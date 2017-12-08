@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppInterceptor } from './app.interceptor';
-import { MatSnackBarModule } from '@angular/material';
 import { SnackBar } from './tool/snackbar';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -21,7 +20,6 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    MatSnackBarModule,
     AppRoutingModule,
     ToastrModule.forRoot({
       maxOpened: 1,

@@ -152,7 +152,7 @@ export class LoginComponent implements OnInit {
       {
         phone: this.wrapDatas.userInpVal,
         email: this.wrapDatas.userEmailVal,
-        password: window['BASE64'].encoder(this.wrapDatas.userPwdVal),
+        password: window.btoa(this.wrapDatas.userPwdVal),
         verifyCode: this.wrapDatas.userYZVal
       },
       true
@@ -166,7 +166,7 @@ export class LoginComponent implements OnInit {
       this.wrapDatas.rootkey = '/account/loginByPassword';
       option = {
         authentication: this.wrapDatas.userAUTHVal,
-        password: window['BASE64'].encoder(this.wrapDatas.userPwdVal)
+        password: window.btoa(this.wrapDatas.userPwdVal)
       };
     } else {
       this.wrapDatas.rootkey = '/account/loginByAuthCode';
