@@ -13,10 +13,14 @@ export class AppService {
   public readonly baseURL: string = `${this.base}/api-portal`;
   public readonly imgPathPre: string = `${this.base || this.host}/images`;
 
-  constructor(private http?: HttpClient) {}
-
+  // Observable sources
   private accountSource = new Subject<Account>();
+  // Observable streams
+  // tslint:disable-next-line:member-ordering
   public accountAnnounced = this.accountSource.asObservable();
+
+  constructor(private http?: HttpClient) { }
+
   /**
    * Service message commands
    *
@@ -26,13 +30,6 @@ export class AppService {
   public announceAccount(account: Account) {
     localStorage.setItem('account', JSON.stringify(account));
     this.accountSource.next(account);
-  }
-
-  private accountEntitySource = new Subject<any>();
-  public accountEntityAnnounced = this.accountEntitySource.asObservable();
-  public announceAccountEntity(entity: any) {
-    localStorage.setItem('accountEntity', JSON.stringify(entity));
-    this.accountEntitySource.next(entity);
   }
 
   /**
@@ -103,63 +100,75 @@ export class AppService {
    * method is like: '/admin/add'
    * param is like: { key: 'test'}
    */
+
   public DELETE(method: string, param?: object): Observable<any> {
     return this.http.delete(this.resolveParamUrl(method, param));
   }
 
   /**
    * 通用POST请求
+   * method is like: '/admin/add'
+   * body is like: {key: 'test'}
+   *
    * @param {string} method
    * @param {object} body
    * @param {{ isFormSubmit?: boolean }} [options]
    * @returns {Observable<any>}
    * @memberof AppService
    */
-  public POST(method: string, body: object, options?: { isFormSubmit?: boolean, isPost?: boolean}): Observable<any> {
-    if (!/^\//.test(method)) {
-      method = `/${method}`;
-    }
-    // 请求URL
-    const url = `${this.baseURL}${method}`;
-
-    this.removeUselessValueFromBody(body);
-
-    // 区别表单POST提交 & Common post
-    if (options && options.isFormSubmit && options.isFormSubmit === true) {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-      return this.http.post(url, $.param(body), {
-        headers,
-        withCredentials: true
-      });
-    } else {
-      return this.http.post(url, body, {
-        withCredentials: true
-      });
-    }
+  public POST(method: string, body: object, options?: { isFormSubmit?: boolean }): Observable<any> {
+    return this.commonMethod('post', method, body, options);
   }
 
   /**
-   * 通用PUT请求
+   * PUT
    *
+   * @param {string} method
+   * @param {object} body
+   * @param {{ isFormSubmit?: boolean }} [options]
+   * @returns {Observable<any>}
+   * @memberof AppService
    */
   public PUT(method: string, body: object, options?: { isFormSubmit?: boolean }): Observable<any> {
+    return this.commonMethod('put', method, body, options);
+  }
+
+  /**
+   * PATCH
+   *
+   * @param {string} method
+   * @param {object} body
+   * @param {{ isFormSubmit?: boolean }} [options]
+   * @returns {Observable<any>}
+   * @memberof AppService
+   */
+  public PATCH(method: string, body: object, options?: { isFormSubmit?: boolean }): Observable<any> {
+    return this.commonMethod('patch', method, body, options);
+  }
+
+  private commonMethod(httpMethod: 'post' | 'put' | 'patch', method: string, body: object, options?: { isFormSubmit?: boolean }): Observable<any> {
     if (!/^\//.test(method)) {
       method = `/${method}`;
     }
     // 请求URL
     const url = `${this.baseURL}${method}`;
 
-    this.removeUselessValueFromBody(body);
+    // 从请求体中删除掉value为null,undefined的key
+    Object.keys(body).forEach((key: string) => {
+      if (body[key] === null || body[key] === undefined || body[key] === 'null' || body[key] === 'undefined') {
+        delete body[key];
+      }
+    });
 
-    // 区别表单PUT提交 & Common PUT
+    // 区别 formPOST & commonPOST
     if (options && options.isFormSubmit && options.isFormSubmit === true) {
       const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-      return this.http.put(url, $.param(body), {
+      return this.http[httpMethod](url, $.param(body), {
         headers,
         withCredentials: true
       });
     } else {
-      return this.http.put(url, body, {
+      return this.http[httpMethod](url, body, {
         withCredentials: true
       });
     }
