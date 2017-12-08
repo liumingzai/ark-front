@@ -1,0 +1,79 @@
+// 公共头部样式
+$bgc: linear-gradient(to bottom, #3c4854, #606a74);
+$text-color: rgba(255, 255, 255, .7);
+$active-color: #fff;
+$supcolor: #ffd430;
+$supbgc: rgba(240, 251, 255, 0.2);
+
+header {
+  background: $bgc;
+
+  .ark-home-logo {
+    color: $text-color;
+    font-size: 1.6rem;
+  }
+
+  .navbar {
+    margin: 0;
+    width: 100%;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row-reverse;
+    li {
+      padding: .6rem 1.5rem;
+      text-align: center;
+    }
+  }
+
+  a.nav-link {
+    color: $text-color;
+    font-size: 1.6rem;
+
+    sup {
+      color: $supcolor;
+      font-family: 'Microsoft Yahei';
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    &.sup-custom {
+      align-items: center;
+      background-color: $supbgc;
+      display: flex;
+      height: 40px;
+      justify-content: center;
+      padding: 0;
+      width: 120px;
+    }
+
+    &.active {
+      color: $active-color;
+      font-weight: bold;
+    }
+  }
+
+  .account {
+    img {
+      border-radius: 15px;
+    }
+
+    a.account-name {
+      color: $active-color;
+      font-size: 1.6rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      text-decoration: none;
+
+      &::after {
+        content: none;
+      }
+    }
+
+    a.dropdown-item {
+      font-size: 1.3rem;
+      line-height: 2.4rem;
+    }
+  }
+}

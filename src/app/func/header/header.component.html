@@ -1,0 +1,36 @@
+<header>
+  <div class="container">
+    <div class="row">
+      <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse row" id="navbarSupportedContent">
+          <div class="col-md-1 ark-home-logo">
+            <a [routerLink]="['/']">Logo</a> 
+          </div>
+          <div class="col-md-9">
+          </div>
+
+          <!-- 登录注册 -->
+          <ul class="navbar-nav log-in-out col-md-2" *ngIf="!account.username">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login"> 登录 </a>
+            </li>
+          </ul>
+
+          <!-- 登录成功后显示 -->
+          <ul class="navbar-nav account col-md-2" *ngIf="account.username">
+            <li class="nav-item dropdown">
+              <!-- <img [src]="account.logo | ImgPathPre | trustURL" width="30" alt="UserLogo"> -->
+              <a class="dropdown-toggle account-name" id="userDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{account.username}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="userDropdownMenuLink">
+                <a class="dropdown-item" [routerLink]="['/manager/info']"><i class="fa fa-cog" aria-hidden="true" ></i> 帐号设置</a>
+                <a class="dropdown-item" (click)="onLogout()"><i class="fa fa-sign-out" aria-hidden="true"></i> 退出</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>

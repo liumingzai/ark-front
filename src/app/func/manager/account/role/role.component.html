@@ -1,0 +1,75 @@
+<section>
+  <div class="margin-b-20">
+    <ol class="breadcrumb font-16">
+      <li class="breadcrumb-item"><a href="javascript: void(0)">账号管理</a></li>
+      <li class="breadcrumb-item active">角色管理</li>
+    </ol>
+  </div>
+
+  <mat-card>
+    <mat-card-header class="margin-b-10">
+      <mat-card-title class="full-height flex-v-center" style="display: flex; margin-bottom: 0;">
+        <span class="font-16 margin-r-20">角色数量 <strong class="text-danger">{{totalRecords}}</strong></span>
+      </mat-card-title>
+      <div class="flex flex-v-center mr-auto">
+        <a class="btn btn-lg btn-primary" [routerLink]="['edit']">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          新增角色
+        </a>
+      </div>
+      <div class="flex flex-v-center ml-auto margin-r-20">
+          <select class="form-control" #active [(ngModel)]="queryParam.active" (change)="onChangeActive(active.value)">
+            <option value="null">角色状态</option>
+            <option value="Y">启用</option>
+            <option value="N">禁用</option>
+          </select>
+        </div>
+        <div class="flex-inline">
+          <mat-form-field>
+            <input type="text" matInput #name [(ngModel)]="queryParam.name" (keyup.enter)="onSearch(name.value)" placeholder="请输入角色名">
+          </mat-form-field>
+          <a mat-mini-fab color="primary" (click)="onSearch(name.value)">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </a>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <table class="table ark-admin-table">
+        <tbody>
+          <tr>
+						<th class="ark-second-col">ID</th>
+            <th class="ark-second-col">角色名称</th>
+						<th>描述</th>
+            <th>创建时间</th>
+            <th>有效标识</th>
+            <th>操作</th>
+          </tr>
+
+          <tr *ngFor="let role of roles" [@flyInOutAnimation]>
+            <td>{{role.id}}</td>
+            <td>{{role.name}}</td>
+            <td>{{role.description}}</td>
+            <td>{{role.entryDatetime | date: 'y-MM-dd'}}</td>
+            <td>{{role.active === 'Y' ? '启用' : '禁用'}}</td>
+            <td>
+              <a class="btn btn-warning btn-sm"  [routerLink]="['/manager/account/bind/auth']" [queryParams]="{id: role.id}"  matTooltip="分配权限" matTooltipPosition="above">
+                <i class="fa fa-universal-access" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-warning btn-sm" [routerLink]="['/manager/account/role/edit']" [queryParams]="{id: role.id}" matTooltip="编辑" matTooltipPosition="above">
+                <i class="fa fa-pencil-square" aria-hidden="true"></i>
+              </a>
+              <button type="button" class="btn btn-danger" (click)="onDelete(role.id)" matTooltip="删除" matTooltipPosition="above">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+
+    <mat-card-footer class="padding-b-20">
+      <ark-paginator rows="10" currentPage="{{currentPage}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
+    </mat-card-footer>
+  </mat-card>
+</section>

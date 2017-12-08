@@ -1,0 +1,79 @@
+<article class="user-list-wrap continer">
+  <section class="content">
+    <ul class="list-content">
+      <li class="slide-title-row row m0 mb10 flex-space-between">
+        <section *ngFor="let item of ListDatas.title; let ind=index" class="slide-title-item {{ListDatas.className? ListDatas.className[ind]:''}}">
+          <p>{{ item }}</p>
+        </section>
+      </li>
+      <li class="slide-row row m0 mb10 flex-space-between" *ngFor="let item of ListDatas.group; let ind=index ">
+        <section *ngFor="let child of item.value; let ind=index" class="slide-item text-br {{ListDatas.className? ListDatas.className[ind]:''}}" [innerHTML]="child | trustHtml">
+        </section>
+        <section class="slide-item col-md-2 max-w12 text-center p0" *ngIf="severData && pathname !== '/user/roleauthoritycontrol'">
+          <div *ngIf="severData[ind]?.hasOwnProperty('state')">
+              <p *ngIf="severData[ind].state">有效</p>
+              <p *ngIf="!severData[ind].state">无效</p>
+          </div>
+          <div *ngIf="severData[ind]?.hasOwnProperty('active')">
+              <p *ngIf="severData[ind].active === 'Y'">有效</p>
+              <p *ngIf="severData[ind].active === 'N'">无效</p>
+          </div>
+        </section>
+        <section class="slide-item col-md-2 max-w12 text-center p0" *ngIf="keyzhi === 1">
+          <a [routerLink]="['/user/authoritycontrol/updata']" [queryParams]="{id:severData[ind].id}" (click)="FnSend(ind)" class="btn btn-primary">编辑</a>
+          <button class="btn btn-danger" (click)="FnDel(severData[ind].id, ind)" data-toggle="modal" data-target="#myDelModal">删除</button>
+        </section>
+        <section class="slide-item col-md-2" *ngIf="keyzhi === 2">
+          <a [routerLink]="['/user/usercontrol/updata']" [queryParams]="{id:severData[ind].id}" (click)="FnSend(ind)" class="btn btn-primary">编辑</a>
+          <button class="btn btn-danger" (click)="FnDel(severData[ind].id, ind)" data-toggle="modal" data-target="#myDelModal">删除</button>
+        </section>
+        <section class="slide-item col-md-3" *ngIf="keyzhi === 4">
+          <a [routerLink]="['/user/rolecontrol/updata']" [queryParams]="{id:severData[ind].id}" (click)="FnSend(ind)" class="btn btn-primary">修改</a>
+          <button class="btn btn-danger" (click)="FnDel(severData[ind].id, ind)" data-toggle="modal" data-target="#myDelModal">删除</button>
+          <a [routerLink]="['/user/roleauthoritycontrol']" [queryParams]="{id:severData[ind].id, bind:'Y'}" class="btn bg-olive text-white">权限</a>
+        </section>
+        <section class="slide-item" *ngIf="keyzhi === 5">
+          <button class="btn">详情</button>
+        </section>
+        <section class="slide-item col-md-1" *ngIf="keyzhi === 6">
+          <button *ngIf="datasTop[0].bind === 'N'" (click)="FnDel(severData[ind].id, ind)" class="btn btn-success" data-toggle="modal" data-target="#myDelModal" >绑定权限</button>
+          <button *ngIf="datasTop[0].bind === 'Y'" (click)="FnDel(severData[ind].id, ind)" class="btn btn-danger" data-toggle="modal" data-target="#myDelModal" >解除权限</button>
+          <!-- <a class="btn" [routerLink]="['/user/detail']" [queryParams]="{type:'port'}">详情</a> -->
+        </section>
+      </li>
+    </ul>
+    <div class="mt20 mb20" *ngIf="totalRecords > 10">
+      <ark-paginator rows="10" currentPage="{{datasTop[0].page}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
+    </div>
+  </section>
+</article>
+
+<div class="modal fade" id="myDelModal" tabindex="-1" role="dialog" aria-labelledby="myDelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title" id="myDelModalLabel">
+            {{datasTop[0].bind? '':'删除'+DelTitle}}
+            {{datasTop[0].bind === 'N'? '绑定'+DelTitle:''}}
+            {{datasTop[0].bind === 'Y'? '解除'+DelTitle:''}}
+          </h4>
+        </div>
+        <div class="modal-body">
+            {{datasTop[0].bind? '':'删除当前'+ DelTitle+'?'}}
+            {{datasTop[0].bind === 'N'? '绑定当前'+DelTitle+'?':''}}
+            {{datasTop[0].bind === 'Y'? '解除当前'+DelTitle+'?':''}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button (click)="FnSureDel()" data-dismiss="modal" type="button" class="btn btn-primary">
+            确定
+          </button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+  </div>

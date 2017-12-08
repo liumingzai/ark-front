@@ -1,0 +1,45 @@
+<article class="group-list-wrap">
+  <div class="main row">
+    <dl class="col-md-3 mb10 pos-relative" *ngFor="let item of severData; let ind=index">
+      <dt>
+        <div>
+          <img class="full-width" src="../../../../../asset/image/default/product_default.png" alt="">
+          <i *ngIf="datasTop[0].DELstate === 'true'" (click)="FnDel(ind)" class="fa fa-close f20 graph-close" data-toggle="modal" data-target="#myDelModal"></i>
+        </div>
+      </dt>
+      <dd class="text-center">
+        <a [routerLink]="['/user/interface/detail']" [queryParams]="{apiId:severData[ind].apiId}" (click)="FnSend(ind)" >{{item.apiName}}</a>
+      </dd>
+    </dl>
+  </div>
+  <div class="mt20 mb20" *ngIf="totalRecords > 12">
+    <ark-paginator rows="10" currentPage="{{datasTop[0].page}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
+  </div>
+</article>
+
+<!--从控制器代码分析，此处是删除接口 -->
+<div class="modal fade" id="myDelModal" tabindex="-1" role="dialog" aria-labelledby="myDelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+        <h4 class="modal-title" id="myDelModalLabel">
+          删除{{DelTitle}}  
+        </h4>
+      </div>
+      <div class="modal-body">
+          确定删除当前{{DelTitle}}？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button (click)="FnSureDel()" data-dismiss="modal" type="button" class="btn btn-primary">
+            确定
+          </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal -->
+</div>

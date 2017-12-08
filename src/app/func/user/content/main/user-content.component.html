@@ -1,0 +1,8 @@
+<!--显示头部，列表，场景和接口根据条件判断 -->
+<article class="user-content-wrap">
+  <user-header *ngIf="type"></user-header>
+  <user-list *ngIf="type === 'list'"></user-list>
+  <scene-content *ngIf="type === 'scene'"></scene-content>
+  <user-graphlist *ngIf="type === 'graphlist'"></user-graphlist>
+  <router-outlet *ngIf="!type"></router-outlet>
+</article>

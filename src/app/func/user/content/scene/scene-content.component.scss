@@ -1,0 +1,44 @@
+.scene-conten-wrap {
+  padding-left: 10px;
+  padding-top: 10px;
+  position: relative;
+
+}
+
+.main-header,
+.main-content {
+  margin: 0 auto 10px;
+  width: 98%;
+}
+
+.main-header{
+  justify-content: space-between;
+}
+
+.main-content {
+  border: 1px solid #ccc;
+
+}
+
+.minh-136px {
+  min-height: 136px !important;
+}
+
+.main-list {
+  padding: 12px;
+}
+
+.scene-describe {
+  border: 1px solid #ccc;
+  line-height: 2em;
+  min-height: 200px;
+  text-indent: 2em;
+  width: 100%;
+}
+
+.save-box button {
+  font-size: 14px;
+  height: 40px;
+  margin-top: 20px;
+  width: 16%;
+}

@@ -1,0 +1,40 @@
+<section>
+  <div class="margin-b-20">
+    <ol class="breadcrumb font-16">
+      <li class="breadcrumb-item"><a href="javascript: void(0)" routerLink="../"  routerLinkActive="active">角色管理</a></li>
+      <li class="breadcrumb-item active">{{showTitle}}</li>
+    </ol>
+  </div>
+
+  <mat-card>
+    <mat-card-content class="container">
+      <div class="row flex-column">
+        <form>
+          <div class="form-group">
+            <label for="">角色名称</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="role.name">
+          </div>
+
+          <div class="form-group">
+            <label for="">描述</label>
+            <input type="text" class="form-control" name="description" [(ngModel)]="role.description">
+          </div>
+
+          <div class="form-group">
+            <label for="">有效状态</label>
+            <select name="active" id="active" class="form-control" [(ngModel)]="role.active">
+              <option  value="Y">启用</option>
+              <option  value="N">禁用</option>
+              </select>
+          </div>
+          <div class="form-group text-center">
+            <button class="btn btn-lg btn-primary" [disabled]="isSubmiting" (click)="onSubmit()">
+              <i class="fa fa-save" aria-hidden="true"></i>
+              保存
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

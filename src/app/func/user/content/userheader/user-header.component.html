@@ -1,0 +1,138 @@
+<article class="user-header-wrap">
+  <section class="list-top" *ngIf="pathname === '/user/authoritycontrol' ">
+    <h2 class="list-main-heading mb20">权限管理</h2>
+    <form class="form-inline mb20">
+      <div class="form-group mr20">
+        <label class="mr10" for="permissionName">权限名称</label>
+        <input type="text" class="form-control" id="permissionName" [(ngModel)]="ListDatas.permissionName" placeholder="请输入名称" name="permissionName">
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="ValidPath">路径</label>
+        <input type="text" name="ValidPath" [(ngModel)]="ListDatas.ValidPath" class="form-control" id="ValidPath" placeholder="请输入路径">
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="Valid-identification">权限状态</label>
+        <select class="form-control" id="Valid-identification" (change)="FnChangeModel($event, 'Action')">
+          <option value="">所有</option>
+          <option value="Y">有效</option>
+          <option value="N">无效</option>
+        </select>
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="Valid-time">默认时间排序</label>
+        <select class="form-control" id="Valid-time" (change)="FnChangeModel($event, 'TimeSort')">
+          <option value="">默认</option>
+          <option value="0">升序</option>
+          <option value="1">降序</option>
+        </select>
+      </div>
+      <a class="btn btn-primary mr20" [routerLink]="['/user/authoritycontrol/add']">新增权限</a>
+      <button class="btn btn-info" (click)="GoToRootPath('权限管理')">查询权限</button>
+    </form>
+  </section>
+  <section class="list-top" *ngIf="pathname === '/user/usercontrol' ">
+    <h2 class="list-main-heading mb20">用户管理</h2>
+    <form class="form-inline mb20">
+      <div class="form-group mr20">
+        <label class="mr10" for="userName">用户名</label>
+        <input type="text" class="form-control" [(ngModel)]="ListDatas.userName" name="userName" id="userName" placeholder="请输入名称">
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="UID">UID</label>
+        <input type="text" class="form-control" [(ngModel)]="ListDatas.uid" name="uid" id="UID" placeholder="请输入uid">
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="user-VValid-identification">用户状态</label>
+        <select class="form-control" id="user-Valid-identification" (change)="FnChangeModel($event, '用户管理state')">
+          <option value="">所有</option>
+          <option value="Y">有效</option>
+          <option value="N">无效</option>
+        </select>
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="user-time">默认时间排序</label>
+        <select class="form-control" id="user-time" (change)="FnChangeModel($event, 'TimeSort')">
+            <option value="">默认</option>
+            <option value="0">升序</option>
+            <option value="1">降序</option>
+          </select>
+      </div>
+      <a class="btn btn-primary mr20" [routerLink]="['/user/usercontrol/add']">新增用户</a>
+      <button class="btn btn-info" (click)="GoToRootPath('用户管理')">
+        查询用户
+      </button>
+    </form>
+  </section>
+  <section class="list-top" *ngIf="pathname === '/user/rolecontrol' ">
+    <h2 class="list-main-heading mb20">角色管理</h2>
+    <form class="form-inline mb20">
+      <div class="form-group mr20">
+        <label class="mr10" for="rolename">角色名</label>
+        <input type="text" class="form-control" [(ngModel)]="ListDatas.rolename" name="rolename" id="rolename" placeholder="请输入名称">
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="role-VValid-identification">角色状态</label>
+        <select class="form-control" id="role-Valid-identification" (change)="FnChangeModel($event, 'Action')">
+          <option value="">所有</option>
+          <option value="Y">有效</option>
+          <option value="N">无效</option>
+        </select>
+      </div>
+      <div class="form-group mr20">
+        <label class="mr10" for="role-time">默认时间排序</label>
+        <select class="form-control" id="role-time" (change)="FnChangeModel($event, 'TimeSort')">
+          <option value="">默认</option>
+          <option value="0">升序</option>
+          <option value="1">降序</option>
+        </select>
+      </div>
+      <a class="btn btn-primary mr20" [routerLink]="['/user/rolecontrol/add']">新增角色</a>
+      <button class="btn btn-info" (click)="GoToRootPath('角色管理')">查询角色</button>
+    </form>
+  </section>
+  <section class="list-top" *ngIf="pathname === '/user/roleauthoritycontrol' ">
+    <h2 class="list-main-heading mb20">当前角色权限管理</h2>
+    <nav class="mb20">
+      <a class="btn b f14" [routerLink]="['/user/roleauthoritycontrol']" [queryParams]="{id: datasTop[0].id, bind:'Y'}">
+        当前已绑定接口
+      </a>
+      <a class="btn b f14" [routerLink]="['/user/roleauthoritycontrol']" [queryParams]="{id: datasTop[0].id, bind:'N'}">
+        当前未绑定接口
+      </a>
+    </nav>
+  </section>
+  <section class="list-top" *ngIf="pathname === '/user/interface' ">
+    <h2 class="list-main-heading mb20">接口总览</h2>
+    <div class="row mb10">
+      <h5 class="col-md-1">分类:</h5>
+      <nav class="col-md-10">
+        <a class="col-md-1" href="javascript:;">全部</a>
+        <a class="col-md-1" href="javascript:;">企业</a>
+        <a class="col-md-1" href="javascript:;">专利</a>
+        <a class="col-md-1" href="javascript:;">工商</a>
+        <a class="col-md-1" href="javascript:;">其他</a>
+      </nav>
+    </div>
+    <form class="form-inline mb20 pr10 flex-space-between">
+      <div class="row m0">
+        <div class="form-group mb10 mr10">
+          <label class="mr10 mb10" for="NIC-Name">接口名称</label>
+          <input type="text" class="form-control" id="NIC-Name" placeholder="请输入接口名称">
+        </div>
+        <div class="form-group mr20">
+          <label class="mr10" for="interface-time">默认时间排序</label>
+          <select class="form-control" id="interface-time" (change)="FnChangeModel($event, 'TimeSort')">
+            <option value="">默认</option>
+            <option value="0">升序</option>
+            <option value="1">降序</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-success" [routerLink]="['/user/interface/add']">新增</button>
+        <button class="btn btn-warning text-white" (click)="FnDelModel($event,'接口总览')">删除</button>
+        <button class="btn btn-info" (click)="GoToRootPath('接口总览')" >查询</button>
+      </div>
+    </form>
+  </section>
+</article>

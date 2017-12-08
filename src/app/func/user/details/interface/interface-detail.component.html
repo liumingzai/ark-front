@@ -1,0 +1,322 @@
+<!-- 当前接口详情 -->
+<article class="interface-detail-wrap row">
+  <div class="col-md-2">
+    <nav class="interface-detail-nav">
+      <a href="javascript:;" (click)="FnShowModel('showdata')">{{DetailData.apiName}}</a>
+      <a href="javascript:;" (click)="FnShowModel('updata')">编辑当前接口</a>
+      <a href="javascript:;" (click)="FnShowModel('comment')">评论</a>
+      <a href="javascript:;" (click)="FnShowModel('degree')">调用次数</a>
+    </nav>
+  </div>
+  <form class="col-md-10 interface-detail-list">
+    <div class="form-group row">
+      <label for="accessUrl" class="col-md-2 max-w15">调用地址:</label>
+      <textarea rows="2" [(ngModel)]="severData.accessUrl" name="accessUrl" *ngIf="HTMLkey === 'updata'" type="text" class="form-control col-md-10 f14">
+      </textarea>
+      <p *ngIf="HTMLkey === 'showdata'" class="col-md-10 p0 m0">{{severData?.accessUrl}}</p>
+    </div>
+    <div class="form-group row">
+      <label for="queryType" class="col-md-2 max-w15">请求类型:</label>
+      <select *ngIf="HTMLkey === 'updata'" (change)="FnChangeModel($event, 'queryType')" type="text" class="form-control col-md-10">
+        <option selected="{{severData?.queryType==='GET'? 'selected':'' }}" value="GET">GET</option>
+        <option selected="{{severData?.queryType==='POST'? 'selected':'' }}" value="POST">POST</option>
+      </select>
+      <p *ngIf="HTMLkey === 'showdata'" class="col-md-10 p0 m0">{{severData?.queryType}}</p>
+    </div>
+    <div class="form-group row">
+      <label for="returnType" class="col-md-2 max-w15">返回类型:</label>
+      <select *ngIf="HTMLkey === 'updata'" (change)="FnChangeModel($event, 'returnType')" type="text" class="form-control col-md-10">
+        <option selected="{{severData?.returnType==='JSON'? 'selected':'' }}" value="JSON">JSON</option>
+        <option selected="{{severData?.returnType==='XML'? 'selected':'' }}" value="XML">XML</option>
+      </select>
+      <p *ngIf="HTMLkey === 'showdata'" class="col-md-10 p0 m0">{{severData?.returnType}}</p>
+    </div>
+    <div class="form-group  row">
+      <label class="row m0 mb10 flex-space-between full-width">
+        <div class="col-md-4">
+          请求参数<small>（header）</small>:
+        </div>
+        <div class="col-md-3 text-right">
+          <button *ngIf="HTMLkey === 'updata'"
+          data-toggle="modal" data-target="#myEditModalLabel"
+          (click)="FnEditModel('add','header')"
+          class = "btn btn-success text-white ml10">新增</button>
+        </div>
+      </label>
+      <div class="col-md-2 max-w15"></div>
+      <ul class="col-md-10 p0 slide-list">
+        <li class="row">
+          <h5 class="col-md-3">名称</h5>
+          <h5 class="col-md-2">类型</h5>
+          <h5 class="col-md-2">是否必须</h5>
+          <h5 *ngIf="HTMLkey === 'showdata'" class="col-md-5">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-3">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-2">编辑</h5>
+        </li>
+        <li class="row" *ngFor="let item of HeaderlData; let ind= index">
+          <div class="col-md-3">{{item.item?.queryColumnName}}</div>
+          <div class="col-md-2">{{item.item?.queryColumnType}}</div>
+          <div class="col-md-2">{{item.item?.queryOption}}</div>
+          <div *ngIf="HTMLkey === 'showdata'" class="col-md-5">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-3">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-2">
+            <button class="btn btn-info" data-toggle="modal" data-target="#myEditModalLabel" (click)="FnEditModel('updata','header',ind,item.ind)">编辑</button>
+            <button class="btn btn-danger"
+            (click)="FnEditModel('del','header',ind,item.ind)" 
+            data-toggle="modal" data-target="#myDelModal">删除</button>
+          </div>
+        </li>
+        <li class="row flex-space-center bdl1" *ngIf="HeaderlData.length < 1">
+          请先创建数据
+        </li>
+      </ul>
+    </div>
+    <div class="form-group  row">
+      <label class="row m0 mb10 flex-space-between full-width">
+        <div class="col-md-4">
+        请求参数<small>（query）</small>:
+        </div>
+        <div class="col-md-3 text-right">
+          <button *ngIf="HTMLkey === 'updata'"
+          data-toggle="modal" data-target="#myEditModalLabel"
+          (click)="FnEditModel('add','query')"
+          class = "btn btn-success text-white ml10">新增</button>
+        </div>
+      </label>
+      <div class="col-md-2 max-w15"></div>
+      <ul class="col-md-10 p0 slide-list">
+        <li class="row">
+          <h5 class="col-md-3">名称</h5>
+          <h5 class="col-md-2">类型</h5>
+          <h5 class="col-md-2">是否必须</h5>
+          <h5 *ngIf="HTMLkey === 'showdata'" class="col-md-5">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-3">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-2">编辑</h5>
+        </li>
+        <li class="row" *ngFor="let item of queryData;let ind=index">
+          <div class="col-md-3">{{item.item?.queryColumnName}}</div>
+          <div class="col-md-2">{{item.item?.queryColumnType}}</div>
+          <div class="col-md-2">{{item.item?.queryOption}}</div>
+          <div *ngIf="HTMLkey === 'showdata'" class="col-md-5">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-3">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-2">
+            <button class="btn btn-info" data-toggle="modal" (click)="FnEditModel('updata','query',ind,item.ind)" data-target="#myEditModalLabel">编辑</button>
+            <button class="btn btn-danger"
+            (click)="FnEditModel('del','query',ind,item.ind)" 
+            data-toggle="modal" data-target="#myDelModal">删除</button>
+          </div>
+        </li>
+        <li class="row flex-space-center bdl1" *ngIf="queryData.length < 1">
+          请先创建数据
+        </li>
+      </ul>
+    </div>
+    <div class="form-group  row">
+      <label class="row m0 mb10 flex-space-between full-width">
+        <div class="col-md-4">
+          请求参数<small>（body）</small>:
+        </div>
+        <div class="col-md-3 text-right">
+          <button *ngIf="HTMLkey === 'updata'"
+          data-toggle="modal" data-target="#myEditModalLabel"
+          (click)="FnEditModel('add','body')"
+          class = "btn btn-success text-white ml10">新增</button>
+        </div>
+      </label>
+      <div class="col-md-2 max-w15"></div>
+      <ul class="col-md-10 p0 slide-list">
+        <li class="row">
+          <h5 class="col-md-3">名称</h5>
+          <h5 class="col-md-2">类型</h5>
+          <h5 class="col-md-2">是否必须</h5>
+          <h5 *ngIf="HTMLkey === 'showdata'" class="col-md-5">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-3">描述</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-2">编辑</h5>
+        </li>
+        <li class="row" *ngFor="let item of bodyData;let ind = index">
+          <div class="col-md-3">{{item.item?.queryColumnName}}</div>
+          <div class="col-md-2">{{item.item?.queryColumnType}}</div>
+          <div class="col-md-2">{{item.item?.queryOption}}</div>
+          <div *ngIf="HTMLkey === 'showdata'" class="col-md-5">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-3">{{item.item?.queryColumnDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-2">
+            <button class="btn btn-info" data-toggle="modal" (click)="FnEditModel('updata','body',ind,item.ind)" data-target="#myEditModalLabel">编辑</button>
+            <button class="btn btn-danger"
+            (click)="FnEditModel('del','body',ind,item.ind)" 
+            data-toggle="modal" data-target="#myDelModal"
+            >删除</button>
+          </div>
+        </li>
+        <li class="row flex-space-center bdl1" *ngIf="bodyData.length < 1">
+          请先创建数据
+        </li>
+      </ul>
+    </div>
+    <div class="form-group row">
+      <label for="returnSample" class="col-md-2 max-w15">返回示例:</label>
+      <textarea [(ngModel)]="severData.returnSample" name="returnSample" *ngIf="HTMLkey === 'updata'" rows="4" type="text" class="form-control col-md-10 f14">
+        {{severData?.returnSample}}
+      </textarea>
+      <textarea readonly rows="4" *ngIf="HTMLkey === 'showdata'" type="text" class="form-control col-md-10 f14">
+        {{severData?.returnSample}}
+      </textarea>
+    </div>
+    <div class="form-group  row">
+      <label class="row m0 mb10 flex-space-between full-width">
+        <div class="col-md-4">
+          错误code:
+        </div>
+        <div class="col-md-3 text-right">
+          <button *ngIf="HTMLkey === 'updata'" 
+          data-toggle="modal" data-target="#myEditModalLabel"
+          (click)="FnEditModel('add','code')"
+          class = "btn btn-success text-white ml10">新增</button>
+        </div>
+      </label>
+      <div class="col-md-2 max-w15"></div>
+      <ul class="col-md-10 p0 slide-list">
+        <li class="row">
+          <h5 class="col-md-3">code</h5>
+          <h5 *ngIf="HTMLkey === 'showdata'" class="col-md-9">说明</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-7">说明</h5>
+          <h5 *ngIf="HTMLkey === 'updata'" class="col-md-2">编辑</h5>
+        </li>
+        <li class="row" *ngFor="let item of severData?.errorCodeList;let ind=index">
+          <div class="col-md-3">{{item?.errorCode}}</div>
+          <div *ngIf="HTMLkey === 'showdata'" class="col-md-9">{{item?.errorDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-7">{{item?.errorDesc}}</div>
+          <div *ngIf="HTMLkey === 'updata'" class="col-md-2">
+            <button class="btn btn-info" data-toggle="modal"
+             (click)="FnEditModel('updata','code',ind)" 
+            data-target="#myEditModalLabel">编辑</button>
+            <button class="btn btn-danger"
+            (click)="FnEditModel('del','code',ind)" 
+            data-toggle="modal" data-target="#myDelModal"
+            >删除</button>
+          </div>
+        </li>
+        <li class="row flex-space-center bdl1" *ngIf="severData?.errorCodeList.length < 1">
+          请先创建数据
+        </li>
+      </ul>
+    </div>
+    <div class="row flex-space-center" *ngIf="HTMLkey === 'updata'">
+      <button type="btn" data-toggle="modal" data-target="#mySaveModal" class="btn btn-warning text-white interface-save-box ">保存</button>
+    </div>
+  </form>
+
+</article>
+
+<!-- 对当前接口新增请求参数弹框-->
+<div class="modal fade" id="myEditModalLabel" tabindex="-1" role="dialog" aria-labelledby="myEditModalLabelLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myEditModalLabelLabel">
+            新增或编辑参数
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div *ngIf="TYPEkey!=='code'" class="form-group">
+            <label for="queryColumnName">参数名称</label>
+            <input [(ngModel)]="interfaceData.queryColumnName" name="queryColumnName" type="text" class="form-control" id="queryColumnName" placeholder="请输入名称">
+          </div>
+          <div *ngIf="TYPEkey!=='code'" class="form-group">
+            <label for="queryOption">参数类型</label>
+            <select (change)="FnChangeModel($event, 'YorN')" type="text" class="form-control col-md-10">
+              <option selected="{{interfaceData.queryColumnType==='string'? 'selected':'' }}" value="string">string</option>
+              <option selected="{{interfaceData.queryColumnType==='int'? 'selected':'' }}" value="int">int</option>
+            </select>
+          </div>
+          <div *ngIf="TYPEkey!=='code'" class="form-group">
+            <label for="queryColumnType">是否必须</label>
+            <select (change)="FnChangeModel($event, 'queryColumnType')" type="text" class="form-control col-md-10">
+              <option selected="{{interfaceData.queryOption==='Y'? 'selected':'' }}" value="Y">Y</option>
+              <option selected="{{interfaceData.queryOption==='N'? 'selected':'' }}" value="N">N</option>
+            </select>
+          </div>
+          <div *ngIf="TYPEkey!=='code'" class="form-group">
+            <label for="queryColumnDesc">参数描述</label>
+            <textarea [(ngModel)]="interfaceData.queryColumnDesc" name="queryColumnDesc" rows="2" type="text" class="form-control col-md-10 f14"></textarea>
+          </div>
+          <div *ngIf="TYPEkey==='code'" class="form-group">
+            <label for="errorCode">code名称</label>
+            <input [(ngModel)]="interfaceData.errorCode" name="errorCode" type="text" class="form-control" id="errorDesc" placeholder="请输入名称">
+          </div>
+          <div *ngIf="TYPEkey==='code'" class="form-group">
+            <label for="errorDesc">code描述</label>
+            <textarea [(ngModel)]="interfaceData.errorDesc" name="errorDesc" rows="2" type="text" class="form-control col-md-10 f14"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button data-dismiss="modal" type="button" 
+        class="btn btn-primary" (click)="FnSureEditModel()">
+          确定
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal -->
+</div>
+
+<!-- 对当前接口新增请求参数弹框 -->
+<div class="modal fade" id="myDelModal" tabindex="-1" role="dialog" aria-labelledby="myDelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title" id="myDelModalLabel">
+            暂时删除参数或code
+          </h4>
+        </div>
+        <div class="modal-body">
+          您确定要删除参数或code
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button (click)="FnSureEditModel()" data-dismiss="modal" 
+          type="button" class="btn btn-primary">
+            确定
+          </button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+  </div>
+
+<!--保存提示框 -->
+<div class="modal fade" id="mySaveModal" tabindex="-1" role="dialog" aria-labelledby="mySaveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title" id="mySaveModalLabel">
+          保存内容（若保存将暂时删除的参数或code将永久删除）
+        </h4>
+      </div>
+      <div class="modal-body">
+        您确定要怎么做吗？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button (click)="FnSureSave()" data-dismiss="modal" type="button" class="btn btn-primary">
+          确定
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal -->
+</div>

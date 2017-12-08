@@ -1,0 +1,67 @@
+.user-sidebar-wrap {
+  box-sizing: border-box;
+  padding-top: 10px;
+  position: relative;
+}
+
+.CCGMC {
+  font-size: 24px;
+  padding: 15px;
+  position: relative;
+  text-align: center;
+  &::after {
+    background: #eee;
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 1.5rem;
+    margin-top: 10px;
+    position: absolute;
+    width: calc(100% - 3rem);
+  }
+}
+
+.user-work-group {
+  .user-work-item, .user-work-title {
+    align-items: center;
+    background-color: transparent;
+    border-radius: 3px;
+    color: #3c4858;
+    cursor: pointer;
+    display: flex;
+    font-size: 1.6rem;
+    margin: .8rem 1.5rem;
+    padding: .8rem 1.5rem;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+    position: relative;
+    .state {
+      margin-top: -4%;
+      position: absolute;
+      right: 10%;
+      top: 50%;
+    }
+    &:hover {
+      background-color: #673ab7;
+      box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+      color: #fff;
+      transition: all .3s ease;
+    }
+  }
+  .change {
+    background-color: #673ab7;
+    box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+    color: #fff;
+    transition: all .3s ease;
+  }
+}
+
+
+
+.user-work-list {
+  background-color: rgb(233, 236, 239);
+  margin-top: 10px;
+  transition: all .3s ease;
+  width: 100%;
+}
+

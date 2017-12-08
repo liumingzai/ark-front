@@ -1,0 +1,20 @@
+<article class="user-sidebar-wrap">
+  <div class="pd15">
+    <h2 class="CCGMC">管理中心</h2>
+  </div>
+  <div class="user-work-group mt20"  *ngFor="let items of admindatas; let ind = index">
+    <h3 class="user-work-title text-justify" (click)="FnChange($event,ind)">
+      {{items.slidetitle}}
+      <i class="state fa fa-chevron-up"></i>
+    </h3>
+    <ul class="user-work-list hide pt10 pb10">
+      <li 
+        class="user-work-item {{admindatas[ind].rooturl[x]}}" 
+        *ngFor="let item of items.group; let x = index"
+        (click)="GoToContent(item, ind , x)"
+      >
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+</article>
