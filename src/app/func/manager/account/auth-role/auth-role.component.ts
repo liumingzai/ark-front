@@ -14,11 +14,10 @@ import { debug } from 'util';
 
 @Component({
   templateUrl: './auth-role.component.html',
-  animations: [ flyInOutAnimation ],
-  providers: [ AuthRoleService ]
+  animations: [flyInOutAnimation],
+  providers: [AuthRoleService]
 })
 export class AuthRoleComponent implements OnInit {
-
   private roleId: number;
   private binds: string[];
   private unbinds: string[];
@@ -32,11 +31,10 @@ export class AuthRoleComponent implements OnInit {
     private router: Router,
     private authRoleService: AuthRoleService,
     private appService: AppService,
-    private snackbar: SnackBar,
+    private snackbar: SnackBar
   ) {
     this.roleId = this.activedRoute.snapshot.queryParams['id'];
   }
-
 
   public ngOnInit() {
     this.getBindAuthDatas(1);
@@ -59,7 +57,7 @@ export class AuthRoleComponent implements OnInit {
    * 绑定权限
    */
   public onBind(obj: any) {
-    const permissions = new Array<{id: number}>();
+    const permissions = new Array<{ id: number }>();
     permissions.push(obj);
     this.authRoleService.addRolePermissions(this.roleId, permissions).subscribe((data: any) => {
       if ('2000' === data.code) {
@@ -74,7 +72,7 @@ export class AuthRoleComponent implements OnInit {
    * 解除绑定
    */
   public onUnBind(obj: any) {
-    const permissions = new Array<{id: number}>();
+    const permissions = new Array<{ id: number }>();
     permissions.push(obj);
     this.authRoleService.deleteRolePermissions(this.roleId, permissions).subscribe((data: any) => {
       if ('2000' === data.code) {
@@ -110,6 +108,4 @@ export class AuthRoleComponent implements OnInit {
       }
     });
   }
-
 }
-

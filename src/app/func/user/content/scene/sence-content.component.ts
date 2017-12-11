@@ -10,7 +10,6 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './scene-content.component.html',
   styleUrls: ['./scene-content.component.scss']
 })
-
 export class SceneContentComponents implements OnInit {
   public rooturl: string;
   @Input() public ListDatas: ListDatas;
@@ -22,11 +21,7 @@ export class SceneContentComponents implements OnInit {
   public account: Account;
   public accountRole: number;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {
     this.Scenedata = '';
     this.Token = '';
   }
@@ -51,7 +46,6 @@ export class SceneContentComponents implements OnInit {
           accountId: this.datasTop[0].accountId
         });
       }
-
     });
     this.ListDatas = {
       wlContent: '',
@@ -73,7 +67,6 @@ export class SceneContentComponents implements OnInit {
             this.active = this.Scenedata[this.senceNum].active;
             this.Token = this.Scenedata[this.senceNum].userToken;
           }
-
         }
       }
     });
@@ -92,7 +85,7 @@ export class SceneContentComponents implements OnInit {
   public FnAddModel(): void {
     const rooturl = '/user/scene/add';
     const queryParams = {
-      accountId: this.datasTop[0].accountId,
+      accountId: this.datasTop[0].accountId
     };
     this.router.navigate([rooturl], { queryParams });
   }
@@ -115,7 +108,6 @@ export class SceneContentComponents implements OnInit {
       case 'readio':
         this.active = val;
     }
-
   }
   public FnSaveBtn(): void {
     this.GetScenedata('PUT', 'admin/um/updateAppWhiteList', {

@@ -1,4 +1,3 @@
-
 export class QueryParam {
   public pageNum: number;
   public createTimeSort: number;

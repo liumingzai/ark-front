@@ -12,16 +12,8 @@ import { UserServer } from './service/user.service';
 import { UserHttpServer } from './service/user-http.service';
 
 @NgModule({
-  declarations: [
-    UserComponents,
-    UserSidebarComponents
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HeaderModule,
-    RouterModule.forChild(UserRoutes)
-  ],
+  declarations: [UserComponents, UserSidebarComponents],
+  imports: [CommonModule, FormsModule, HeaderModule, RouterModule.forChild(UserRoutes)],
   providers: [UserServer, UserHttpServer]
 })
-export class UserModule { }
+export class UserModule {}

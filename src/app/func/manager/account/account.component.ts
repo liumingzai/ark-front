@@ -11,5 +11,4 @@ export class AccountComponent {
   public prepRouteState(outlet: any) {
     return outlet.activatedRouteData['animation'];
   }
-
 }

@@ -7,7 +7,7 @@ export class User {
   public phone: string;
   public email: string;
   public state: number;
-  public roles: Array<{id: number; name: string; }>;
+  public roles: Array<{ id: number; name: string }>;
 
   constructor() {
     this.uid = null;

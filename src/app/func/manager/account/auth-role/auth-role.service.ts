@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { AppService } from '../../../../app.service';
 import { Observable } from 'rxjs/Observable';
 
-
 @Injectable()
 export class AuthRoleService {
   constructor(private appService: AppService) {}
-
 
   /**
    * 获取绑定权限列表
@@ -15,7 +13,7 @@ export class AuthRoleService {
    * @returns {Observable<any>}
    * @memberof AuthRoleService
    */
-  public getBindPermissionListById(id: number, pageNum: number): Observable < any > {
+  public getBindPermissionListById(id: number, pageNum: number): Observable<any> {
     const method = '/admin/pm/getRoleBindPermissions';
     return this.appService.GET(method, { id, pageNum });
   }
@@ -27,7 +25,7 @@ export class AuthRoleService {
    * @returns {Observable<any>}
    * @memberof AuthRoleService
    */
-  public getUnBindPermissionListById(id: number, pageNum: number): Observable < any > {
+  public getUnBindPermissionListById(id: number, pageNum: number): Observable<any> {
     const method = '/admin/pm/getRoleUnbindPermissions';
     return this.appService.GET(method, { id, pageNum });
   }
@@ -37,9 +35,9 @@ export class AuthRoleService {
    * @param id
    * @param permission
    */
-  public addRolePermissions(id: number, permissions: Array<{id: number}>): Observable < any >  {
+  public addRolePermissions(id: number, permissions: Array<{ id: number }>): Observable<any> {
     const method = '/admin/pm/addRolePermissions';
-    return this.appService.POST(method, {id, permissions});
+    return this.appService.POST(method, { id, permissions });
   }
 
   /**
@@ -47,10 +45,8 @@ export class AuthRoleService {
    * @param id
    * @param permission
    */
-  public deleteRolePermissions(id: number, permissions: Array<{id: number}>): Observable < any >  {
+  public deleteRolePermissions(id: number, permissions: Array<{ id: number }>): Observable<any> {
     const method = '/admin/pm/deleteRolePermissions';
-    return this.appService.POST(method, {id, permissions});
+    return this.appService.POST(method, { id, permissions });
   }
-
 }
-

@@ -21,12 +21,7 @@ import { ManageComponent } from './manage.component';
     HeaderModule,
     ManageRoutingModule
   ],
-  declarations: [
-    ManageComponent,
-  ],
-  providers: [
-    ManageService
-  ]
+  declarations: [ManageComponent],
+  providers: [ManageService]
 })
-
 export class ManageModule {}

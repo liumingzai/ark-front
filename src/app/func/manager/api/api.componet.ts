@@ -11,5 +11,4 @@ export class ApiComponent {
   public prepRouteState(outlet: any) {
     return outlet.activatedRouteData['animation'];
   }
-
 }

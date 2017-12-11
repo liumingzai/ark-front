@@ -9,7 +9,6 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './user-header.component.html',
   styleUrls: ['./user-header.component.scss']
 })
-
 export class UserHeaderComponents implements OnInit {
   public datasTop: seaData[];
   public listTop: ListDatas[];
@@ -21,11 +20,7 @@ export class UserHeaderComponents implements OnInit {
   public character: string;
   public pathname: string;
   public DELstate: string | null;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) { }
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {}
   public ngOnInit(): void {
     console.warn('******************头部内容*****************');
     this.route.queryParams.subscribe((params: Params) => {
@@ -33,7 +28,7 @@ export class UserHeaderComponents implements OnInit {
       this.datasTop = [
         {
           id: this.route.snapshot.queryParams['id'],
-          character: this.route.snapshot.queryParams['character'],
+          character: this.route.snapshot.queryParams['character']
         }
       ];
       this.ListDatas = {
@@ -41,8 +36,7 @@ export class UserHeaderComponents implements OnInit {
         rolename: null,
         uid: null,
         ValidPath: null,
-        permissionName: null,
-
+        permissionName: null
       };
     });
   }

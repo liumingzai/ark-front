@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { Auth, QueryParam } from '../model';
 
-
 @Injectable()
 export class AuthService {
   constructor(private appService: AppService) {}
@@ -16,7 +15,7 @@ export class AuthService {
    * @returns {Observable<any>}
    * @memberof AuthService
    */
-  public getPermissionList(queryParam: QueryParam): Observable < any > {
+  public getPermissionList(queryParam: QueryParam): Observable<any> {
     const method = '/admin/pm/getPermissions';
     return this.appService.GET(method, queryParam);
   }
@@ -28,7 +27,7 @@ export class AuthService {
    * @returns {Observable<any>}
    * @memberof AuthService
    */
-  public AddPermission(auth: Auth): Observable < any > {
+  public AddPermission(auth: Auth): Observable<any> {
     const method = '/admin/pm/addPermissions';
     return this.appService.POST(method, auth);
   }
@@ -40,7 +39,7 @@ export class AuthService {
    * @returns {Observable<any>}
    * @memberof AuthService
    */
-  public updatePermission(auth: Auth): Observable < any > {
+  public updatePermission(auth: Auth): Observable<any> {
     const method = '/admin/pm/updatePermissions';
     return this.appService.PUT(method, auth);
   }
@@ -52,18 +51,17 @@ export class AuthService {
    * @returns {Observable<any>}
    * @memberof AuthService
    */
-  public deletePermission(id: number): Observable < any > {
+  public deletePermission(id: number): Observable<any> {
     const method = '/admin/pm/deletePermissions';
     return this.appService.DELETE(method, {
       id
     });
   }
 
-
   /**
    * 获取作用域信息
    */
-  public getPermissionScope(): Observable < any > {
+  public getPermissionScope(): Observable<any> {
     const method = '/admin/pm/getPermissionScope';
     return this.appService.GET(method);
   }
@@ -71,7 +69,7 @@ export class AuthService {
   /**
    * 获取过滤器信息
    */
-  public getPermissionFilters(): Observable < any > {
+  public getPermissionFilters(): Observable<any> {
     const method = '/admin/pm/getPermissionFilters';
     return this.appService.GET(method);
   }
@@ -82,10 +80,8 @@ export class AuthService {
    * @returns {Observable<any>}
    * @memberof AuthService
    */
-  public getPermissionById(id: number): Observable < any > {
+  public getPermissionById(id: number): Observable<any> {
     const method = '/admin/pm/getPermissionsById';
     return this.appService.GET(method, { id });
   }
-
 }
-

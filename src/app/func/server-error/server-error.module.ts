@@ -5,22 +5,12 @@ import { HeaderModule } from '../header';
 
 import { ServerErrorComponent } from './server-error.componnet';
 
-const ROUTES: Routes = [
-  { path: '', component: ServerErrorComponent }
-];
+const ROUTES: Routes = [{ path: '', component: ServerErrorComponent }];
 
 @NgModule({
-  declarations: [
-    ServerErrorComponent
-  ],
-  imports: [
-    CommonModule,
-    HeaderModule,
-    RouterModule.forChild(ROUTES)
-  ],
-  exports: [
-    ServerErrorComponent
-  ],
-  providers: [],
+  declarations: [ServerErrorComponent],
+  imports: [CommonModule, HeaderModule, RouterModule.forChild(ROUTES)],
+  exports: [ServerErrorComponent],
+  providers: []
 })
 export class ServerErrorModule {}

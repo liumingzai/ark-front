@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent {
-
-    constructor() {
-        console.warn('************用户概览管理****************');
-    }
+  constructor() {
+    console.warn('************用户概览管理****************');
+  }
 }

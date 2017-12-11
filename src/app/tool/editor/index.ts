@@ -1,8 +1,8 @@
 import { AppService } from '../../app.service';
 export class Editor {
   public config: object;
-  private imageServerURL: string = (new AppService()).baseURL + '/uc/uploadPicture?type=1';
-  private uploadUrl: string = (new AppService()).baseURL + '/uc/uploadPicture?type=2';
+  private imageServerURL: string = new AppService().baseURL + '/uc/uploadPicture?type=1';
+  private uploadUrl: string = new AppService().baseURL + '/uc/uploadPicture?type=2';
 
   constructor() {
     this.initConfig();
@@ -43,7 +43,10 @@ export class Editor {
         { name: 'Narrow image', type: 'widget', widget: 'image', attributes: { class: 'image-narrow' } },
         { name: 'Wide image', type: 'widget', widget: 'image', attributes: { class: 'image-wide' } }
       ],
-      contentsCss: ['/src/asset/lib/ckeditor/contents.css', '/src/asset/lib/ckeditor/plugins/copyformatting/styles/copyformatting.css']
+      contentsCss: [
+        '/src/asset/lib/ckeditor/contents.css',
+        '/src/asset/lib/ckeditor/plugins/copyformatting/styles/copyformatting.css'
+      ]
     };
   }
 }

@@ -1,9 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { AppService } from '../../app.service';
 
-@Pipe({name: 'ImgPathPre'})
+@Pipe({ name: 'ImgPathPre' })
 export class ImgPathPrePipe implements PipeTransform {
-
   /**
    * Usage
    * img src="{{logoPath | ImgPathPre}}"
@@ -23,7 +22,7 @@ export class ImgPathPrePipe implements PipeTransform {
 
     // 判断server图片 是否有images前缀，没有则加上
     if (!/^images\/(.)*/.test(value)) {
-     prePath += 'images/';
+      prePath += 'images/';
     }
 
     return prePath + value;

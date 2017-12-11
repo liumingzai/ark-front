@@ -5,25 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgxCropperModule } from 'ngx-cropper';
 import { ArkPipeModule } from '../../../tool/pipe';
 
-
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatInputModule,
-  MatTooltipModule,
-} from '@angular/material';
+import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTooltipModule } from '@angular/material';
 
 import { InfoComponent } from './info.component';
 
-const ROUTES: Routes = [
-  { path: '', component: InfoComponent, children: [] },
-];
+const ROUTES: Routes = [{ path: '', component: InfoComponent, children: [] }];
 
 @NgModule({
-  declarations: [
-    InfoComponent,
-  ],
+  declarations: [InfoComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,12 +20,12 @@ const ROUTES: Routes = [
     MatCardModule,
     MatIconModule,
     MatInputModule,
-    MatTooltipModule,  
+    MatTooltipModule,
     NgxCropperModule,
     ArkPipeModule,
     RouterModule.forChild(ROUTES)
   ],
   exports: [],
-  providers: [],
+  providers: []
 })
 export class InfoModule {}

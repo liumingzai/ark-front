@@ -7,11 +7,10 @@ describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [
-      ]
+      imports: []
     }).compileComponents();
   });
-  it ('should work', () => {
+  it('should work', () => {
     const fixture = TestBed.createComponent(AppComponent);
     expect(fixture.componentInstance instanceof AppComponent).toBe(true, 'should create AppComponent');
   });

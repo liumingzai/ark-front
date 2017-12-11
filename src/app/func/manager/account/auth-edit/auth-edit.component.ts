@@ -13,11 +13,10 @@ import { Auth } from '../auth/model/auth';
 
 @Component({
   templateUrl: './auth-edit.component.html',
-  animations: [ flyInOutAnimation ],
-  providers: [ AuthService ]
+  animations: [flyInOutAnimation],
+  providers: [AuthService]
 })
 export class AuthEditComponent implements OnInit, AfterViewInit {
-
   private scopes: string[];
   private filters: string[];
   private id: number;
@@ -30,7 +29,7 @@ export class AuthEditComponent implements OnInit, AfterViewInit {
     private router: Router,
     private authService: AuthService,
     private appService: AppService,
-    private snackbar: SnackBar,
+    private snackbar: SnackBar
   ) {
     this.id = this.route.snapshot.queryParams['id'];
     this.showTitle = this.id ? '编辑权限' : '新增权限';
@@ -67,7 +66,7 @@ export class AuthEditComponent implements OnInit, AfterViewInit {
   private goBack() {
     _.delay(() => {
       this.router.navigate(['/manager/account/auth'], {
-        relativeTo: this.route,
+        relativeTo: this.route
       });
     }, 1000);
   }
@@ -173,5 +172,4 @@ export class AuthEditComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
 }

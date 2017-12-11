@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { PaginatorComponent } from './paginator.component';
 
 @NgModule({
@@ -7,4 +7,4 @@ import { PaginatorComponent } from './paginator.component';
   exports: [PaginatorComponent],
   declarations: [PaginatorComponent]
 })
-export class PaginatorModule { }
+export class PaginatorModule {}

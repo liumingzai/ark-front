@@ -6,17 +6,9 @@ import { ArkPipeModule } from '../../tool/pipe';
 import { HeaderComponent } from './header.component';
 
 @NgModule({
-  declarations: [
-    HeaderComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ArkPipeModule
-  ],
-  exports: [
-    HeaderComponent
-  ],
-  providers: [],
+  declarations: [HeaderComponent],
+  imports: [CommonModule, RouterModule, ArkPipeModule],
+  exports: [HeaderComponent],
+  providers: []
 })
 export class HeaderModule {}

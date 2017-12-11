@@ -6,18 +6,8 @@ import { TrustHtmlPipe } from './trust-html.pipe';
 import { TrustURLPipe } from './trust-url.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    ImgPathPrePipe,
-    TrustHtmlPipe,
-    TrustURLPipe
-  ],
-  exports: [
-    ImgPathPrePipe,
-    TrustHtmlPipe,
-    TrustURLPipe
-  ]
+  imports: [CommonModule],
+  declarations: [ImgPathPrePipe, TrustHtmlPipe, TrustURLPipe],
+  exports: [ImgPathPrePipe, TrustHtmlPipe, TrustURLPipe]
 })
-export class ArkPipeModule { }
+export class ArkPipeModule {}

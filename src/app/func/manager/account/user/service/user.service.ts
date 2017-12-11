@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { QueryParam, User } from '../model';
 
-
 @Injectable()
 export class UserService {
   // 请求头定义
@@ -21,7 +20,7 @@ export class UserService {
    * @returns {Observable<any>}
    * @memberof UserService
    */
-  public getAccountList(queryParam: QueryParam): Observable < any > {
+  public getAccountList(queryParam: QueryParam): Observable<any> {
     const method = '/admin/um/getAccountList';
     return this.appService.GET(method, queryParam);
   }
@@ -33,7 +32,7 @@ export class UserService {
    * @returns {Observable<any>}
    * @memberof UserService
    */
-  public AddAccount(user: User): Observable < any > {
+  public AddAccount(user: User): Observable<any> {
     const method = '/admin/um/addAccount';
     return this.appService.POST(method, user);
   }
@@ -45,9 +44,9 @@ export class UserService {
    * @returns {Observable<any>}
    * @memberof UserService
    */
-  public updateAccount(user: User): Observable < any > {
+  public updateAccount(user: User): Observable<any> {
     const method = '/admin/um/updateAccount';
-    return  this.appService.PUT(method, user);
+    return this.appService.PUT(method, user);
   }
 
   /**
@@ -57,7 +56,7 @@ export class UserService {
    * @returns {Observable<any>}
    * @memberof UserService
    */
-  public deleteAccount(id: number): Observable < any > {
+  public deleteAccount(id: number): Observable<any> {
     const method = '/admin/um/deleteAccount';
     return this.appService.DELETE(method, { id });
   }
@@ -83,6 +82,4 @@ export class UserService {
     const method = '/admin/um/getAccountById';
     return this.appService.GET(method, { accountId });
   }
-
 }
-

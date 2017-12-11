@@ -8,17 +8,13 @@ import { SnackBar } from '../../../tool/snackbar';
 
 @Component({
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss'],
+  styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
   public ngxCropperConfig: object;
   public account: Account;
 
-  constructor(
-    private snackbar: SnackBar,
-    private appService: AppService,
-    private router: Router
-  ) {
+  constructor(private snackbar: SnackBar, private appService: AppService, private router: Router) {
     this.ngxCropperConfig = {
       url: this.appService.baseURL + '/account/addLogo', // image server url
       maxsize: 512000, // image max size, default 500k = 512000bit
@@ -56,5 +52,4 @@ export class InfoComponent implements OnInit {
       }
     }
   }
-
 }

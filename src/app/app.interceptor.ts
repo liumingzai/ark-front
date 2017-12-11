@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+  HttpErrorResponse,
+  HttpResponse
+} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -24,7 +31,7 @@ export class AppInterceptor implements HttpInterceptor {
     req = req.clone({ withCredentials: true });
     return next
       .handle(req)
-      .do((event) => {
+      .do(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200 && event.type === 4) {
             // not login, session outdated code === '2001'

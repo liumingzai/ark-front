@@ -9,14 +9,11 @@ import { seaData } from '../user-type';
   templateUrl: './user-sidebar.component.html',
   styleUrls: ['./user-sidebar.component.scss']
 })
-
 export class UserSidebarComponents implements OnInit {
   public admindatas: seaData[];
   public account: Account;
   public rooturl: string;
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router) {}
   public ngOnInit(): void {
     this.account = JSON.parse(localStorage.getItem('account'));
     if (this.account['roles'][0]['description'] === '一般用户') {

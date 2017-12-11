@@ -9,9 +9,9 @@ import { flyInOutAnimation } from '../../../../tool/animation';
 
 @Component({
   templateUrl: './auth.component.html',
-  animations: [ flyInOutAnimation ],
+  animations: [flyInOutAnimation],
   styleUrls: ['./auth.component.scss'],
-  providers: [ AuthService ]
+  providers: [AuthService]
 })
 export class AuthComponent implements OnInit {
   public totalRecords: number = 0;
@@ -30,13 +30,13 @@ export class AuthComponent implements OnInit {
   }
 
   public ngOnInit() {
-  this.activedRoute.queryParams.subscribe((params: Params) => {
+    this.activedRoute.queryParams.subscribe((params: Params) => {
       this.queryParam.pageNum = Number(params['pageNum']) || 1;
       this.key = params['key'] || null;
       this.queryParam.createTimeSort = Number(params['sort']) || 0;
       this.queryParam.active = params['active'] || null;
       this.queryParam.stype = params['stype'] || 'name';
-      if ( this.queryParam.stype === 'name') {
+      if (this.queryParam.stype === 'name') {
         this.queryParam.permissionName = this.key;
         this.queryParam.path = null;
       } else {
@@ -47,7 +47,6 @@ export class AuthComponent implements OnInit {
       this.getPermissionList();
     });
   }
-
 
   /**
    * 翻页
@@ -149,7 +148,6 @@ export class AuthComponent implements OnInit {
         this.deletePermission(id);
       },
       (dismiss: string) => {
-
         if (dismiss === 'cancel') {
           // do antion cancel
         }

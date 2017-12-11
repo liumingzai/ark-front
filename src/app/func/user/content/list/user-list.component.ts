@@ -11,7 +11,6 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-
 export class UserListComponents implements OnInit {
   public datasTop: seaData[];
   public listTop: ListDatas[];
@@ -25,13 +24,7 @@ export class UserListComponents implements OnInit {
   public Delind: number;
   public DelTitle: string;
   public upDate: string;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) {
-
-  }
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {}
   public ngOnInit(): void {
     console.warn('****************table数据的表头和样式以及获取表数据包装**********************');
     this.account = JSON.parse(localStorage.getItem('account'));
@@ -65,9 +58,15 @@ export class UserListComponents implements OnInit {
         dataUrl = 'admin/pm/getPermissions';
         this.ListDatas = {
           title: ['权限名称', '显示名称', '路径', '过滤器', '作用域', '权限状态', '操作'],
-          className: ['col-md-2', 'col-md-2 max-w15  text-center', 'col-md-2 max-w12 text-center ',
-            'col-md-2 max-w12 text-center ', 'col-md-2 max-w12 text-center ',
-            'col-md-2 max-w12 text-center ', 'col-md-2 max-w12 text-center '],
+          className: [
+            'col-md-2',
+            'col-md-2 max-w15  text-center',
+            'col-md-2 max-w12 text-center ',
+            'col-md-2 max-w12 text-center ',
+            'col-md-2 max-w12 text-center ',
+            'col-md-2 max-w12 text-center ',
+            'col-md-2 max-w12 text-center '
+          ],
           group: []
         };
         break;
@@ -76,8 +75,13 @@ export class UserListComponents implements OnInit {
         dataUrl = 'admin/um/getAccountList';
         this.ListDatas = {
           title: ['用户名', 'uid', 'email', '用户状态', '操作'],
-          className: ['flex1 max-w15', 'flex1 col-md-4 p0', 'flex1 col-md-3 max-w20 p0',
-            'flex1 col-md-2 max-w12 text-center p0', 'flex1 col-md-2'],
+          className: [
+            'flex1 max-w15',
+            'flex1 col-md-4 p0',
+            'flex1 col-md-3 max-w20 p0',
+            'flex1 col-md-2 max-w12 text-center p0',
+            'flex1 col-md-2'
+          ],
           group: []
         };
         break;
@@ -89,7 +93,7 @@ export class UserListComponents implements OnInit {
           group: [
             {
               value: ['1', '专利查询', '查询全部专利', 'http://XXXX.sss', '5000', '2017-09-28', '12.89.23.11']
-            },
+            }
           ]
         };
         break;
@@ -98,7 +102,7 @@ export class UserListComponents implements OnInit {
         dataUrl = '	admin/pm/getRole';
         this.ListDatas = {
           title: ['角色名称', '描述', '角色状态', '操作'],
-          className: ['col-md-2', 'col-md-2', 'col-md-2 text-center max-w12', 'col-md-3'],
+          className: ['col-md-2', 'col-md-2', 'col-md-2 text-center max-w12', 'col-md-3']
         };
         break;
       case '/user/roleauthoritycontrol':
@@ -117,21 +121,26 @@ export class UserListComponents implements OnInit {
         this.keyzhi = 0;
     }
     if (this.keyzhi) {
-      this.Getdata('GET', dataUrl, {
-        pageNum: this.datasTop[0].page || null,
-        id: this.datasTop[0].id || null,
-        roleId: this.datasTop[0].roleId || null,
-        path: this.datasTop[0].path || null,
-        active: this.datasTop[0].state || null,
-        createtimeSort: this.datasTop[0].timesort || null,
-        username: this.datasTop[0].username || null,
-        name: this.datasTop[0].rolename || null,
-        state: this.datasTop[0].state || null,
-        uid: this.datasTop[0].uid || null,
-        permissionName: this.datasTop[0].permissionName || null,
-      }, false, 'data');
+      this.Getdata(
+        'GET',
+        dataUrl,
+        {
+          pageNum: this.datasTop[0].page || null,
+          id: this.datasTop[0].id || null,
+          roleId: this.datasTop[0].roleId || null,
+          path: this.datasTop[0].path || null,
+          active: this.datasTop[0].state || null,
+          createtimeSort: this.datasTop[0].timesort || null,
+          username: this.datasTop[0].username || null,
+          name: this.datasTop[0].rolename || null,
+          state: this.datasTop[0].state || null,
+          uid: this.datasTop[0].uid || null,
+          permissionName: this.datasTop[0].permissionName || null
+        },
+        false,
+        'data'
+      );
     }
-
   }
   public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
     this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
@@ -159,8 +168,15 @@ export class UserListComponents implements OnInit {
               for (const i in data.data) {
                 this.ListDatas['group'].push({
                   value: [
-                    '<a href="/user/scene?id=' + data.data[i].id + '&uid='
-                    + data.data[i].uid + '&username=' + data.data[i].username + '">' + data.data[i].username + '</a>',
+                    '<a href="/user/scene?id=' +
+                      data.data[i].id +
+                      '&uid=' +
+                      data.data[i].uid +
+                      '&username=' +
+                      data.data[i].username +
+                      '">' +
+                      data.data[i].username +
+                      '</a>',
                     data.data[i].uid,
                     data.data[i].email
                   ]
@@ -171,10 +187,7 @@ export class UserListComponents implements OnInit {
               // tslint:disable-next-line:forin
               for (const i in data.data) {
                 this.ListDatas['group'].push({
-                  value: [
-                    data.data[i].name,
-                    data.data[i].description
-                  ]
+                  value: [data.data[i].name, data.data[i].description]
                 });
               }
               break;
@@ -287,5 +300,4 @@ export class UserListComponents implements OnInit {
     const NewDate = new Date(time);
     return NewDate.getFullYear() + '年' + (NewDate.getMonth() + 1) + '月' + NewDate.getDate() + '日';
   }
-
 }

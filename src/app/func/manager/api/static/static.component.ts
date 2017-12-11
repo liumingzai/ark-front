@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./static.component.scss']
 })
 export class StaticComponent {
-
-    constructor() {
-        console.warn('************用户记录管理****************');
-    }
+  constructor() {
+    console.warn('************用户记录管理****************');
+  }
 }

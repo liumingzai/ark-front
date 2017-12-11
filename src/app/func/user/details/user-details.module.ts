@@ -7,10 +7,7 @@ import { MainDetailComponents } from './main/main-detailcomponent';
 import { HickyDetailComponents } from './interface/interface-detail.component';
 
 @NgModule({
-  declarations: [
-    MainDetailComponents,
-    HickyDetailComponents,
-  ],
+  declarations: [MainDetailComponents, HickyDetailComponents],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,12 +15,13 @@ import { HickyDetailComponents } from './interface/interface-detail.component';
       {
         path: '',
         component: MainDetailComponents
-      }, {
-        path: 'interface',
-        component: HickyDetailComponents,
       },
+      {
+        path: 'interface',
+        component: HickyDetailComponents
+      }
     ])
   ],
   providers: []
 })
-export class DetailsModule { }
+export class DetailsModule {}

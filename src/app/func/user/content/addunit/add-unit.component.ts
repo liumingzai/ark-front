@@ -9,7 +9,6 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './add-unit.component.html',
   styleUrls: ['./add-unit.component.scss']
 })
-
 export class AddUnitComponents implements OnInit {
   public rooturl: string[];
   public filters: string;
@@ -30,11 +29,7 @@ export class AddUnitComponents implements OnInit {
   public datatype: string;
   public Actiokey: boolean;
   @Input() public ListDatas: ListDatas;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {
     this.ScopeDatas = [];
     this.FilterDatas = [];
   }
@@ -44,7 +39,7 @@ export class AddUnitComponents implements OnInit {
       this.account = JSON.parse(localStorage.getItem('account'));
       this.upData = JSON.parse(localStorage.getItem('ListData')) || null;
       this.noth1query = JSON.parse(localStorage.getItem('noth1query')) || null;
-      this.accountRole = this.account['roles'][0]['type'];   // 用户的类型（管理员，普通用户，临港用户）
+      this.accountRole = this.account['roles'][0]['type']; // 用户的类型（管理员，普通用户，临港用户）
       // datasTop包装了id，用户id 应用id
       this.datasTop = [
         {
@@ -65,7 +60,7 @@ export class AddUnitComponents implements OnInit {
         permissionName: this.upData ? this.upData.permissionName : '',
         ValidPath: this.upData ? this.upData.path : '',
         rolename: this.upData ? this.upData.name : '',
-        active: this.upData ? this.upData.active : 'Y',
+        active: this.upData ? this.upData.active : 'Y'
       };
       this.FnSwitchModel();
       switch (this.pathname) {
@@ -225,7 +220,6 @@ export class AddUnitComponents implements OnInit {
     console.warn(this.ListDatas.active);
   }
 
-
   public UseData(type: string, dataurl: string) {
     this.Getdata(type, dataurl, {
       id: this.datasTop[0].id, // 用户id
@@ -247,7 +241,7 @@ export class AddUnitComponents implements OnInit {
       username: this.ListDatas.userName || null,
       phone: this.ListDatas.phone || null,
       email: this.ListDatas.Email || null,
-      roles: this.RuleObj ? this.RuleObj.RuleIdArr : null, // 用户添加角色集合
+      roles: this.RuleObj ? this.RuleObj.RuleIdArr : null // 用户添加角色集合
     });
   }
 

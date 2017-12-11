@@ -29,9 +29,7 @@ import { AppComponent } from './app.component';
       newestOnTop: true
     })
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   providers: [
     Title,
     AppService,
@@ -46,6 +44,6 @@ import { AppComponent } from './app.component';
       useValue: '/'
     }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

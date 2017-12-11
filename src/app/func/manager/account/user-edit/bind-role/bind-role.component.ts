@@ -9,11 +9,11 @@ import * as _ from 'lodash';
   providers: [RoleService]
 })
 export class BindRoleComponent {
-  public allRoles: Array<{id: number; name: string; isSelected: boolean; }>;
+  public allRoles: Array<{ id: number; name: string; isSelected: boolean }>;
 
   constructor(
     private roleService: RoleService,
-    @Inject(MAT_DIALOG_DATA) public data: {roles: BindRole[]},
+    @Inject(MAT_DIALOG_DATA) public data: { roles: BindRole[] },
     public dialogRef: MatDialogRef<BindRoleComponent>
   ) {
     this.getAllRole();
@@ -24,8 +24,8 @@ export class BindRoleComponent {
   }
 
   public onClaime(): void {
-    const roles = this.allRoles.filter((e) => e.isSelected === true).map((e: any) => {
-      return  { id: e.id, name: e.name };
+    const roles = this.allRoles.filter(e => e.isSelected === true).map((e: any) => {
+      return { id: e.id, name: e.name };
     });
     this.dialogRef.close({
       roles
@@ -57,7 +57,7 @@ export class BindRoleComponent {
   public arrayIncludeObj(obj: any): boolean {
     let returnData = false;
     this.data.roles.map((e: any) => {
-      if ( _.includes(obj, e.name)) {
+      if (_.includes(obj, e.name)) {
         returnData = true;
       }
     });

@@ -25,19 +25,20 @@ import { BindRoleModule } from './user-edit/bind-role/bind-role.module';
 import { AuthRoleComponent } from './auth-role/auth-role.component';
 
 const ACCOUNTROUTES: Routes = [
-  { path: '',
+  {
+    path: '',
     component: AccountComponent,
     children: [
-      { path: 'user', component: UserComponent, data: { animation: 'user' }},
-      { path: 'user/edit', component: UserEditComponent, data: { animation: 'user_edit' }},
-      { path: 'role', component: RoleComponent, data: { animation: 'role'} },
-      { path: 'role/edit', component: RoleEditComponent,  data: { animation: 'role_edit' }},
-      { path: 'bind/auth', component: AuthRoleComponent, data: { animation: 'bind-auth' }},
-      { path: 'auth', component: AuthComponent, data: { animation: 'auth'}},
-      { path: 'auth/edit', component: AuthEditComponent, data: { animation: 'auth_edit' }},
-      { path: '', redirectTo: '/404'}
+      { path: 'user', component: UserComponent, data: { animation: 'user' } },
+      { path: 'user/edit', component: UserEditComponent, data: { animation: 'user_edit' } },
+      { path: 'role', component: RoleComponent, data: { animation: 'role' } },
+      { path: 'role/edit', component: RoleEditComponent, data: { animation: 'role_edit' } },
+      { path: 'bind/auth', component: AuthRoleComponent, data: { animation: 'bind-auth' } },
+      { path: 'auth', component: AuthComponent, data: { animation: 'auth' } },
+      { path: 'auth/edit', component: AuthEditComponent, data: { animation: 'auth_edit' } },
+      { path: '', redirectTo: '/404' }
     ]
-  },
+  }
 ];
 
 @NgModule({
@@ -65,6 +66,6 @@ const ACCOUNTROUTES: Routes = [
     RouterModule.forChild(ACCOUNTROUTES)
   ],
   exports: [],
-  providers: [],
+  providers: []
 })
 export class AccountModule {}

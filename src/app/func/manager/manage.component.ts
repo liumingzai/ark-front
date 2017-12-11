@@ -12,7 +12,7 @@ export class ManageComponent {
   public isAdmin: boolean; // 判断是管理员还是研究员，确定显示相应的nav
   public account: Account;
 
-  constructor( private router: Router, private titleService: Title, private manageService: ManageService) {
+  constructor(private router: Router, private titleService: Title, private manageService: ManageService) {
     this.account = JSON.parse(localStorage.getItem('account'));
 
     if (this.account && this.account.roles) {

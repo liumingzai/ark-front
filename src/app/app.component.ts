@@ -9,18 +9,17 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private  activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   public ngOnInit() {
     this.router.events
-    .filter((event) => event instanceof NavigationEnd)
-    .map((event) => this.activatedRoute)
-    .subscribe((event) => {
-      // do relative router action.
-      // console.warn(event);
-      // console.warn(event.component);
-    });
+      .filter(event => event instanceof NavigationEnd)
+      .map(event => this.activatedRoute)
+      .subscribe(event => {
+        // do relative router action.
+        // console.warn(event);
+        // console.warn(event.component);
+      });
   }
 }

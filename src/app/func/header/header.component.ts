@@ -12,16 +12,15 @@ import { SnackBar } from '../../tool/snackbar';
   providers: [HeaderService]
 })
 export class HeaderComponent {
-
-  @Input()
-  public arkTitle: string;
+  @Input() public arkTitle: string;
 
   public account: Account;
   constructor(
     private headerService: HeaderService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackbar: SnackBar) {
+    private snackbar: SnackBar
+  ) {
     if (localStorage.getItem('account')) {
       this.account = JSON.parse(localStorage.getItem('account'));
     } else {

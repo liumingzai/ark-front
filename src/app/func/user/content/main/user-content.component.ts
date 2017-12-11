@@ -8,18 +8,15 @@ import { seaData } from '../../user-type';
   templateUrl: './user-content.component.html',
   styleUrls: ['./user-content.component.scss']
 })
-
 export class UserContentComponents implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
   public type: string;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events
-      .filter((event) => event instanceof NavigationEnd)
-      .map(() => this.route).subscribe((event) => {
+      .filter(event => event instanceof NavigationEnd)
+      .map(() => this.route)
+      .subscribe(event => {
         this.PDtype(location.pathname);
       });
   }
@@ -47,4 +44,3 @@ export class UserContentComponents implements OnInit {
     }
   }
 }
-

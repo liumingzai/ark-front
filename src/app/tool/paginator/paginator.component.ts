@@ -118,7 +118,7 @@ export class PaginatorComponent {
 
   private calculatePageLinkBoundaries() {
     const numberOfPages = this.getPageCount();
-    const  visiblePages = Math.min(this.pageLinkSize, numberOfPages);
+    const visiblePages = Math.min(this.pageLinkSize, numberOfPages);
 
     // calculate range, keep current in middle if necessary
     let start = Math.max(0, Math.ceil(this.getPage() - visiblePages / 2));
@@ -141,5 +141,4 @@ export class PaginatorComponent {
       this.pageLinks.push(i + 1);
     }
   }
-
 }

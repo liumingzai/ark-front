@@ -19,7 +19,7 @@ export class AppService {
   // tslint:disable-next-line:member-ordering
   public accountAnnounced = this.accountSource.asObservable();
 
-  constructor(private http?: HttpClient) { }
+  constructor(private http?: HttpClient) {}
 
   /**
    * Service message commands
@@ -59,8 +59,13 @@ export class AppService {
     }
     let url = `${this.baseURL}${method}`;
     if (params) {
-      Object.keys(params).forEach((key) => {
-        if (params[key] !== null && params[key] !== undefined && params[key] !== 'null' && params[key] !== 'undefined') {
+      Object.keys(params).forEach(key => {
+        if (
+          params[key] !== null &&
+          params[key] !== undefined &&
+          params[key] !== 'null' &&
+          params[key] !== 'undefined'
+        ) {
           url += `${/\?/.test(url) === false ? '?' : '&'}${key}=${params[key]}`;
         }
       });
@@ -146,7 +151,12 @@ export class AppService {
     return this.commonMethod('patch', method, body, options);
   }
 
-  private commonMethod(httpMethod: 'post' | 'put' | 'patch', method: string, body: object, options?: { isFormSubmit?: boolean }): Observable<any> {
+  private commonMethod(
+    httpMethod: 'post' | 'put' | 'patch',
+    method: string,
+    body: object,
+    options?: { isFormSubmit?: boolean }
+  ): Observable<any> {
     if (!/^\//.test(method)) {
       method = `/${method}`;
     }

@@ -34,20 +34,20 @@ import { ArkPipeModule } from '../../../tool/pipe';
         children: [
           {
             path: 'add',
-            component: AddUnitComponents,
+            component: AddUnitComponents
           },
           {
             path: 'updata',
-            component: AddUnitComponents,
+            component: AddUnitComponents
           },
           {
             path: 'detail',
             loadChildren: '../details/user-details.module.ts#DetailsModule'
-          },
+          }
         ]
       }
     ])
   ],
   providers: []
 })
-export class ContentModule { }
+export class ContentModule {}

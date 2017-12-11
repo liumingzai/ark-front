@@ -9,7 +9,6 @@ import { seaData, interfaceData } from '../../user-type';
   templateUrl: './interface-detail.component.html',
   styleUrls: ['./interface-detail.component.scss']
 })
-
 export class HickyDetailComponents implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
@@ -25,11 +24,7 @@ export class HickyDetailComponents implements OnInit {
   public workKey: string = '';
   public arrind: any;
   public typeind: any;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {
     this.FninterfaceData();
   }
   public ngOnInit(): void {
@@ -40,9 +35,15 @@ export class HickyDetailComponents implements OnInit {
           apiId: this.route.snapshot.queryParams['apiId']
         }
       ];
-      this.Getdata('GET', 'common/getApiInfo', {
-        apiId: this.datasTop[0].apiId
-      }, false, 'data');
+      this.Getdata(
+        'GET',
+        'common/getApiInfo',
+        {
+          apiId: this.datasTop[0].apiId
+        },
+        false,
+        'data'
+      );
     });
   }
   public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
@@ -53,12 +54,10 @@ export class HickyDetailComponents implements OnInit {
           this.severData.returnSample = this.severData.returnSample.replace(/\,/g, ',\r\n');
           data.data.paramList['forEach']((item: any, i: number) => {
             if (item.argumentType === 'header') {
-              this.HeaderlData.push(
-                {
-                  item,
-                  ind: i
-                }
-              );
+              this.HeaderlData.push({
+                item,
+                ind: i
+              });
             } else if (item.argumentType === 'querys') {
               this.queryData.push({
                 item,
@@ -117,10 +116,9 @@ export class HickyDetailComponents implements OnInit {
           queryColumnType: this.severData.paramList[indy].queryColumnType || 'String',
           queryOption: this.severData.paramList[indy].queryOption || 'Y',
           queryColumnDesc: this.severData.paramList[indy].queryColumnDesc || null,
-          paerrorCodege: this.severData.paramList[indy].paerrorCodege || null,
+          paerrorCodege: this.severData.paramList[indy].paerrorCodege || null
         };
       }
-
     } else {
       if (this.workKey === 'updata') {
         this.interfaceData = {
@@ -170,7 +168,7 @@ export class HickyDetailComponents implements OnInit {
     switch (this.TYPEkey) {
       case 'header':
         if (this.workKey === 'add') {
-          this.HeaderlData.push({item: obj});
+          this.HeaderlData.push({ item: obj });
           this.severData.paramList.push(obj);
         } else if (this.workKey === 'updata') {
           this.HeaderlData[this.arrind] = obj;
@@ -182,7 +180,7 @@ export class HickyDetailComponents implements OnInit {
         break;
       case 'querys':
         if (this.workKey === 'add') {
-          this.queryData.push({item: obj});
+          this.queryData.push({ item: obj });
           this.severData.paramList.push(obj);
         } else if (this.workKey === 'updata') {
           this.queryData[this.arrind].item = obj;
@@ -194,7 +192,7 @@ export class HickyDetailComponents implements OnInit {
         break;
       case 'bodys':
         if (this.workKey === 'add') {
-          this.bodyData.push({item: obj});
+          this.bodyData.push({ item: obj });
           this.severData.paramList.push(obj);
         } else if (this.workKey === 'updata') {
           this.bodyData[this.arrind].item = obj;

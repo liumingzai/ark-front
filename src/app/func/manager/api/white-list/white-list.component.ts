@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./white-list.component.scss']
 })
 export class WhiteListComponent {
-
-    constructor() {
-        console.warn('************白名单记录管理****************');
-    }
+  constructor() {
+    console.warn('************白名单记录管理****************');
+  }
 }

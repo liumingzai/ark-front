@@ -17,7 +17,7 @@ import { Role } from '../role/model/index';
 
 @Component({
   templateUrl: './user-edit.component.html',
-  animations: [ flyInOutAnimation ],
+  animations: [flyInOutAnimation],
   styleUrls: ['./user-edit.component.scss'],
   providers: [UserService, RoleService]
 })
@@ -35,7 +35,7 @@ export class UserEditComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private roleService: RoleService,
     private appService: AppService,
-    private snackbar: SnackBar,
+    private snackbar: SnackBar
   ) {
     this.user = new User();
   }
@@ -50,7 +50,6 @@ export class UserEditComponent implements OnInit, AfterViewInit {
       this.getAccountDetail(this.id);
     }
   }
-
 
   /**
    * click 保存 btn
@@ -72,7 +71,7 @@ export class UserEditComponent implements OnInit, AfterViewInit {
   private goBack() {
     _.delay(() => {
       this.router.navigate(['/manager/account/user'], {
-        relativeTo: this.activedRoute,
+        relativeTo: this.activedRoute
       });
     }, 1000);
   }
@@ -177,5 +176,4 @@ export class UserEditComponent implements OnInit, AfterViewInit {
       this.isSubmiting = false;
     });
   }
-
 }

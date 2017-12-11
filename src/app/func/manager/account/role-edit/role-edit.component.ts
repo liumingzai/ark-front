@@ -13,11 +13,10 @@ import { Role } from '../role/model/role';
 
 @Component({
   templateUrl: './role-edit.component.html',
-  animations: [ flyInOutAnimation ],
-  providers: [ RoleService ]
+  animations: [flyInOutAnimation],
+  providers: [RoleService]
 })
 export class RoleEditComponent implements OnInit, AfterViewInit {
-
   private scopes: string[];
   private filters: string[];
   private id: number;
@@ -30,7 +29,7 @@ export class RoleEditComponent implements OnInit, AfterViewInit {
     private router: Router,
     private roleService: RoleService,
     private appService: AppService,
-    private snackbar: SnackBar,
+    private snackbar: SnackBar
   ) {
     this.id = this.route.snapshot.queryParams['id'];
     this.showTitle = this.id ? '编辑角色' : '新增角色';
@@ -66,7 +65,7 @@ export class RoleEditComponent implements OnInit, AfterViewInit {
   private goBack() {
     _.delay(() => {
       this.router.navigate(['/manager/account/role'], {
-        relativeTo: this.route,
+        relativeTo: this.route
       });
     }, 1000);
   }

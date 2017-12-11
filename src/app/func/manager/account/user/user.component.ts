@@ -9,8 +9,8 @@ import { flyInOutAnimation } from '../../../../tool/animation';
 
 @Component({
   templateUrl: './user.component.html',
-  animations: [ flyInOutAnimation ],
-  providers: [ UserService ]
+  animations: [flyInOutAnimation],
+  providers: [UserService]
 })
 export class UserComponent implements OnInit {
   public totalRecords: number = 0;
@@ -28,7 +28,7 @@ export class UserComponent implements OnInit {
   }
 
   public ngOnInit() {
-  this.activedRoute.queryParams.subscribe((params: Params) => {
+    this.activedRoute.queryParams.subscribe((params: Params) => {
       this.queryParam.pageNum = Number(params['pageNum']) || 1;
       this.queryParam.username = params['username'] || null;
       this.queryParam.createTimeSort = Number(params['createTimeSort']) || 0;
@@ -120,7 +120,6 @@ export class UserComponent implements OnInit {
         this.deletePerson(id);
       },
       (dismiss: string) => {
-
         if (dismiss === 'cancel') {
           // do antion cancel
         }

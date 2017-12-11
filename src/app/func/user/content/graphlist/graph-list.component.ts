@@ -10,7 +10,6 @@ import { PaginatorModule } from '../../../../tool/paginator/paginator.module';
   templateUrl: './graph-list.component.html',
   styleUrls: ['./graph-list.component.scss']
 })
-
 export class GraphListComponents implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
@@ -20,13 +19,7 @@ export class GraphListComponents implements OnInit {
   public totalRecords: number;
   public Delind: number;
   public DelTitle: string;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private userServer: UserServer
-  ) {
-
-  }
+  constructor(private router: Router, private route: ActivatedRoute, private userServer: UserServer) {}
   public ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       this.pathname = location.pathname;
@@ -52,9 +45,15 @@ export class GraphListComponents implements OnInit {
     }
     // 弄了个keyzhi语义不理解，此处应该判断是否分页
     if (this.keyzhi) {
-      this.Getdata('GET', dataUrl, {
-        pageNum: this.datasTop[0].page || null
-      }, false, 'data');
+      this.Getdata(
+        'GET',
+        dataUrl,
+        {
+          pageNum: this.datasTop[0].page || null
+        },
+        false,
+        'data'
+      );
     }
   }
 

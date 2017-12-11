@@ -6,16 +6,10 @@ import { MatDialogModule, MatCheckboxModule } from '@angular/material';
 import { BindRoleComponent } from './bind-role.component';
 
 @NgModule({
-  declarations: [
-    BindRoleComponent
-  ],
-  imports: [ CommonModule, FormsModule, MatDialogModule, MatCheckboxModule ],
-  exports: [
-    BindRoleComponent
-  ],
-  entryComponents: [
-    BindRoleComponent
-  ],
-  providers: [],
+  declarations: [BindRoleComponent],
+  imports: [CommonModule, FormsModule, MatDialogModule, MatCheckboxModule],
+  exports: [BindRoleComponent],
+  entryComponents: [BindRoleComponent],
+  providers: []
 })
 export class BindRoleModule {}

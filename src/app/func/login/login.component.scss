@@ -1,4 +1,8 @@
-ul,ol,li{ list-style:none;}
+ul,
+ol,
+li {
+  list-style: none;
+}
 
 .member-wrap {
   display: flex;
@@ -7,7 +11,7 @@ ul,ol,li{ list-style:none;}
 }
 
 .member-cont {
-  background-image: url("../../../asset/image/back_pic/ark-5.jpg");
+  background-image: url('../../../asset/image/back_pic/ark-5.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   flex: 1;
@@ -17,7 +21,7 @@ ul,ol,li{ list-style:none;}
 }
 
 .member-right {
-  opacity: .97;
+  opacity: 0.97;
   background-color: #acddf1;
 }
 
@@ -25,24 +29,25 @@ ul,ol,li{ list-style:none;}
   width: 90%;
 }
 
-.member-slide{
+.member-slide {
   height: 30px;
   line-height: 30px;
   margin-bottom: 10px;
 }
 
-.yz-group{
+.yz-group {
   position: relative;
   width: 90%;
 }
 
-.yz-inp,.yz-btn{
+.yz-inp,
+.yz-btn {
   background: none;
   border: none;
   border: 1px solid #ccc;
 }
 
-.yz-btn{
+.yz-btn {
   position: absolute;
   top: 0;
   right: 0;
@@ -50,7 +55,7 @@ ul,ol,li{ list-style:none;}
   width: 100px;
 }
 
-.yz-inp{
+.yz-inp {
   border-right: 0px;
   text-indent: 1em;
   width: 100%;

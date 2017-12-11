@@ -8,7 +8,6 @@ import { seaData, ListDatas } from '../user-type';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-
 export class UserComponents implements OnInit {
   public modelClass: string;
   public childtitle: string;
@@ -19,13 +18,11 @@ export class UserComponents implements OnInit {
   public datasTop: seaData[];
   public noth1query: any;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events
-      .filter((event) => event instanceof NavigationEnd)
-      .map(() => this.route).subscribe((event) => {
+      .filter(event => event instanceof NavigationEnd)
+      .map(() => this.route)
+      .subscribe(event => {
         this.PDchildTitle(location.pathname);
       });
   }
@@ -38,12 +35,13 @@ export class UserComponents implements OnInit {
           accountId: this.route.snapshot.queryParams['id'],
           uid: this.route.snapshot.queryParams['uid'],
           username: this.route.snapshot.queryParams['username']
-        }];
+        }
+      ];
       this.PDchildTitle(location.pathname, this.datasTop[0]);
     });
   }
 
-  // 根据路由地址填充noth1 noth2 childtitle noth1root等值 
+  // 根据路由地址填充noth1 noth2 childtitle noth1root等值
   public PDchildTitle(pathname: string, obj?: any): void {
     const pathnameArr = pathname.split('/');
     const account = JSON.parse(localStorage.getItem('account'));
@@ -80,7 +78,6 @@ export class UserComponents implements OnInit {
             username: obj.username
           };
         }
-
     }
 
     // 此处有疑惑，不知道为何要重置account

@@ -5,8 +5,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./scene.component.scss']
 })
 export class SceneComponent {
-
-    constructor() {
-        console.warn('************用户场景管理****************');
-    }
+  constructor() {
+    console.warn('************用户场景管理****************');
+  }
 }

@@ -9,8 +9,8 @@ import { flyInOutAnimation } from '../../../../tool/animation';
 
 @Component({
   templateUrl: './role.component.html',
-  animations: [ flyInOutAnimation ],
-  providers: [ RoleService ]
+  animations: [flyInOutAnimation],
+  providers: [RoleService]
 })
 export class RoleComponent implements OnInit {
   public totalRecords: number = 0;
@@ -28,7 +28,7 @@ export class RoleComponent implements OnInit {
   }
 
   public ngOnInit() {
-  this.activedRoute.queryParams.subscribe((params: Params) => {
+    this.activedRoute.queryParams.subscribe((params: Params) => {
       this.queryParam.pageNum = Number(params['pageNum']) || 1;
       this.queryParam.name = params['name'] || null;
       this.queryParam.createTimeSort = Number(params['sort']) || 0;
@@ -120,7 +120,6 @@ export class RoleComponent implements OnInit {
         this.deleteRole(id);
       },
       (dismiss: string) => {
-
         if (dismiss === 'cancel') {
           // do antion cancel
         }
