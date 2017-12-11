@@ -24,8 +24,8 @@ export class OverviewService {
    * @returns {Observable<any>}
    * @memberof OverviewService
    */
-  public 	getApiInfo(apiId: string): Observable<any> {
+  public getApiInfo(apiId: string): Observable<any> {
     const method = 'common/getApiInfo';
-    return this.appService.GET(method, {apiId});
+    return this.appService.GET(method, { apiId });
   }
 }
