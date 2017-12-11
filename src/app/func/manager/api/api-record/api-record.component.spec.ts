@@ -6,12 +6,13 @@ describe('ApiRecordComponent', () => {
   let component: ApiRecordComponent;
   let fixture: ComponentFixture<ApiRecordComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ApiRecordComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ApiRecordComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ApiRecordComponent);

@@ -6,12 +6,13 @@ describe('WhitelistComponent', () => {
   let component: WhitelistComponent;
   let fixture: ComponentFixture<WhitelistComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ WhitelistComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [WhitelistComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WhitelistComponent);
