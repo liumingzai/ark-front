@@ -9,9 +9,9 @@ import { PaginatorModule } from '../../../tool/paginator';
 
 import { ApiComponent } from './api.componet';
 import { OverviewComponent } from './overview/overview.component';
-import { StaticComponent } from './static/static.component';
 import { SceneComponent } from './scene/scene.component';
-import { WhiteListComponent } from './white-list/white-list.component';
+import { WhitelistComponent } from './whitelist/whitelist.component';
+import { ApiRecordComponent } from './api-record/api-record.component';
 
 const ROUTES: Routes = [
   {
@@ -19,16 +19,16 @@ const ROUTES: Routes = [
     component: ApiComponent,
     children: [
       { path: 'overview', component: OverviewComponent, data: { animation: 'overview' } },
-      { path: 'static', component: StaticComponent, data: { animation: 'static' } },
       { path: 'scene', component: SceneComponent, data: { animation: 'scene' } },
-      { path: 'white', component: WhiteListComponent, data: { animation: 'order' } },
+      { path: 'whitelist', component: WhitelistComponent, data: { animation: 'whitelist' } },
+      { path: 'apirecord', component: ApiRecordComponent, data: { animation: 'apirecord' } },
       { path: '', redirectTo: '/404' }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [ApiComponent, OverviewComponent, StaticComponent, SceneComponent, WhiteListComponent],
+  declarations: [ApiComponent, OverviewComponent, SceneComponent, WhitelistComponent, ApiRecordComponent],
   imports: [
     CommonModule,
     FormsModule,

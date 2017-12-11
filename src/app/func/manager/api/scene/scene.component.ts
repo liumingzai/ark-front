@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
+  selector: 'scene',
   templateUrl: './scene.component.html',
   styleUrls: ['./scene.component.scss']
 })
-export class SceneComponent {
-  constructor() {
-    console.warn('************用户场景管理****************');
+export class SceneComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
   }
+
 }

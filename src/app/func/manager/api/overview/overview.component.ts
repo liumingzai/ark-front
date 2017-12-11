@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
+  selector: 'overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent {
-  constructor() {
-    console.warn('************用户概览管理****************');
+export class OverviewComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
   }
+
 }
