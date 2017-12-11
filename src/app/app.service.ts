@@ -7,19 +7,16 @@ import * as $ from 'jquery';
 
 @Injectable()
 export class AppService {
-  public readonly isProd: boolean = false; // OR true
+  private readonly isProd: boolean = false; // OR true // 暂时不需要全局 private
   public readonly base: string = this.isProd ? '' : 'http://192.168.1.151';
-  public readonly host: string = window.location.protocol + '//' + window.location.host;
+  private readonly host: string = window.location.protocol + '//' + window.location.host;
   public readonly baseURL: string = `${this.base}/api-portal`;
-  public readonly imgPathPre: string = `${this.base || this.host}/images`;
-
-  // Observable sources
-  private accountSource = new Subject<Account>();
-  // Observable streams
-  // tslint:disable-next-line:member-ordering
-  public accountAnnounced = this.accountSource.asObservable();
+  // public readonly imgPathPre: string = `${this.base || this.host}/images`; // 暂时无用
 
   constructor(private http?: HttpClient) {}
+
+  private accountSource = new Subject<Account>();
+  public accountAnnounced = this.accountSource.asObservable();
 
   /**
    * Service message commands
@@ -33,18 +30,6 @@ export class AppService {
   }
 
   /**
-   * 通用获取JSONAPI
-   * path 一定是以 /asset/localdb 为开始的路径!
-   * @param {string} path
-   * @returns {Observable<any>}
-   * @memberof AppService
-   */
-  public GetJSON(path: string): Observable<any> {
-    const url = this.isProd ? path : `/src${path}`;
-    return this.http.get(url);
-  }
-
-  /**
    * 生成请求的URL, 自动去掉value为null和undefined的参数
    * 目前主要用于 GET 请求
    *
@@ -53,7 +38,7 @@ export class AppService {
    * @returns {string}
    * @memberof AppService
    */
-  public resolveParamUrl(method: string, params?: object): string {
+  private resolveParamUrl(method: string, params?: object): string {
     if (!/^\//.test(method)) {
       method = `/${method}`;
     }
@@ -75,15 +60,15 @@ export class AppService {
   }
 
   /**
-   * 从请求体中删除掉value为null,undefined的key
+   * 通用获取JSONAPI
+   * path 一定是以 /asset/localdb 为开始的路径!
+   * @param {string} path
+   * @returns {Observable<any>}
+   * @memberof AppService
    */
-  public removeUselessValueFromBody(body: object): object {
-    Object.keys(body).forEach((key: string) => {
-      if (body[key] === null || body[key] === undefined || body[key] === 'null' || body[key] === 'undefined') {
-        delete body[key];
-      }
-    });
-    return body;
+  public GetJSON(path: string): Observable<any> {
+    const url = this.isProd ? path : `/src${path}`;
+    return this.http.get(url);
   }
 
   /**
