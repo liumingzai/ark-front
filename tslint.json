@@ -62,7 +62,8 @@
     "no-eval": true,
     "no-inferrable-types": [
       true,
-      "ignore-params"
+      "ignore-params",
+      "ignore-properties"
     ],
     "no-misused-new": true,
     "no-non-null-assertion": true,
@@ -130,7 +131,7 @@
     //   "app",
     //   "kebab-case"
     // ],
-    "no-output-on-prefix": true,
+    // "no-output-on-prefix": true, // TODO: make true
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,

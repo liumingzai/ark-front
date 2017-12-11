@@ -8,7 +8,7 @@ import { seaData, ListDatas } from '../user-type';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponents implements OnInit {
+export class UserComponent implements OnInit {
   public modelClass: string;
   public childtitle: string;
   public noth1: string;

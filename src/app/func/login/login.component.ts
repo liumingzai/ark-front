@@ -35,10 +35,9 @@ export class LoginComponent implements OnInit {
       userAUTHVal: null
     };
     this.Getdata('GET', '/verify/checkGeeServer');
-    console.warn('******************登录注册*****************');
   }
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.loginservice.FnHomes(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.loginservice.FnHomes(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         console.warn(this.wrapDatas.sanjipdzhi);
         if (this.wrapDatas.sanjipdzhi === 'YZ') {
@@ -54,8 +53,8 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-  public HttpGetdata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.loginservice.FnHomes(sertype, serurl, data).subscribe((data: any) => {
+  public HttpGetdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.loginservice.FnHomes(sertype, serurl, dataParam).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (this.wrapDatas.sanjipdzhi === 'YZ') {
           this.GTdata = data.data;

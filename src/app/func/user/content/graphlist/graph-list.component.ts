@@ -10,7 +10,7 @@ import { PaginatorModule } from '../../../../tool/paginator/paginator.module';
   templateUrl: './graph-list.component.html',
   styleUrls: ['./graph-list.component.scss']
 })
-export class GraphListComponents implements OnInit {
+export class GraphListComponent implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
   public severData: any[];
@@ -58,8 +58,8 @@ export class GraphListComponents implements OnInit {
   }
 
   // 此处只是获取接口概览数据调用
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean, key?: string): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (key === 'data') {
           this.severData = data.data;

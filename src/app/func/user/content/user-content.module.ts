@@ -3,24 +3,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { PaginatorModule } from '../../../tool/paginator/paginator.module';
-import { GraphListComponents } from './graphlist/graph-list.component';
+import { GraphListComponent } from './graphlist/graph-list.component';
 
-import { UserContentComponents } from './main/user-content.component';
-import { UserListComponents } from './list/user-list.component';
-import { UserHeaderComponents } from './userheader/user-header.component';
-import { SceneContentComponents } from './scene/sence-content.component';
-import { AddUnitComponents } from './addunit/add-unit.component';
+import { UserContentComponent } from './main/user-content.component';
+import { UserListComponent } from './list/user-list.component';
+import { UserHeaderComponent } from './userheader/user-header.component';
+import { SceneContentComponent } from './scene/sence-content.component';
+import { AddUnitComponent } from './addunit/add-unit.component';
 
 import { ArkPipeModule } from '../../../tool/pipe';
 
 @NgModule({
   declarations: [
-    UserContentComponents,
-    UserListComponents,
-    UserHeaderComponents,
-    SceneContentComponents,
-    AddUnitComponents,
-    GraphListComponents
+    UserContentComponent,
+    UserListComponent,
+    UserHeaderComponent,
+    SceneContentComponent,
+    AddUnitComponent,
+    GraphListComponent
   ],
   imports: [
     CommonModule,
@@ -30,15 +30,15 @@ import { ArkPipeModule } from '../../../tool/pipe';
     RouterModule.forChild([
       {
         path: '',
-        component: UserContentComponents,
+        component: UserContentComponent,
         children: [
           {
             path: 'add',
-            component: AddUnitComponents
+            component: AddUnitComponent
           },
           {
             path: 'updata',
-            component: AddUnitComponents
+            component: AddUnitComponent
           },
           {
             path: 'detail',

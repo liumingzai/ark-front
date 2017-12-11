@@ -9,7 +9,7 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './add-unit.component.html',
   styleUrls: ['./add-unit.component.scss']
 })
-export class AddUnitComponents implements OnInit {
+export class AddUnitComponent implements OnInit {
   public rooturl: string[];
   public filters: string;
   public permissionScope: string;
@@ -147,8 +147,8 @@ export class AddUnitComponents implements OnInit {
   }
 
   // 接口调用
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean, key?: string): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (key === 'Scope') {
           this.ScopeDatas = data.data;
@@ -166,8 +166,8 @@ export class AddUnitComponents implements OnInit {
   }
 
   // 获取token数据
-  public GetTokendata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public GetTokendata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         this.Token = data.data;
       }

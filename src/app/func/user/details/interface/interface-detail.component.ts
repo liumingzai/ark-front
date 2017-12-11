@@ -9,7 +9,7 @@ import { seaData, interfaceData } from '../../user-type';
   templateUrl: './interface-detail.component.html',
   styleUrls: ['./interface-detail.component.scss']
 })
-export class HickyDetailComponents implements OnInit {
+export class HickyDetailComponent implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
   @Input() public severData: any;
@@ -46,8 +46,8 @@ export class HickyDetailComponents implements OnInit {
       );
     });
   }
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean, key?: string): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (key === 'data') {
           this.severData = data.data;

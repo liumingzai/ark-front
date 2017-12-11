@@ -8,7 +8,7 @@ import { seaData } from '../../user-type';
   templateUrl: './main-detail.component.html',
   styleUrls: ['./main-detail.component.scss']
 })
-export class MainDetailComponents implements OnInit {
+export class MainDetailComponent implements OnInit {
   public rooturl: string;
   public datasTop: seaData[];
   constructor(private router: Router, private route: ActivatedRoute) {}

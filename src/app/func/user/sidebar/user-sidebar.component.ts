@@ -9,7 +9,7 @@ import { seaData } from '../user-type';
   templateUrl: './user-sidebar.component.html',
   styleUrls: ['./user-sidebar.component.scss']
 })
-export class UserSidebarComponents implements OnInit {
+export class UserSidebarComponent implements OnInit {
   public admindatas: seaData[];
   public account: Account;
   public rooturl: string;

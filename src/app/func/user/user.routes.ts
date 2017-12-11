@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { UserComponents } from './main/user.component';
+import { UserComponent } from './main/user.component';
 
 export const UserRoutes: Routes = [
   {
     path: '',
-    component: UserComponents,
+    component: UserComponent,
     children: [
       {
         path: 'usercontrol',

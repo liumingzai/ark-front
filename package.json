@@ -21,6 +21,7 @@
   "pre-commit": [
     "pre-commit-msg",
     "prettier",
+    "lint",
     "next-commit-msg"
   ],
   "private": true,

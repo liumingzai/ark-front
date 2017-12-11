@@ -11,7 +11,7 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponents implements OnInit {
+export class UserListComponent implements OnInit {
   public datasTop: seaData[];
   public listTop: ListDatas[];
   public ListDatas: ListDatas | ListDatas[];
@@ -142,8 +142,8 @@ export class UserListComponents implements OnInit {
       );
     }
   }
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean, key?: string): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean, key?: string): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (key === 'data') {
           this.severData = data.data;
@@ -254,6 +254,7 @@ export class UserListComponents implements OnInit {
         break;
       case 6:
         this.DelTitle = '权限';
+        break;
       default:
         console.warn('其他');
     }
@@ -282,7 +283,7 @@ export class UserListComponents implements OnInit {
             permissions: [{ id: this.Delid }]
           });
         }
-      default:
+      // default:
     }
     this.severData.splice(this.Delind, 1);
   }

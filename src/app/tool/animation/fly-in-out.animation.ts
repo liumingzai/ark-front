@@ -1,7 +1,6 @@
-import { AnimationEntryMetadata } from '@angular/core';
 import { trigger, animate, state, style, group, transition } from '@angular/animations';
 
-export const flyInOutAnimation: AnimationEntryMetadata = trigger('flyInOutAnimation', [
+export const flyInOutAnimation = trigger('flyInOutAnimation', [
   state('in', style({ width: 120, transform: 'translateX(0)', opacity: 1 })),
   transition('void => *', [
     style({ width: 10, transform: 'translateX(50px)', opacity: 0 }),

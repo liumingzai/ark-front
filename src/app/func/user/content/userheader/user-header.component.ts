@@ -9,7 +9,7 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './user-header.component.html',
   styleUrls: ['./user-header.component.scss']
 })
-export class UserHeaderComponents implements OnInit {
+export class UserHeaderComponent implements OnInit {
   public datasTop: seaData[];
   public listTop: ListDatas[];
   public RoleIdArr: any[];
@@ -40,8 +40,8 @@ export class UserHeaderComponents implements OnInit {
       };
     });
   }
-  public Getdata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (location.pathname === '/user/authoritycontrol') {
           this.RoleIdArr = data.data;

@@ -13,7 +13,7 @@ export class ImgPathPrePipe implements PipeTransform {
    */
   public transform(value: string): string {
     const host = `${window.location.protocol}//${window.location.host}`;
-    let prePath: string = '';
+    let prePath = '';
 
     // 判断 是否是本地图片，不是本地图片需要添加host
     if (!/^src\/asset\/(.)*/.test(value)) {

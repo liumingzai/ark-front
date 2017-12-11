@@ -10,7 +10,7 @@ import { seaData, ListDatas } from '../../user-type';
   templateUrl: './scene-content.component.html',
   styleUrls: ['./scene-content.component.scss']
 })
-export class SceneContentComponents implements OnInit {
+export class SceneContentComponent implements OnInit {
   public rooturl: string;
   @Input() public ListDatas: ListDatas;
   public datasTop: seaData[];
@@ -54,8 +54,8 @@ export class SceneContentComponents implements OnInit {
       description: ''
     };
   }
-  public GetScenedata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public GetScenedata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         if (data.data) {
           this.Scenedata = data.data.length > 0 ? data.data : null;
@@ -71,8 +71,8 @@ export class SceneContentComponents implements OnInit {
       }
     });
   }
-  public GetTokendata(sertype: string, serurl: string, data?: any, isForm?: boolean): void {
-    this.userServer.FnUsers(sertype, serurl, data, isForm).subscribe((data: any) => {
+  public GetTokendata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
+    this.userServer.FnUsers(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
       if ('2000' === data.code) {
         this.Token = data.data;
       }

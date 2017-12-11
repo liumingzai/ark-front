@@ -1,7 +1,6 @@
 import { trigger, state, animate, transition, style, query } from '@angular/animations';
-import { AnimationEntryMetadata } from '@angular/core';
 
-export const fadeInAnimation: AnimationEntryMetadata = trigger('fadeInAnimation', [
+export const fadeInAnimation = trigger('fadeInAnimation', [
   transition('* <=> *', [
     style({
       opacity: 0
