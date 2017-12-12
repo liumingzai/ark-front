@@ -1,26 +1,28 @@
 /**
  * Account 用户的基本信息
- * type 0-管理员，1管理员  2临港  3普通注册用户
+ * userType 1-管理员  4-临港  5-API用户
  */
+class Role {
+  id: number;
+  name: string;
+}
+
 export class Account {
   public username: string;
-  public type: number;
-  public typeName: string;
+  public userType: number[];
   public logo: string;
   public phone: number;
-  public roles: any[];
+  public roles: Role[];
 
   constructor(
     username: string = null,
-    type: number = null,
-    typeName: string = null,
+    userType: number[] = null,
     logo: string = null,
     phone: number = null,
-    roles: any[] = []
+    roles: Role[] = []
   ) {
     this.username = username;
-    this.type = type;
-    this.typeName = typeName;
+    this.userType = userType;
     this.logo = logo;
     this.phone = phone;
     this.roles = roles;

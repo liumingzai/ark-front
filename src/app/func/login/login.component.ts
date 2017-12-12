@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { wrapDatas, reqDatas, recDatas } from './model/home-type';
+import { AppService } from '../../app.service';
 import { LoginService } from './service/login.service';
 import { Account } from '../../account.model';
 import * as $ from 'jquery';
@@ -16,11 +17,15 @@ export class LoginComponent implements OnInit {
   public reqDatas: reqDatas;
   public recDatas: recDatas;
   public GTdata: any;
-  public loginData: any;
+  public loginData: Account;
   public account: Account;
-  constructor(private router: Router, private route: ActivatedRoute, private loginservice: LoginService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private loginservice: LoginService,
+    private appService: AppService
+  ) {
     this.GTdata = '';
-    this.loginData = '';
   }
   public ngOnInit(): void {
     this.wrapDatas = {
@@ -37,16 +42,27 @@ export class LoginComponent implements OnInit {
     this.Getdata('GET', '/verify/checkGeeServer');
   }
   public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
-    this.loginservice.FnHomes(sertype, serurl, dataParam, isForm).subscribe((data: any) => {
+    this.loginservice.FnHomes(sertype, serurl, dataParam, isForm).subscribe((data: { code: string; data: Account }) => {
       if ('2000' === data.code) {
-        console.warn(this.wrapDatas.sanjipdzhi);
         if (this.wrapDatas.sanjipdzhi === 'YZ') {
           this.GTdata = data.data;
           this.FnGT(JSON.parse(this.GTdata));
         }
         if (this.wrapDatas.sanjipdzhi === 'login') {
-          this.loginData = data.data;
-          localStorage.setItem('account', JSON.stringify(this.loginData));
+          const userType: number[] = data.data.roles.map(e => {
+            return e.id;
+          });
+          this.loginData = {
+            username: data.data.username,
+            roles: data.data.roles,
+            phone: data.data.phone,
+            logo: data.data.logo
+              ? `${data.data.logo}`
+              : (this.appService.isProd ? '' : 'src/') + 'asset/image/common/person.svg',
+            userType
+          };
+          // localStorage.setItem('account', JSON.stringify(this.loginData));
+          this.appService.announceAccount(this.loginData);
           this.router.navigate(['']);
         }
         this.FnSwitchMondule('pwd-login');

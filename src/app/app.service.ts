@@ -7,7 +7,7 @@ import * as $ from 'jquery';
 
 @Injectable()
 export class AppService {
-  private readonly isProd: boolean = false; // OR true // 暂时不需要全局 private
+  public readonly isProd: boolean = false; // OR true
   public readonly base: string = this.isProd ? '' : 'http://192.168.1.151';
   private readonly host: string = window.location.protocol + '//' + window.location.host;
   public readonly baseURL: string = `${this.base}/api-portal`;

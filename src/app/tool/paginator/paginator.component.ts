@@ -11,7 +11,7 @@ export class PaginatorComponent {
   @Input() public style: any;
   @Input() public styleClass: string;
   @Input() public rowsPerPageOptions: number[];
-  @Input() public alwaysShow: boolean = true;
+  @Input() public alwaysShow: boolean = false;
 
   public pageLinks: number[];
   private totalRecordsTmp: number = 0;

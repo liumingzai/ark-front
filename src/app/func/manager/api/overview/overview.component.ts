@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { OverviewService } from './overview.service';
 import { QueryParam } from './model';
 
+type UserType = 'admin' | 'API';
+
 @Component({
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
@@ -11,6 +13,9 @@ import { QueryParam } from './model';
 export class OverviewComponent implements OnInit {
   public queryParam: QueryParam;
   public cats: string[];
+  public totalRecords: number;
+  public currentPage: number;
+  private userType: UserType;
 
   constructor(private overviewService: OverviewService, private router: Router, private route: ActivatedRoute) {
     this.queryParam = new QueryParam();
@@ -28,6 +33,11 @@ export class OverviewComponent implements OnInit {
       this.queryParam.page = params['page'] || 1;
       this.queryParam.sort = params['sort'] || null;
     });
+  }
+
+  private getUserType(): UserType {
+    const account = JSON.parse(localStorage.getItem('account'));
+    return account.userType;
   }
 
   public onSearch() {

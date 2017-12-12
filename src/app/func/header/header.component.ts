@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Account } from '../../account.model';
+import { AppService } from '../../app.service';
 import { HeaderService } from './header.service';
 
 import { SnackBar } from '../../tool/snackbar';
@@ -13,19 +14,25 @@ import { SnackBar } from '../../tool/snackbar';
 })
 export class HeaderComponent {
   @Input() public arkTitle: string;
-
   public account: Account;
+
   constructor(
     private headerService: HeaderService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackbar: SnackBar
+    private snackbar: SnackBar,
+    private appService: AppService
   ) {
     if (localStorage.getItem('account')) {
       this.account = JSON.parse(localStorage.getItem('account'));
     } else {
       this.account = new Account();
     }
+
+    this.appService.accountAnnounced.subscribe((account: Account) => {
+      console.warn(111);
+      this.account = account;
+    });
   }
 
   public onLogout() {

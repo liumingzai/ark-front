@@ -2,83 +2,99 @@ $bgc: #fff;
 $activecolor: #efb933;
 $textcolor: #fff;
 $defaultcolor: #aaa;
+$bordercolor: #d5d5d5;
 
 .ui-paginator {
+  border: 0;
   margin: 0;
-  text-align: center;
   padding: 0.125em;
-}
+  text-align: center;
 
-.ui-paginator .ui-paginator-top {
-  border-bottom: 0 none;
-}
+  .ui-paginator-top {
+    border-bottom: 0 none;
+  }
 
-.ui-paginator .ui-paginator-bottom {
-  border-top: 0 none;
-}
+  .ui-paginator-bottom {
+    border-top: 0 none;
+  }
 
-.ui-paginator .ui-paginator-page,
-.ui-paginator .ui-paginator-pages,
-.ui-paginator .ui-paginator-next,
-.ui-paginator .ui-paginator-last,
-.ui-paginator .ui-paginator-first,
-.ui-paginator .ui-paginator-prev,
-.ui-paginator .ui-paginator-current {
-  align-items: center;
-  display: inline-flex;
-  justify-content: center;
-  text-decoration: none;
-  zoom: 1;
-}
+  .ui-paginator-page,
+  .ui-paginator-pages,
+  .ui-paginator-next,
+  .ui-paginator-last,
+  .ui-paginator-first,
+  .ui-paginator-prev,
+  .ui-paginator-current {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    text-decoration: none;
+    zoom: 1;
+  }
 
-.ui-paginator .ui-paginator-page,
-.ui-paginator .ui-paginator-next,
-.ui-paginator .ui-paginator-last,
-.ui-paginator .ui-paginator-first,
-.ui-paginator .ui-paginator-prev {
-  cursor: pointer;
-}
+  .ui-paginator-page,
+  .ui-paginator-next,
+  .ui-paginator-last,
+  .ui-paginator-first,
+  .ui-paginator-prev {
+    cursor: pointer;
+  }
 
-.ui-paginator .ui-paginator-current,
-.ui-paginator .ui-paginator-rpp-options {
-  margin-left: 1em;
-  margin-right: 1em;
-  background-image: none;
-}
+  .ui-paginator-current,
+  .ui-paginator-rpp-options {
+    background-image: none;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
 
-.ui-paginator .ui-paginator-jtp-select option,
-.ui-paginator .ui-paginator-rpp-options option {
-  background-image: none;
-  border: 0 none;
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
+  .ui-paginator-jtp-select option,
+  .ui-paginator-rpp-options option {
+    background-image: none;
+    border: 0 none;
+    box-shadow: none;
+  }
 
-.ui-paginator a.ui-state-disabled {
-  outline: 0 none;
-}
+  a.ui-state-disabled {
+    outline: 0 none;
+  }
 
-.ui-paginator-element {
-  height: 36px;
-  width: 60px;
-}
+  .ui-paginator-list {
+    background-color: $bgc;
+    border: 1px solid $bordercolor;
+    border-radius: 18px;
+    display: inline-flex;
 
-.ui-paginator-list {
-  background-color: $bgc;
-  border: 1px solid $defaultcolor;
-  border-radius: 18px;
-  display: inline-flex;
+    a {
+      color: $defaultcolor;
+      font-family: Arial;
+      font-size: 1.6rem;
+      // font-weight: bold;
+      height: 36px;
+      width: 60px;
 
-  a {
-    color: $defaultcolor;
-    font-family: Arial;
-    font-size: 1.6rem;
-    font-weight: bold;
+      &.ui-state-active {
+        background-color: $activecolor;
+        color: $textcolor;
+      }
+    }
 
-    &.ui-state-active {
-      background-color: $activecolor;
-      color: $textcolor;
+    & > span a {
+      border-right: 1px solid $bordercolor;
+
+      &:first-child {
+        border-left: 1px solid $bordercolor;
+      }
+    }
+  }
+
+  // 小分页
+  &.small {
+    & > .ui-paginator-list {
+      & a {
+        font-size: 12px;
+        height: 20px;
+        width: 34px;
+      }
     }
   }
 }

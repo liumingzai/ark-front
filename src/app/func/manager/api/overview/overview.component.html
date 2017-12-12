@@ -13,10 +13,10 @@
       </mat-card-title>
       <div class="flex flex-v-center mr-auto">
         <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" *ngFor="let cat of cats; let i = index;">
-              <a class="nav-link font-12" [ngClass]="{'active': queryParam.cat === cat}" routerLink="./" [queryParams]="{cat: cat, page: 1}" queryParamsHandling="merge" id="pills-home-tab-${i}" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">{{cat}}</a>
-            </li>
-          </ul>
+          <li class="nav-item" *ngFor="let cat of cats; let i = index;">
+            <a class="nav-link font-12" [ngClass]="{'active': queryParam.cat === cat}" routerLink="./" [queryParams]="{cat: cat, page: 1}" queryParamsHandling="merge" id="pills-home-tab-${i}" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">{{cat}}</a>
+          </li>
+        </ul>
       </div>
       <div class="flex-inline">
         <mat-form-field>
@@ -29,11 +29,18 @@
     </mat-card-header>
 
     <mat-card-content>
-
+      <div class="card" style="width: 20rem;">
+        <img class="card-img-top" src="../../../../../asset/image/default/company_default.png" alt="API Logo">
+        <div class="card-body">
+          <h4 class="card-title">Card title</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
     </mat-card-content>
 
     <mat-card-footer>
-
+      <ark-paginator rows="10" currentPage="{{currentPage}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
     </mat-card-footer>
   </mat-card>
 </section>
