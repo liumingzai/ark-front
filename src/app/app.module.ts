@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppInterceptor } from './app.interceptor';
 import { SnackBar } from './tool/snackbar';
 import { ToastrModule } from 'ngx-toastr';
+import { HeaderModule } from './func/header';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -21,6 +22,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
+    HeaderModule,
     ToastrModule.forRoot({
       maxOpened: 1,
       timeOut: 3000,

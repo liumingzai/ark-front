@@ -4,6 +4,7 @@ html {
 }
 
 body {
+  background-color: $body-bgc;
   display: flex;
   flex-direction: row;
   font-family: 'Microsoft Yahei', Arial, Helvetica, sans-serif;

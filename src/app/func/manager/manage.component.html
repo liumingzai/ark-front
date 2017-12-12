@@ -1,77 +1,80 @@
 <section class="full-height flex flex-column">
-  <ark-header headerTitle="管理中心"></ark-header>
+  <!-- <div class="full-width flex flex-1"> -->
+  <mat-sidenav-container class="flex-1">
+    <mat-sidenav #sidenav mode="side" opened="true">
+      <!-- <div class="sidebar">
+        <section> -->
+          <div class="padding-15">
+            <h3>管理中心 <span class="badge badge-warning font-12">管理员</span></h3>
+          </div>
+          <div class="sidebar-wrapper">
+            <ul class="nav flex-column">
 
-  <div class="full-width flex flex-1">
-    <div class="sidebar">
-      <section>
-        <div class="padding-15">
-          <h3>管理中心 <span class="badge badge-warning font-12">管理员</span></h3>
-        </div>
-        <div class="sidebar-wrapper">
-          <ul class="nav flex-column">
-
-            <li class="flex-column" *ngIf="isAdmin">
-              <a data-toggle="collapse" class="collapsed" href="#collapseUsers" aria-expanded="false" aria-controls="collapseExample">
+              <li class="flex-column" *ngIf="isAdmin">
+                <a data-toggle="collapse" class="collapsed" href="#collapseUsers" aria-expanded="false" aria-controls="collapseExample">
                 <i class="fa fa-users"></i> <span class="mr-auto">账号管理</span> <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </a>
-              <div class="collapse" id="collapseUsers" style="background-color: #e9ecef">
-                <ul class="nav flex-column">
-                  <li class="flex-column">
-                    <a routerLink="account/user" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 用户管理</span></a>
-                  </li>
-                  <li class="flex-column">
-                    <a routerLink="account/role" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span>角色管理</span></a>
-                  </li>
-                  <li class="flex-column">
-                    <a routerLink="account/auth" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span>权限管理</span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
+                <div class="collapse" id="collapseUsers" style="background-color: #e9ecef">
+                  <ul class="nav flex-column">
+                    <li class="flex-column">
+                      <a routerLink="account/user" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 用户管理</span></a>
+                    </li>
+                    <li class="flex-column">
+                      <a routerLink="account/role" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span>角色管理</span></a>
+                    </li>
+                    <li class="flex-column">
+                      <a routerLink="account/auth" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span>权限管理</span></a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-            <li class="flex-column">
-              <a data-toggle="collapse" class="collapsed" href="#collapseAudits" aria-expanded="false" aria-controls="collapseExample">
+              <li class="flex-column">
+                <a data-toggle="collapse" class="collapsed" href="#collapseAudits" aria-expanded="false" aria-controls="collapseExample">
                 <i class="fa fa-gavel"></i> <span class="mr-auto">接口管理</span> <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </a>
-              <div class="collapse" id="collapseAudits" style="background-color: #e9ecef">
-                <ul class="nav flex-column">
-                  <li class="flex-column">
-                    <a routerLink="api/overview" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 接口概览</span></a>
-                  </li>
-                  <li class="flex-column">
-                    <a routerLink="api/scene" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 场景管理</span></a>
-                  </li>
-                  <li class="flex-column">
-                    <a routerLink="api/whitelist" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 白名单请求记录</span></a>
-                  </li>
-                  <li class="flex-column">
-                    <a routerLink="api/apirecord" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> API调用记录</span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
+                <div class="collapse" id="collapseAudits" style="background-color: #e9ecef">
+                  <ul class="nav flex-column">
+                    <li class="flex-column">
+                      <a routerLink="api/overview" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 接口概览</span></a>
+                    </li>
+                    <li class="flex-column">
+                      <a routerLink="api/scene" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 场景管理</span></a>
+                    </li>
+                    <li class="flex-column">
+                      <a routerLink="api/whitelist" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> 白名单请求记录</span></a>
+                    </li>
+                    <li class="flex-column">
+                      <a routerLink="api/apirecord" routerLinkActive="active"><i class="fa fa-circle-o" aria-hidden="true"></i> <span> API调用记录</span></a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-            <!--默认显示-->
-            <li class="flex-column">
-              <a a routerLink="info" routerLinkActive="active">
+              <!--默认显示-->
+              <li class="flex-column">
+                <a a routerLink="info" routerLinkActive="active">
                 <i class="fa fa-cog"></i> <span>帐号设置</span></a>
-            </li>
+              </li>
 
-          </ul>
-        </div>
-      </section>
-    </div>
+            </ul>
+          </div>
+        <!-- </section>
+      </div> -->
+    </mat-sidenav>
 
-    <div class="sidenav-content padding-t-10">
-      <!-- <div class="padding-10">
+    <mat-sidenav-content>
+      <div class="sidenav-content padding-t-10">
+        <!-- <div class="padding-10">
         <button mat-button mat-mini-fab color="primary" (click)="sidenav.toggle()">
           <i class="fa fa-exchange" aria-hidden="true"></i>
         </button>
       </div> -->
 
-      <div class="padding-10">
-        <router-outlet></router-outlet>
+        <div class="padding-10">
+          <router-outlet></router-outlet>
+        </div>
       </div>
-    </div>
-  </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </section>

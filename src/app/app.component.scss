@@ -1,5 +1,7 @@
 // 定义整个Application styles
-$bg-color: #eee;
+app-root {
+  padding-top: 64px;
+}
 
 @media (min-width: 1230px) {
   .container {
@@ -13,8 +15,4 @@ $bg-color: #eee;
     font-size: 1.4rem;
     vertical-align: middle;
   }
-}
-
-.body-bgc {
-  background-color: $bg-color;
 }

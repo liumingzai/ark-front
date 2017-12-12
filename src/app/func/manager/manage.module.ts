@@ -5,22 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MatButtonModule, MatSidenavModule, MatCardModule } from '@angular/material';
 
-import { HeaderModule } from '../header';
-
 import { ManageRoutingModule } from './manage-routing.module';
 import { ManageService } from './manage.service';
 import { ManageComponent } from './manage.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatCardModule,
-    HeaderModule,
-    ManageRoutingModule
-  ],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatSidenavModule, MatCardModule, ManageRoutingModule],
   declarations: [ManageComponent],
   providers: [ManageService]
 })

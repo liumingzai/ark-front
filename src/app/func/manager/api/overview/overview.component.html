@@ -6,5 +6,34 @@
     </ol>
   </div>
 
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="full-height flex-v-center" style="display: flex; margin-bottom: 0;">
+        <span class="font-16 margin-r-20">分类</span>
+      </mat-card-title>
+      <div class="flex flex-v-center mr-auto">
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" *ngFor="let cat of cats; let i = index;">
+              <a class="nav-link font-12" [ngClass]="{'active': queryParam.cat === cat}" routerLink="./" [queryParams]="{cat: cat, page: 1}" queryParamsHandling="merge" id="pills-home-tab-${i}" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">{{cat}}</a>
+            </li>
+          </ul>
+      </div>
+      <div class="flex-inline">
+        <mat-form-field>
+          <input type="text" matInput [(ngModel)]="queryParam.key" (keyup.enter)="onSearch()" placeholder="请输入接口名称">
+        </mat-form-field>
+        <a mat-mini-fab color="primary" (click)="onSearch()">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </a>
+      </div>
+    </mat-card-header>
 
+    <mat-card-content>
+
+    </mat-card-content>
+
+    <mat-card-footer>
+
+    </mat-card-footer>
+  </mat-card>
 </section>
