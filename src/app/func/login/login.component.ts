@@ -49,9 +49,16 @@ export class LoginComponent implements OnInit {
           this.FnGT(JSON.parse(this.GTdata));
         }
         if (this.wrapDatas.sanjipdzhi === 'login') {
-          const userType: number[] = data.data.roles.map(e => {
+          const typeList = [1, 4, 5]; // 1管理员，4临港，5普通用户
+          const idList: number[] = data.data.roles.map(e => {
             return e.id;
           });
+          let userType = null; // 1-管理员，2-临港，3-普通用户
+          const typeNames = ['管理员', '临港用户', '普通用户'];
+          // 暂时的业务，用户和角色都是1对1
+          if (idList.length === 1 && typeList.indexOf(idList[0]) > -1) {
+            userType = typeList.indexOf(idList[0]) + 1;
+          }
           this.loginData = {
             username: data.data.username,
             roles: data.data.roles,
@@ -59,7 +66,8 @@ export class LoginComponent implements OnInit {
             logo: data.data.logo
               ? `${data.data.logo}`
               : (this.appService.isProd ? '' : 'src/') + 'asset/image/common/person.svg',
-            userType
+            userType,
+            typeName: typeNames[userType - 1]
           };
           // localStorage.setItem('account', JSON.stringify(this.loginData));
           this.appService.announceAccount(this.loginData);

@@ -1,0 +1,139 @@
+<section>
+  <div class="margin-b-20">
+    <ol class="breadcrumb font-16">
+      <li class="breadcrumb-item"><a>接口管理</a></li>
+      <li class="breadcrumb-item active"><a routerLink="/manager/api/overview">接口概览</a></li>
+      <li class="breadcrumb-item active"><a href="javascript: void(0)">接口详情</a></li>
+    </ol>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="alert alert-primary flex" role="alert">
+        <span>{{apiName}}</span>
+        <span class="flex-1"></span>
+        <!-- <div>
+          调用 <strong class="text-red">5</strong> 次
+        </div> -->
+      </div>
+
+      <form>
+        <div class="form-group">
+          <label for="">调用地址：</label>
+          <span>{{detail.accessUrl}}</span>
+        </div>
+
+        <!-- <div class="form-group"><label for="">地址参数：</label><span>{{detail.accessUrl}}</span></div> -->
+        <div class="form-group"><label for="">请求类型：</label><span>{{detail.queryType}}</span></div>
+        <div class="form-group"><label for="">返回类型：</label><span>{{detail.returnType}}</span></div>
+        <div class="form-group">
+          <label for="">请求参数（header）：</label>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>是否必须</th>
+                <th>描述</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="header">
+                <td>{{header.queryColumnName}}</td>
+                <td>{{header.queryColumnType}}</td>
+                <td>{{header.queryOption}}</td>
+                <td>{{header.queryColumnDesc}}</td>
+              </tr>
+              <tr *ngIf="!header">
+                <td colspan="4">暂无数据</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group">
+          <label for="">请求参数（query）：</label>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>是否必须</th>
+                <th>描述</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="query">
+                <td>{{query.queryColumnName}}</td>
+                <td>{{query.queryColumnType}}</td>
+                <td>{{query.queryOption}}</td>
+                <td>{{query.queryColumnDesc}}</td>
+              </tr>
+              <tr *ngIf="!query">
+                <td colspan="4">暂无数据</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group">
+          <label for="">请求参数（body）：</label>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>是否必须</th>
+                <th>描述</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="body">
+                <td>{{body.queryColumnName}}</td>
+                <td>{{body.queryColumnType}}</td>
+                <td>{{body.queryOption}}</td>
+                <td>{{body.queryColumnDesc}}</td>
+              </tr>
+              <tr *ngIf="!body">
+                <td colspan="4">暂无数据</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group">
+          <label for="">调用示例：</label>
+          <code>
+            {{detail.accessSample}}
+          </code>
+        </div>
+        <div class="form-group">
+          <label for="">返回示例：</label>
+          <code class="json">
+            {{detail.returnSample}}
+          </code>
+        </div>
+        <div class="form-group">
+          <label for="">错误Code：</label>
+          <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of detail.errorCodeList">
+                  <td>{{item.errorCode}}</td>
+                  <td>{{item.errorDesc}}</td>
+                </tr>
+
+                <tr *ngIf="!detail.errorCodeList || detail.errorCodeList.length < 1">
+                  <td colspan="2">暂无数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

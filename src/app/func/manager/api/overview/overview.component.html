@@ -28,13 +28,30 @@
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <div class="card" style="width: 20rem;">
-        <img class="card-img-top" src="../../../../../asset/image/default/company_default.png" alt="API Logo">
-        <div class="card-body">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+    <mat-card-header>
+      <div class="mr-auto"></div>
+      <div class="flex-inline">
+        <a mat-raised-button color="accent" routerLink="./edit">
+           新增
+        </a>
+        <a mat-raised-button color="warn" (click)="onSearch()">
+          编辑
+        </a>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="margin-t-20">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 mb-5" *ngFor="let api of apis">
+          <div class="card">
+            <img class="card-img-top" src="../../../../../asset/image/default/company_default.png" alt="API Logo">
+            <div class="card-body">
+              <h4 class="card-title"><a [routerLink]="['./detail', api.apiId, api.apiName]">{{api.apiName}}</a></h4>
+              <h5>分类： <span class="text-gray">{{api.apiCategory}}</span></h5>
+              <h5>价格(分/次)： <strong class="text-red">1</strong> </h5>
+              <h5>更新时间：<span>{{api.updateTime | date: 'y-MM-dd hh:mm:ss'}}</span></h5>
+            </div>
+          </div>
         </div>
       </div>
     </mat-card-content>
