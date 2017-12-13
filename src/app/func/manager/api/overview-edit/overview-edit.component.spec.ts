@@ -6,12 +6,13 @@ describe('OverviewEditComponent', () => {
   let component: OverviewEditComponent;
   let fixture: ComponentFixture<OverviewEditComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ OverviewEditComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [OverviewEditComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OverviewEditComponent);

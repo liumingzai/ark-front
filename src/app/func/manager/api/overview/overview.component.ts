@@ -28,8 +28,8 @@ export class OverviewComponent implements OnInit {
 
   private initRouteListener() {
     this.route.queryParams.subscribe((params: Params) => {
-      const {key = null, cat = null, page = 1, sort = null} = params;
-      this.queryParam = {key, cat, page, sort};
+      const { key = null, cat = null, page = 1, sort = null } = params;
+      this.queryParam = { key, cat, page, sort };
       this.currentPage = page;
 
       if (this.userType === 1) {
@@ -63,7 +63,7 @@ export class OverviewComponent implements OnInit {
       queryParams: {
         page
       }
-    })
+    });
   }
 
   private getApiOverview() {

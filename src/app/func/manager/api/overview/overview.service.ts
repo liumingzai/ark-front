@@ -16,8 +16,8 @@ export class OverviewService {
    */
   public getApiOverview(param: QueryParam): Observable<any> {
     const method = 'common/getApiOverview';
-    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort} = param;
-    return this.appService.GET(method, {pageNum, apiName, apiCategory, createTimeSort});
+    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort } = param;
+    return this.appService.GET(method, { pageNum, apiName, apiCategory, createTimeSort });
   }
 
   /**
@@ -29,8 +29,8 @@ export class OverviewService {
    */
   public adminGetApiOverview(param: QueryParam): Observable<any> {
     const method = 'admin/api/getApiOverview';
-    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort} = param;
-    return this.appService.GET(method, {pageNum, apiName, apiCategory, createTimeSort});
+    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort } = param;
+    return this.appService.GET(method, { pageNum, apiName, apiCategory, createTimeSort });
   }
 
   /**
