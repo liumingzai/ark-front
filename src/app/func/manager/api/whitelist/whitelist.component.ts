@@ -64,8 +64,8 @@ export class WhitelistComponent implements OnInit {
 
   private initRouterListener() {
     this.route.queryParams.subscribe((params: Params) => {
-      const {page = 1, uid = null, apiId = null, clientIp = null, url = null, dailyDate = null } = params;
-      this.queryParam = {page: +page, uid, apiId, clientIp, url, dailyDate};
+      const { page = 1, uid = null, apiId = null, clientIp = null, url = null, dailyDate = null } = params;
+      this.queryParam = { page: +page, uid, apiId, clientIp, url, dailyDate };
       this.currentPage = page;
 
       this.getSummaryWhiteListLog();
