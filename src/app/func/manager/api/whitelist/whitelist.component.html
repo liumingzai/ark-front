@@ -1,3 +1,93 @@
-<p>
-  whitelist works!
-</p>
+<section>
+  <div class="margin-b-20">
+    <ol class="breadcrumb font-16">
+      <li class="breadcrumb-item"><a>接口管理</a></li>
+      <li class="breadcrumb-item active"><a href="javascript: void(0)">白名单请求记录</a></li>
+    </ol>
+  </div>
+
+  <mat-card>
+    <!-- <mat-card-header> -->
+    <form>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">UID</label>
+            <input type="text" class="form-control form-control-lg" name="uid" [(ngModel)]="queryParam.uid">
+          </div>
+
+          <div class="form-group">
+            <label for="">Client IP</label>
+            <input type="text" class="form-control form-control-lg" name="clientIp" [(ngModel)]="queryParam.clientIp">
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">API ID</label>
+            <input type="text" class="form-control form-control-lg" name="apiid" [(ngModel)]="queryParam.apiId">
+          </div>
+
+          <div class="form-group">
+            <label for="">API URL</label>
+            <input type="text" class="form-control form-control-lg" name="url" [(ngModel)]="queryParam.url">
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">Access Date</label>
+            <mat-form-field class="font-14">
+                <input matInput [matDatepicker]="picker" placeholder="选择时间" readonly="readonly" [value]="queryParam.dailyDate" [max]="maxDate" [min]="minDate" name="startDate" [(ngModel)]="queryParam.dailyDate">
+                <mat-datepicker-toggle class="pos-absolute mat-abs-data" matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi="true" #picker></mat-datepicker>
+              </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <a mat-raised-button color="primary" (click)="onSearch()">搜索</a>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <!-- </mat-card-header> -->
+
+    <mat-card-content>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>UID</th>
+            <th>用户ID</th>
+            <th>API ID</th>
+            <th>资源名称</th>
+            <th>客户端IP</th>
+            <th>通过标识</th>
+            <th>返回信息</th>
+            <th>访问日期</th>
+            <th>访问数量</th>
+            <th>访问主机名</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let whitelist of whitelists">
+            <td>{{whitelist.uid}}</td>
+            <td>{{whitelist.accountId}}</td>
+            <td>{{whitelist.apiId}}</td>
+            <td>{{whitelist.url}}</td>
+            <td>{{whitelist.clientIp}}</td>
+            <td>{{whitelist.passFlag}}</td>
+            <td>{{whitelist.rtnMessage}}</td>
+            <td>{{whitelist.dailyDate | date: 'y-MM-dd'}}</td>
+            <td>{{whitelist.accessTotal}}</td>
+            <td>{{whitelist.domain}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <ark-paginator rows="10" currentPage="{{currentPage}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
+    </mat-card-footer>
+  </mat-card>
+</section>

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { SceneService } from './scene.service';
 
 @Component({
-  selector: 'scene',
   templateUrl: './scene.component.html',
-  styleUrls: ['./scene.component.scss']
+  styleUrls: ['./scene.component.scss'],
+  providers: [SceneService]
 })
 export class SceneComponent implements OnInit {
-  constructor() {}
+  constructor(private sceneService: SceneService) {}
 
   ngOnInit() {}
 }
