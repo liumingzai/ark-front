@@ -1,3 +1,83 @@
-<p>
-  api-record works!
-</p>
+<section>
+  <div class="margin-b-20">
+    <ol class="breadcrumb font-16">
+      <li class="breadcrumb-item"><a>接口管理</a></li>
+      <li class="breadcrumb-item active"><a href="javascript: void(0)">API调用记录</a></li>
+    </ol>
+  </div>
+
+  <mat-card>
+    <form>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">UID</label>
+            <input type="text" class="form-control form-control-lg" name="uid" [(ngModel)]="queryParam.uid">
+          </div>
+          <div class="form-group">
+            <label for="">起始时间</label>
+            <mat-form-field class="font-14">
+              <input matInput [matDatepicker]="picker" placeholder="选择时间" readonly="readonly" [value]="queryParam.startDate" [max]="maxDate" [min]="minDate" name="startDate" [(ngModel)]="queryParam.startDate">
+              <mat-datepicker-toggle class="pos-absolute mat-abs-data" matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi="true" #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">API 名称</label>
+            <input type="text" class="form-control form-control-lg" name="apiname" [(ngModel)]="queryParam.apiName">
+          </div>
+
+          <div class="form-group">
+            <label for="">结束时间</label>
+            <mat-form-field class="font-14">
+              <input matInput [matDatepicker]="endpicker" placeholder="选择时间" readonly="readonly" [value]="queryParam.endDate" [max]="maxDate" [min]="minDate" name="endDate" [(ngModel)]="queryParam.endDate">
+              <mat-datepicker-toggle class="pos-absolute mat-abs-data" matSuffix [for]="endpicker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi="true" #endpicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="form-group">
+            <label for="">URL</label>
+            <input type="text" class="form-control form-control-lg" name="url" [(ngModel)]="queryParam.url">
+          </div>
+          <div class="form-group">
+            <a mat-raised-button color="primary" (click)="onSearch()">搜索</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <mat-card-content>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>接口ID</th>
+            <th>接口名称</th>
+            <th>用户ID</th>
+            <th>接入URL</th>
+            <th>日期</th>
+            <th>访问数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let accessApi of accessApis">
+            <td>{{accessApi.apiId}}</td>
+            <td>{{accessApi.apiName}}</td>
+            <td>{{accessApi.id}}</td>
+            <td>{{accessApi.accessUrl}}</td>
+            <td>{{accessApi.dailyDate | date: 'y-MM-dd'}}</td>
+            <td>{{accessApi.accessTotal}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <ark-paginator rows="10" currentPage="{{currentPage}}" totalRecords="{{totalRecords}}" (onPageChange)="paginate($event)"></ark-paginator>
+    </mat-card-footer>
+  </mat-card>
+</section>

@@ -15,7 +15,6 @@ export class WhitelistComponent implements OnInit {
   public currentPage: number;
   public maxDate: Date;
   public minDate: Date;
-  public startDate: Date; // 实施时间
 
   constructor(private whitelistService: WhitelistService, private router: Router, private route: ActivatedRoute) {
     this.queryParam = new QueryParam();
