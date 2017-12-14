@@ -164,23 +164,15 @@ swal({
   cancelButtonColor: "#dc3545",
   confirmButtonText: "确定",
   cancelButtonText: "取消"
-}).then((result) => {
+}).then(result => {
   if (result.value) {
-    swal(
-      'Deleted!',
-      'Your file has been deleted.',
-      'success'
-    )
-  // result.dismiss can be 'cancel', 'overlay',
-  // 'close', and 'timer'
-  } else if (result.dismiss === 'cancel') {
-    swal(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
+    swal("Deleted!", "Your file has been deleted.", "success");
+    // result.dismiss can be 'cancel', 'overlay',
+    // 'close', and 'timer'
+  } else if (result.dismiss === "cancel") {
+    swal("Cancelled", "Your imaginary file is safe :)", "error");
   }
-})
+});
 ```
 
 ## 更新日志
