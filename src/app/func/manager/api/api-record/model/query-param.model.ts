@@ -10,8 +10,8 @@ export class QueryParam {
     this.uid = null;
     this.apiName = null;
     this.url = null;
-     this.startDate = null;
-     this.endDate = null;
-     this.page = 1;
+    this.startDate = null;
+    this.endDate = null;
+    this.page = 1;
   }
 }
