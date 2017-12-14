@@ -29,8 +29,8 @@ export class OverviewService {
    */
   public adminGetApiOverview(param: QueryParam): Observable<any> {
     const method = 'admin/api/getApiOverview';
-    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort } = param;
-    return this.appService.GET(method, { pageNum, apiName, apiCategory, createTimeSort });
+    const { page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort, publish } = param;
+    return this.appService.GET(method, { pageNum, apiName, apiCategory, createTimeSort, publish });
   }
 
   /**
@@ -43,10 +43,5 @@ export class OverviewService {
   public deleteApi(apiId: string): Observable<any> {
     const method = 'admin/api/deleteApi';
     return this.appService.DELETE(method, { apiId });
-  }
-
-  public updateApiInfo(param): Observable<any> {
-    const method = 'admin/api/updateApiInfo';
-    return this.appService.PUT(method, param);
   }
 }

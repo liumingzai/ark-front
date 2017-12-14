@@ -3,4 +3,5 @@ export class QueryAPI {
   public apiCategory: string;
   public apiName: string;
   public createTimeSort: number;
+  public publish?: number;
 }

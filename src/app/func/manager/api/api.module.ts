@@ -9,7 +9,8 @@ import {
   MatIconModule,
   MatInputModule,
   MatTooltipModule,
-  MatRadioModule
+  MatRadioModule,
+  MatSelectModule
 } from '@angular/material';
 
 import { PaginatorModule } from '../../../tool/paginator';
@@ -57,6 +58,7 @@ const ROUTES: Routes = [
     MatInputModule,
     MatTooltipModule,
     MatRadioModule,
+    MatSelectModule,
     PaginatorModule,
     RouterModule.forChild(ROUTES)
   ],

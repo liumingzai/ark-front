@@ -3,6 +3,7 @@ export class QueryParam {
   public cat: string;
   public key: string;
   public sort: number;
+  public publish?: number;
 
   constructor() {
     this.page = 1;
