@@ -18,6 +18,7 @@ export class ApiRecordComponent implements OnInit {
   private userType: number;
   public maxDate: Date;
   public minDate: Date;
+  private userId: number;
 
   constructor(private apiRecordService: ApiRecordService, private router: Router, private route: ActivatedRoute) {
     this.queryParam = new QueryParam();
@@ -31,6 +32,7 @@ export class ApiRecordComponent implements OnInit {
 
   private getUserType(): number {
     const account: Account = JSON.parse(localStorage.getItem('account'));
+    this.userId = account.id;
     return account.userType;
   }
 
@@ -96,7 +98,7 @@ export class ApiRecordComponent implements OnInit {
   }
 
   private getCountAsscssApi() {
-    this.apiRecordService.getCountAsscssApi(this.queryParam.page).subscribe((data: any) => {
+    this.apiRecordService.getCountAsscssApi(this.queryParam.page, this.userId).subscribe((data: any) => {
       if ('2000' === data.code) {
         this.accessApis = data.data;
         this.totalRecords = data.size;

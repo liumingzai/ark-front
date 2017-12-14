@@ -7,16 +7,30 @@
   </div>
 
   <mat-card>
-    <!-- <mat-card-header>
-        <button mat-button [matMenuTriggerFor]="menu">Menu</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-    </mat-card-header> -->
-
     <mat-card-content>
+      <form>
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <h4>基本信息</h4>
 
+            <div class="form-group">
+              <label for="">场景ID</label>
+              <input type="text">
+            </div>
+
+            <div class="form-group">
+              <label for="">场景描述</label>
+              <textarea class="form-control" name="desc" rows="6"></textarea>
+            </div>
+
+
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <h4>白名单限制</h4>
+
+          </div>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 </section>

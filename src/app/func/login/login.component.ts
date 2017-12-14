@@ -67,7 +67,8 @@ export class LoginComponent implements OnInit {
               ? `${data.data.logo}`
               : (this.appService.isProd ? '' : 'src/') + 'asset/image/common/person.svg',
             userType,
-            typeName: typeNames[userType - 1]
+            typeName: typeNames[userType - 1],
+            id: data.data.id
           };
           // localStorage.setItem('account', JSON.stringify(this.loginData));
           this.appService.announceAccount(this.loginData);

@@ -24,11 +24,12 @@ export class ApiRecordService {
    * API用户 获取API调用记录
    *
    * @param {number} pageNum
+   * @param {number} id 用户id
    * @returns {Observable<any>}
    * @memberof ApiRecordService
    */
-  public getCountAsscssApi(pageNum: number): Observable<any> {
+  public getCountAsscssApi(pageNum: number, id: number): Observable<any> {
     const method = 'common/getCountAsscssApi';
-    return this.appService.GET(method, { pageNum });
+    return this.appService.GET(method, { pageNum, id });
   }
 }

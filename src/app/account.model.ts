@@ -14,6 +14,7 @@ export class Account {
   public logo: string;
   public phone: number;
   public roles: Role[];
+  public id: number;
 
   constructor(
     username: string = null,
@@ -21,7 +22,8 @@ export class Account {
     typeName: string = null,
     logo: string = null,
     phone: number = null,
-    roles: Role[] = []
+    roles: Role[] = [],
+    id: number = null
   ) {
     this.username = username;
     this.userType = userType;
@@ -29,5 +31,6 @@ export class Account {
     this.logo = logo;
     this.phone = phone;
     this.roles = roles;
+    this.id = id;
   }
 }
