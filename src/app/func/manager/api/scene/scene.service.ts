@@ -21,7 +21,16 @@ export class SceneService {
    */
   public adminUpdateAppWhiteList(p: Scene): Observable<any> {
     const method = 'admin/um/updateAppWhiteList';
-    return this.appService.PUT(method, p);
+    const { description, wlContent, active, userToken, accountId, appMd5, applicationName } = p;
+    return this.appService.PUT(method, {
+      description,
+      wlContent,
+      active,
+      userToken,
+      accountId,
+      appMd5,
+      applicationName
+    });
   }
 
   /**
@@ -33,7 +42,8 @@ export class SceneService {
    */
   public updateAppWhiteList(p: Scene): Observable<any> {
     const method = 'common/updateAppWhiteList';
-    return this.appService.PUT(method, p);
+    const { description, wlContent, active, accountId, appMd5, applicationName } = p;
+    return this.appService.PUT(method, { description, wlContent, active, accountId, appMd5, applicationName });
   }
 
   /**
@@ -45,7 +55,8 @@ export class SceneService {
    */
   public addAppWhiteList(p: Scene): Observable<any> {
     const method = 'common/addAppWhiteList';
-    return this.appService.POST(method, p);
+    const { description, wlContent, active, accountId, applicationName } = p;
+    return this.appService.POST(method, { description, wlContent, active, accountId, applicationName });
   }
 
   /**
@@ -57,7 +68,8 @@ export class SceneService {
    */
   public adminAddAppWhiteList(p: Scene): Observable<any> {
     const method = 'admin/um/addAppWhiteList';
-    return this.appService.POST(method, p);
+    const { description, wlContent, active, userToken, accountId, applicationName } = p;
+    return this.appService.POST(method, { description, wlContent, active, userToken, accountId, applicationName });
   }
 
   /**

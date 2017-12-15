@@ -6,28 +6,82 @@
     </ol>
   </div>
 
+  <div class="margin-b-20" *ngIf="!isEditing">
+    <div class="alert alert-primary flex flex-space-between" role="alert">
+      <ul class="nav nav-pills font-14" id="pills-tab" role="tablist">
+        <li class="nav-item" *ngFor="let s of scenes">
+          <a class="nav-link" [ngClass]="{'active': s.appMd5 === scene.appMd5}" data-toggle="pill" role="tab" aria-selected="true">{{s.applicationName}}</a>
+        </li>
+        <!-- <li class="nav-item">
+              <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Profile</a>
+            </li> -->
+      </ul>
+
+      <div>
+        <a mat-raised-button (click)="addNewScene()">新增场景</a>
+      </div>
+    </div>
+  </div>
+
   <mat-card>
     <mat-card-content>
-      <form>
+      <form class="font-12">
         <div class="row">
           <div class="col-lg-6 col-md-12">
             <h4>基本信息</h4>
 
             <div class="form-group">
+              <label for="">场景名称</label>
+              <input type="text" class="form-control form-control-lg" name="sceneName" [(ngModel)]="scene.applicationName">
+            </div>
+
+            <div class="form-group" *ngIf="!isEditing">
               <label for="">场景ID</label>
-              <input type="text">
+              <input type="text" class="form-control form-control-lg" readonly="readonly" name="sceneId" [ngModel]="scene.appMd5">
             </div>
 
             <div class="form-group">
               <label for="">场景描述</label>
-              <textarea class="form-control" name="desc" rows="6"></textarea>
+              <textarea class="form-control" name="desc" rows="6" [(ngModel)]="scene.description"></textarea>
             </div>
 
+            <div class="form-group">
+              <label for="">有效标识</label>
+              <mat-radio-group name="active" [(ngModel)]="scene.active">
+                <mat-radio-button value="Y">有效</mat-radio-button>
+                <mat-radio-button value="N">无效</mat-radio-button>
+              </mat-radio-group>
+            </div>
 
           </div>
           <div class="col-lg-6 col-md-12">
             <h4>白名单限制</h4>
 
+            <div class="form-group" *ngIf="!isEditing">
+                <label for="">更新时间</label>
+                <input type="text" class="form-control form-control-lg" readonly="readonly" name="updateTime" [ngModel]="scene.updateTime | date: 'y-MM-dd hh:MM:ss'">
+              </div>
+
+            <div class="form-group" *ngIf="!isEditing">
+              <label for="">最大白名单限制</label>
+              <input type="text" class="form-control form-control-lg" readonly="readonly" name="restrict" [ngModel]="scene.wlMaxCount">
+            </div>
+
+            <div class="form-group">
+              <label for="">白名单</label>
+              <textarea class="form-control" name="whitelist" rows="6" [(ngModel)]="scene.wlContent"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="">user Token</label>
+              <input type="text" class="form-control form-control-lg" [readonly]="userType !== 1" name="usertoken" [(ngModel)]="scene.userToken">
+            </div>
+          </div>
+
+          <div class="col-12 text-center">
+            <a mat-raised-button color="primary" (click)="onSubmit()">保存</a>
+            <a *ngIf="!isEditing" mat-raised-button color="warn" (click)="onDelete()">删除</a>
+            <a *ngIf="isEditing" mat-raised-button (click)="goBack()">返回</a>
           </div>
         </div>
       </form>
