@@ -14,8 +14,10 @@ import {
   MatDatepickerModule,
   MatNativeDateModule
 } from '@angular/material';
+import { NgxCropperModule } from 'ngx-cropper';
 
 import { PaginatorModule } from '../../../tool/paginator';
+import { ArkPipeModule } from '../../../tool/pipe';
 
 import { ApiComponent } from './api.componet';
 import { OverviewComponent } from './overview/overview.component';
@@ -63,7 +65,9 @@ const ROUTES: Routes = [
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxCropperModule,
     PaginatorModule,
+    ArkPipeModule,
     RouterModule.forChild(ROUTES)
   ],
   exports: [],

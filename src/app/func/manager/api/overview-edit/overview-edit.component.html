@@ -40,6 +40,13 @@
         <div class="col-lg-6 col-md-12">
           <div class="form-group">
             <label for="">显示图片</label>
+            <ngx-cropper [config]="ngxCropperConfig" (returnData)="onReturnData($event)"></ngx-cropper>
+
+            <div>
+              <figure *ngIf="api.apiPic">
+                <img [src]="api.apiPic | ImgPathPre | trustURL" alt="Logo">
+              </figure>
+            </div>
           </div>
         </div>
 
