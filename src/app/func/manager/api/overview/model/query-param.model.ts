@@ -3,7 +3,7 @@ export class QueryParam {
   public cat: string;
   public key: string;
   public sort: number;
-  public publish?: number;
+  public publish?: number; // 0 - 保存, 1 - 发布
 
   constructor() {
     this.page = 1;

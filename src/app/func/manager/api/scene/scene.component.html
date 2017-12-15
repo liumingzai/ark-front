@@ -8,13 +8,10 @@
 
   <div class="margin-b-20" *ngIf="!isEditing">
     <div class="alert alert-primary flex flex-space-between" role="alert">
-      <ul class="nav nav-pills font-14" id="pills-tab" role="tablist">
-        <li class="nav-item" *ngFor="let s of scenes">
-          <a class="nav-link" [ngClass]="{'active': s.appMd5 === scene.appMd5}" data-toggle="pill" role="tab" aria-selected="true">{{s.applicationName}}</a>
+      <ul class="nav nav-pills font-14">
+        <li class="nav-item margin-r-8" *ngFor="let s of scenes">
+          <button mat-raised-button [color]="s.appMd5 === scene.appMd5 ? 'primary' : ''" (click)="scene = s">{{s.applicationName}}</button>
         </li>
-        <!-- <li class="nav-item">
-              <a class="nav-link" data-toggle="pill" role="tab" aria-selected="false">Profile</a>
-            </li> -->
       </ul>
 
       <div>

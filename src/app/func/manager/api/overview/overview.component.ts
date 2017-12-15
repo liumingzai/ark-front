@@ -52,7 +52,7 @@ export class OverviewComponent implements OnInit {
   private initRouteListener() {
     this.route.queryParams.subscribe((params: Params) => {
       const { key = null, cat = null, page = 1, sort = null, publish = null } = params;
-      this.queryParam = { key, cat, page: +page, sort: +sort, publish: +publish };
+      this.queryParam = { key, cat, page: +page, sort: +sort, publish: publish === null ? null : +publish };
       this.currentPage = page;
 
       if (this.userType === 1) {
