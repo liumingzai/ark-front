@@ -10,7 +10,6 @@ import { flyInOutAnimation } from '../../../../tool/animation';
 @Component({
   templateUrl: './auth.component.html',
   animations: [flyInOutAnimation],
-  styleUrls: ['./auth.component.scss'],
   providers: [AuthService]
 })
 export class AuthComponent implements OnInit {
@@ -33,7 +32,7 @@ export class AuthComponent implements OnInit {
     this.activedRoute.queryParams.subscribe((params: Params) => {
       this.queryParam.pageNum = Number(params['pageNum']) || 1;
       this.key = params['key'] || null;
-      this.queryParam.createTimeSort = Number(params['sort']) || 0;
+      this.queryParam.createTimeSort = Number(params['createTimeSort']) || 0;
       this.queryParam.active = params['active'] || null;
       this.queryParam.stype = params['stype'] || 'name';
       if (this.queryParam.stype === 'name') {

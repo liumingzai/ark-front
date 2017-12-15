@@ -41,7 +41,12 @@
 						<th class="ark-second-col">ID</th>
             <th class="ark-second-col">角色名称</th>
 						<th>描述</th>
-            <th>创建时间</th>
+            <th>
+              创建时间
+              <a href="javascript: void(0)" (click)="onChangeSort()">
+                <i class="fa text-primary" [ngClass]="{'fa-sort-amount-desc': queryParam.createTimeSort === 0, 'fa-sort-amount-asc': queryParam.createTimeSort === 1}"></i>
+              </a>
+            </th>
             <th>有效标识</th>
             <th>操作</th>
           </tr>
