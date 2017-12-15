@@ -31,7 +31,7 @@ export class RoleComponent implements OnInit {
     this.activedRoute.queryParams.subscribe((params: Params) => {
       this.queryParam.pageNum = Number(params['pageNum']) || 1;
       this.queryParam.name = params['name'] || null;
-      this.queryParam.createTimeSort = Number(params['sort']) || 0;
+      this.queryParam.createTimeSort = Number(params['createTimeSort']) || 0;
       this.queryParam.active = params['active'] || null;
 
       this.currentPage = this.queryParam.pageNum;
