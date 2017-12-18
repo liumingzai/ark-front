@@ -58,6 +58,8 @@
               <h5>分类： <span class="text-gray">{{api.apiCategory}}</span></h5>
               <h5>价格(分/次)： <strong class="text-red">1</strong> </h5>
               <h5>更新时间：<span>{{api.updateTime | date: 'y-MM-dd hh:mm:ss'}}</span></h5>
+
+              <a *ngIf="canEdit" mat-raised-button color="accent" routerLink="./edit" [queryParams]="{id: api.apiId}">编辑</a>
               <a *ngIf="canEdit" mat-raised-button color="warn" (click)="onDelete(api.apiId)">删除</a>
             </div>
           </div>

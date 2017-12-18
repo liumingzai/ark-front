@@ -50,6 +50,7 @@ export class OverviewEditComponent implements OnInit {
     if (params && params['id']) {
       this.status = this.statusList[1];
       this.api.apiId = params['id'];
+      this.getApiOverView();
     } else {
       this.status = this.statusList[0];
     }
@@ -135,6 +136,26 @@ export class OverviewEditComponent implements OnInit {
         this.router.navigate(['../'], {
           relativeTo: this.route
         });
+      }
+    });
+  }
+
+  /**
+   * 获取API概览详情
+   *
+   * @private
+   * @memberof OverviewEditComponent
+   */
+  private getApiOverView() {
+    this.overviewEditService.getApiOverView(this.api.apiId).subscribe((data: { code: string; data: API }) => {
+      if ('2000' === data.code) {
+        this.api = {
+          apiId: data.data.apiId,
+          apiName: data.data.apiName,
+          apiPic: data.data.apiPic,
+          apiCategory: data.data.apiCategory,
+          unitPrice: data.data.unitPrice
+        };
       }
     });
   }

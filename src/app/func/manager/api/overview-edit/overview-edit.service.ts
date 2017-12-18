@@ -31,7 +31,15 @@ export class OverviewEditService {
     return this.appService.PUT(method, body);
   }
 
-  public getApiOverView() {
-    // do
+  /**
+   * 获取API概览详情
+   *
+   * @param {number} apiId
+   * @returns
+   * @memberof OverviewEditService
+   */
+  public getApiOverView(apiId: number) {
+    const method = 'common/getApiOverviewById';
+    return this.appService.GET(method, { apiId });
   }
 }

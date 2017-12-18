@@ -1,5 +1,5 @@
 export class API {
-  public apiId?: string;
+  public apiId?: number;
   public apiName: string;
   public apiPic: string;
   public apiCategory: string;
