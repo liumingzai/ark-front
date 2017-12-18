@@ -24,11 +24,11 @@ export class OverviewDetailComponent {
   ) {
     this.detail = new APIDetail();
     const params = this.route.snapshot.params;
-    this.getApiInfo(params['id']);
     this.apiName = params['name'];
     this.apiId = params['id'];
     const account: Account = JSON.parse(localStorage.getItem('account'));
     this.isAdmin = account.userType === 1;
+    this.getApiInfo(params['id']);
   }
 
   public onSubmit() {
@@ -48,17 +48,19 @@ export class OverviewDetailComponent {
   private getApiInfo(id: string) {
     this.overviewDetailService.getApiInfo(id).subscribe((data: { code: string; data: APIDetail }) => {
       if ('2000' === data.code) {
-        const { accessUrl, queryType, accessSample, returnSample, returnType, errorCodeList } = data.data;
-        this.detail = { accessUrl, queryType, accessSample, returnSample, returnType, errorCodeList };
-        data.data.paramList.forEach(e => {
-          if (e.argumentType === 'header') {
-            this.detail.header = e || new Request();
-          } else if (e.argumentType === 'bodys') {
-            this.detail.body = e || new Request();
-          } else if (e.argumentType === 'querys') {
-            this.detail.query = e || new Request();
-          }
-        });
+        if (data.data) {
+          const { accessUrl, publish, queryType, accessSample, returnSample, returnType, errorCodeList } = data.data;
+          this.detail = { publish, accessUrl, queryType, accessSample, returnSample, returnType, errorCodeList };
+          data.data.paramList.forEach(e => {
+            if (e.argumentType === 'header') {
+              this.detail.header = e || new Request();
+            } else if (e.argumentType === 'bodys') {
+              this.detail.body = e || new Request();
+            } else if (e.argumentType === 'querys') {
+              this.detail.query = e || new Request();
+            }
+          });
+        }
       }
     });
   }

@@ -39,7 +39,7 @@ export class AppInterceptor implements HttpInterceptor {
               localStorage.removeItem('account');
               // 在需要登录授权的页面，应该跳转到首页或者登录页面
               this.router.navigate(['/login']);
-            } else if (event.body.code === '3001') {
+            } else if (event.body.code === '2002') {
               this.snackbar.warning('您没有操作权限');
               this.router.navigate(['/']);
             } else if ('4004' === event.body.code) {

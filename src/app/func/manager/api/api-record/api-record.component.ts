@@ -11,24 +11,25 @@ import { Account } from '../../../../account.model';
   providers: [ApiRecordService]
 })
 export class ApiRecordComponent implements OnInit {
-  public accessApis: {};
+  public accessApis: any[]; // API调用记录列表
   public queryParam: QueryParam;
   public totalRecords: number;
   public currentPage: number;
-  private userType: number;
-  public maxDate: Date;
-  public minDate: Date;
-  private userId: number;
+  public maxDate: Date; // 日期最大
+  public minDate: Date; // 日期最小
+  private userType: number; // 用户类型，1-admin,2-lingang,3-普通用户
+  private userId: number; // 用户UID
 
   constructor(private apiRecordService: ApiRecordService, private router: Router, private route: ActivatedRoute) {
     this.queryParam = new QueryParam();
     this.minDate = new Date(1970, 0, 1);
     this.maxDate = new Date();
     this.userType = this.getUserType();
-    this.initRouterListener();
   }
 
-  ngOnInit() {}
+  public ngOnInit() {
+    this.initRouterListener();
+  }
 
   private getUserType(): number {
     const account: Account = JSON.parse(localStorage.getItem('account'));
@@ -44,7 +45,7 @@ export class ApiRecordComponent implements OnInit {
 
       if (this.userType === 1) {
         this.adminGetCountAsscssApi();
-      } else if (this.userType === 3) {
+      } else {
         this.getCountAsscssApi();
       }
     });

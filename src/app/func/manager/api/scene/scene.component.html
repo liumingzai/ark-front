@@ -14,7 +14,7 @@
         </li>
       </ul>
 
-      <div>
+      <div *ngIf="canEdit">
         <a mat-raised-button (click)="addNewScene()">新增场景</a>
       </div>
     </div>
@@ -29,7 +29,7 @@
 
             <div class="form-group">
               <label for="">场景名称</label>
-              <input type="text" class="form-control form-control-lg" name="sceneName" [(ngModel)]="scene.applicationName">
+              <input type="text" class="form-control form-control-lg" [readonly]="!canEdit" name="sceneName" [(ngModel)]="scene.applicationName">
             </div>
 
             <div class="form-group" *ngIf="!isEditing">
@@ -39,12 +39,12 @@
 
             <div class="form-group">
               <label for="">场景描述</label>
-              <textarea class="form-control" name="desc" rows="6" [(ngModel)]="scene.description"></textarea>
+              <textarea class="form-control" [readonly]="!canEdit" name="desc" rows="6" [(ngModel)]="scene.description"></textarea>
             </div>
 
             <div class="form-group">
               <label for="">有效标识</label>
-              <mat-radio-group name="active" [(ngModel)]="scene.active">
+              <mat-radio-group name="active" [(ngModel)]="scene.active" [disabled]="!canEdit">
                 <mat-radio-button value="Y">有效</mat-radio-button>
                 <mat-radio-button value="N">无效</mat-radio-button>
               </mat-radio-group>
@@ -66,12 +66,12 @@
 
             <div class="form-group">
               <label for="">白名单</label>
-              <textarea class="form-control" name="whitelist" rows="6" [(ngModel)]="scene.wlContent"></textarea>
+              <textarea class="form-control" [readonly]="!canEdit" name="whitelist" rows="6" [(ngModel)]="scene.wlContent"></textarea>
             </div>
 
             <div class="form-group">
               <label for="">user Token</label>
-              <input type="text" class="form-control form-control-lg" [readonly]="userType !== 1" name="usertoken" [(ngModel)]="scene.userToken">
+              <input type="text" class="form-control form-control-lg" [readonly]="!adminCanEdit" name="usertoken" [(ngModel)]="scene.userToken">
             </div>
           </div>
 

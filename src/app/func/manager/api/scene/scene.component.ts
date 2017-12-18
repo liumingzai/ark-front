@@ -18,8 +18,8 @@ export class SceneComponent implements OnInit {
   public queryParam: QueryParam;
   private maxCount: number;
   public userType: number;
-  public isEditing: boolean;
-  public canEdit: boolean;
+  public isEditing: boolean; // 是否正在保存提交
+  public canEdit: boolean; // 根据权限，能否编辑，主要区分会员（lingang）- 不能编辑 和 admin 以及 注册用户-可以编辑
   public adminCanEdit: boolean;
 
   constructor(
@@ -31,6 +31,8 @@ export class SceneComponent implements OnInit {
     this.scene = new Scene();
     this.queryParam = new QueryParam();
     this.userId = this.getUserId();
+    this.canEdit = this.userType === 2 ? false : this.userType === 3 || this.userType === 1 ? true : null;
+    this.adminCanEdit = this.userType === 1;
 
     const id = this.route.snapshot.queryParams['accountId'];
     this.scene.accountId = id ? id : this.userId;
@@ -42,7 +44,7 @@ export class SceneComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * 新增场景
+   * 新增场景, 只有管理员和注册用户可以新增
    *
    * @memberof SceneComponent
    */
@@ -50,11 +52,6 @@ export class SceneComponent implements OnInit {
     if (this.validateMaxCount()) {
       this.isEditing = true;
       this.scene = new Scene();
-      if (this.userType === 1) {
-        this.adminCanEdit = true;
-      } else {
-        this.canEdit = true;
-      }
     } else {
       this.snackBar.warning('您已经达到了最大场景数量，不能继续添加场景');
     }

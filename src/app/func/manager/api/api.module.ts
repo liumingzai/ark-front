@@ -18,6 +18,7 @@ import { NgxCropperModule } from 'ngx-cropper';
 
 import { PaginatorModule } from '../../../tool/paginator';
 import { ArkPipeModule } from '../../../tool/pipe';
+import { AuthGuard } from './auth-guard.service';
 
 import { ApiComponent } from './api.componet';
 import { OverviewComponent } from './overview/overview.component';
@@ -31,10 +32,21 @@ const ROUTES: Routes = [
   {
     path: '',
     component: ApiComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'overview', component: OverviewComponent, data: { animation: 'overview' } },
-      { path: 'overview/edit', component: OverviewEditComponent, data: { animation: 'overviewedit' } },
-      { path: 'overview/detail/:id/:name', component: OverviewDetailComponent, data: { animation: 'overviewdetail' } },
+      {
+        path: 'overview/edit',
+        component: OverviewEditComponent,
+        data: { animation: 'overviewedit' },
+        canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'overview/detail/:id/:name',
+        component: OverviewDetailComponent,
+        data: { animation: 'overviewdetail' },
+        canActivateChild: [AuthGuard]
+      },
       { path: 'scene', component: SceneComponent, data: { animation: 'scene' } },
       { path: 'whitelist', component: WhitelistComponent, data: { animation: 'whitelist' } },
       { path: 'apirecord', component: ApiRecordComponent, data: { animation: 'apirecord' } },
@@ -71,6 +83,6 @@ const ROUTES: Routes = [
     RouterModule.forChild(ROUTES)
   ],
   exports: [],
-  providers: []
+  providers: [AuthGuard]
 })
 export class ApiModule {}
