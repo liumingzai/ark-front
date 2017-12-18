@@ -20,12 +20,31 @@
       <form>
         <div class="form-group">
           <label for="">调用地址：</label>
-          <span>{{detail.accessUrl}}</span>
+          <div class="row">
+            <div class="col-12">
+              <input type="text" name="accessUrl" [readonly]="!isAdmin" class="form-control form-control-lg" [(ngModel)]="detail.accessUrl">
+            </div>
+          </div>
         </div>
 
-        <!-- <div class="form-group"><label for="">地址参数：</label><span>{{detail.accessUrl}}</span></div> -->
-        <div class="form-group"><label for="">请求类型：</label><span>{{detail.queryType}}</span></div>
-        <div class="form-group"><label for="">返回类型：</label><span>{{detail.returnType}}</span></div>
+        <div class="form-group">
+          <label for="">请求类型：</label>
+          <div class="row">
+            <div class="col-12">
+              <input type="text" name="queryType" [readonly]="!isAdmin" class="form-control form-control-lg" [(ngModel)]="detail.queryType">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">返回类型：</label>
+          <div class="row">
+            <div class="col-12">
+              <input type="text" name="returnType" [readonly]="!isAdmin" class="form-control form-control-lg" [(ngModel)]="detail.returnType">
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="">请求参数（header）：</label>
           <table class="table table-bordered">
@@ -38,14 +57,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="header">
-                <td>{{header.queryColumnName}}</td>
-                <td>{{header.queryColumnType}}</td>
-                <td>{{header.queryOption}}</td>
-                <td>{{header.queryColumnDesc}}</td>
-              </tr>
-              <tr *ngIf="!header">
-                <td colspan="4">暂无数据</td>
+              <tr>
+                <td>
+                <input type="text" name="headerqueryColumnName" class="form-control form-control-lg" [(ngModel)]="detail.header.queryColumnName">
+                </td>
+                <td>
+                  <input type="text" name="headerqueryColumnType" class="form-control form-control-lg" [(ngModel)]="detail.header.queryColumnType">
+                </td>
+                <td>
+                  <input type="text" name="headerqueryOption" class="form-control form-control-lg" [(ngModel)]="detail.header.queryOption">
+                </td>
+                <td>
+                  <input type="text" name="headerqueryColumnDesc" class="form-control form-control-lg" [(ngModel)]="detail.header.queryColumnDesc">
+                </td>
               </tr>
             </tbody>
           </table>
@@ -62,14 +86,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="query">
-                <td>{{query.queryColumnName}}</td>
-                <td>{{query.queryColumnType}}</td>
-                <td>{{query.queryOption}}</td>
-                <td>{{query.queryColumnDesc}}</td>
-              </tr>
-              <tr *ngIf="!query">
-                <td colspan="4">暂无数据</td>
+              <tr>
+                <td>
+                  <input type="text" name="queryqueryColumnName" class="form-control form-control-lg" [(ngModel)]="detail.query.queryColumnName">
+                </td>
+                <td>
+                  <input type="text" name="queryqueryColumnType" class="form-control form-control-lg" [(ngModel)]="detail.query.queryColumnType">
+                </td>
+                <td>
+                  <input type="text" name="queryqueryOption" class="form-control form-control-lg" [(ngModel)]="detail.query.queryOption">
+                </td>
+                <td>
+                  <input type="text" name="queryqueryColumnDesc" class="form-control form-control-lg" [(ngModel)]="detail.query.queryColumnDesc">
+                </td>
               </tr>
             </tbody>
           </table>
@@ -86,32 +115,39 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="body">
-                <td>{{body.queryColumnName}}</td>
-                <td>{{body.queryColumnType}}</td>
-                <td>{{body.queryOption}}</td>
-                <td>{{body.queryColumnDesc}}</td>
-              </tr>
-              <tr *ngIf="!body">
-                <td colspan="4">暂无数据</td>
+              <tr>
+                <td>
+                  <input type="text" name="bodyqueryColumnName" class="form-control form-control-lg" [(ngModel)]="detail.body.queryColumnName">
+                </td>
+                <td>
+                  <input type="text" name="bodyqueryColumnType" class="form-control form-control-lg" [(ngModel)]="detail.body.queryColumnType">
+                </td>
+                <td>
+                  <input type="text" name="bodyqueryOption" class="form-control form-control-lg" [(ngModel)]="detail.body.queryOption">
+                </td>
+                <td>
+                  <input type="text" name="bodyqueryColumnDesc" class="form-control form-control-lg" [(ngModel)]="detail.body.queryColumnDesc">
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="form-group">
           <label for="">调用示例：</label>
-          <code>
+          <!-- <code>
             {{detail.accessSample}}
-          </code>
+          </code> -->
+          <textarea name="sccesssample" class="form-control" rows="10" [readonly]="!isAdmin" [(ngModel)]="detail.accessSample"></textarea>
         </div>
         <div class="form-group">
           <label for="">返回示例：</label>
-          <code class="json">
+          <!-- <code class="json">
             {{detail.returnSample}}
-          </code>
+          </code> -->
+          <textarea name="returnSample" class="form-control" rows="10" [readonly]="!isAdmin" [(ngModel)]="detail.returnSample"></textarea>
         </div>
         <div class="form-group">
-          <label for="">错误Code：</label>
+          <label for="">错误Code：</label> <button type="button" matTooltip="新增" matTooltipPosition="above" mat-mini-fab color="primary" (click)="addNewCode()"><i class="fa fa-plus" aria-hidden="true"></i></button>
           <div>
             <table class="table">
               <thead>
@@ -121,9 +157,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of detail.errorCodeList">
-                  <td>{{item.errorCode}}</td>
-                  <td>{{item.errorDesc}}</td>
+                <tr *ngFor="let item of detail.errorCodeList; let i = index;">
+                  <td>
+                    <input type="text" [ngModelOptions]="{standalone: true}" class="form-control form-control-lg" [(ngModel)]="item.errorCode">
+                  </td>
+                  <td>
+                    <input type="text" [ngModelOptions]="{standalone: true}" class="form-control form-control-lg" [(ngModel)]="item.errorDesc">
+                  </td>
                 </tr>
 
                 <tr *ngIf="!detail.errorCodeList || detail.errorCodeList.length < 1">
@@ -132,6 +172,18 @@
               </tbody>
             </table>
           </div>
+        </div>
+
+        <div class="form-group">
+            <label for="">发布状态: </label>
+            <mat-radio-group name="publish" [(ngModel)]="detail.publish">
+              <mat-radio-button value="0">仅保存</mat-radio-button>
+              <mat-radio-button value="1">保存并发布</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+        <div class="form-group text-center">
+          <a mat-raised-button color="primary" (click)="onSubmit()">保存</a>
         </div>
       </form>
     </mat-card-content>

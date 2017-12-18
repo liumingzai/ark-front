@@ -47,8 +47,8 @@ export class SceneComponent implements OnInit {
    * @memberof SceneComponent
    */
   public addNewScene() {
-    this.isEditing = true;
     if (this.validateMaxCount()) {
+      this.isEditing = true;
       this.scene = new Scene();
       if (this.userType === 1) {
         this.adminCanEdit = true;

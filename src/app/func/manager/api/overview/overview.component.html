@@ -52,7 +52,7 @@
       <div class="row">
         <div class="col-lg-3 col-md-4 col-sm-12 mb-5" *ngFor="let api of apis">
           <div class="card">
-            <img class="card-img-top" src="../../../../../asset/image/default/company_default.png" alt="API Logo">
+            <img class="card-img-top" [src]="api.apiPic | ImgPathPre | trustURL" alt="API Logo">
             <div class="card-body">
               <h4 class="card-title"><a [routerLink]="['./detail', api.apiId, api.apiName]">{{api.apiName}}</a></h4>
               <h5>分类： <span class="text-gray">{{api.apiCategory}}</span></h5>

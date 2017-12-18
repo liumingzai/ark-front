@@ -138,7 +138,12 @@ export class OverviewComponent implements OnInit {
   private getApiOverview() {
     this.overviewService.getApiOverview(this.queryParam).subscribe((data: any) => {
       if ('2000' === data.code) {
-        this.apis = data.data;
+        this.apis =
+          data.data &&
+          data.data.map((e: any) => {
+            e.apiPic = e.apiPic ? e.apiPic : 'asset/image/default/company_default.png';
+            return e;
+          });
 
         this.totalRecords = data.size;
       }
@@ -148,7 +153,12 @@ export class OverviewComponent implements OnInit {
   private adminGetApiOverview() {
     this.overviewService.adminGetApiOverview(this.queryParam).subscribe((data: any) => {
       if ('2000' === data.code) {
-        this.apis = data.data;
+        this.apis =
+          data.data &&
+          data.data.map((e: any) => {
+            e.apiPic = e.apiPic ? e.apiPic : 'asset/image/default/company_default.png';
+            return e;
+          });
 
         this.totalRecords = data.size;
       }

@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
       userEmailVal: null,
       userAUTHVal: null
     };
-    this.Getdata('GET', '/verify/checkGeeServer');
+    this.Getdata('GET', '/account/verify/checkGeeServer');
   }
   public Getdata(sertype: string, serurl: string, dataParam?: any, isForm?: boolean): void {
     this.loginservice.FnHomes(sertype, serurl, dataParam, isForm).subscribe((data: { code: string; data: Account }) => {
@@ -132,7 +132,7 @@ export class LoginComponent implements OnInit {
         });
 
         captchaObj.onSuccess(() => {
-          this.Getdata('GET', '/verify/verifyLogin', {
+          this.Getdata('GET', '/account/verify/verifyLogin', {
             geeServerStatus: 1,
             verifyType: 'register'
           });

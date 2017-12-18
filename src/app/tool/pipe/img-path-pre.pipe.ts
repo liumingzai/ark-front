@@ -14,15 +14,16 @@ export class ImgPathPrePipe implements PipeTransform {
   public transform(value: string): string {
     const host = `${window.location.protocol}//${window.location.host}`;
     let prePath = '';
+    const appService = new AppService();
 
-    // 判断 是否是本地图片，不是本地图片需要添加host
-    if (!/^src\/asset\/(.)*/.test(value)) {
-      prePath += `${new AppService().base || host}/`;
-    }
+    // 不是本地图片需要添加host
+    if (!/^\/?asset\/(.)+/.test(value)) {
+      prePath += `${appService.base || host}/`;
 
-    // 判断server图片 是否有images前缀，没有则加上
-    if (!/^images\/(.)*/.test(value)) {
-      prePath += 'images/';
+      // server图片如果没有images前缀，需要加上
+      if (!/^images\/(.)*/.test(value)) {
+        prePath += 'images/';
+      }
     }
 
     return prePath + value;

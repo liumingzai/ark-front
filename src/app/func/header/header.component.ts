@@ -30,7 +30,6 @@ export class HeaderComponent {
     }
 
     this.appService.accountAnnounced.subscribe((account: Account) => {
-      console.warn(111);
       this.account = account;
     });
   }

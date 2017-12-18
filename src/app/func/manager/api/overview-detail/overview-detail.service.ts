@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AppService } from '../../../../app.service';
+import { APIDetail } from './api-detail.model';
 
 @Injectable()
 export class OverviewDetailService {
@@ -16,5 +17,27 @@ export class OverviewDetailService {
   public getApiInfo(apiId: string): Observable<any> {
     const method = 'common/getApiInfo';
     return this.appService.GET(method, { apiId });
+  }
+
+  /**
+   * 更新接口详情
+   *
+   * @param {number} apiId
+   * @param {APIDetail} p
+   * @returns {Observable<any>}
+   * @memberof OverviewDetailService
+   */
+  public updateApiInfo(apiId: number, p: APIDetail): Observable<any> {
+    const method = 'admin/api/updateApiInfo';
+    const { accessUrl, queryType, returnType, accessSample, returnSample, errorCodeList, header, body, query } = p;
+    const paramList = Object.assign({}, header, body, query);
+    return this.appService.PUT(
+      method,
+      Object.assign(
+        {},
+        { apiId },
+        { accessUrl, queryType, returnType, accessSample, returnSample, errorCodeList, paramList }
+      )
+    );
   }
 }
