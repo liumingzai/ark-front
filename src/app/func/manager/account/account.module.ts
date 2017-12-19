@@ -23,11 +23,13 @@ import { RoleEditComponent } from './role-edit/role-edit.component';
 import { AuthEditComponent } from './auth-edit/auth-edit.component';
 import { BindRoleModule } from './user-edit/bind-role/bind-role.module';
 import { AuthRoleComponent } from './auth-role/auth-role.component';
+import { AuthGuard } from './auth-guard.service';
 
 const ACCOUNTROUTES: Routes = [
   {
     path: '',
     component: AccountComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'user', component: UserComponent, data: { animation: 'user' } },
       { path: 'user/edit', component: UserEditComponent, data: { animation: 'user_edit' } },
@@ -66,6 +68,6 @@ const ACCOUNTROUTES: Routes = [
     RouterModule.forChild(ACCOUNTROUTES)
   ],
   exports: [],
-  providers: []
+  providers: [AuthGuard]
 })
 export class AccountModule {}
