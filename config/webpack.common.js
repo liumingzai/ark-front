@@ -1,5 +1,9 @@
 const { root } = require('./root');
-const { ProgressPlugin, BannerPlugin, DllReferencePlugin } = require('webpack');
+const {
+  ProgressPlugin,
+  BannerPlugin,
+  ProvidePlugin, DllReferencePlugin
+} = require('webpack');
 const InterpolateWebpackPlugin = require('interpolate-webpack-plugin');
 
 const dllVendor = require(root('dll/vendor-manifest.json'));
@@ -13,16 +17,24 @@ exports.common = {
     extensions: ['.js', '.jsx', '.json']
   },
   module: {
-    strictExportPresence: true,
+    strictExportPresence: true
   },
   plugins: [
     new ProgressPlugin(),
 
-    new InterpolateWebpackPlugin([{
-      key: 'INJECT_DLL',
-      value: root('dll/*.js'),
-      type: 'PATH'
-    }]),
+    new ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    }),
+
+    new InterpolateWebpackPlugin([
+      {
+        key: 'INJECT_DLL',
+        value: root('dll/*.js'),
+        type: 'PATH'
+      }
+    ]),
 
     new DllReferencePlugin({
       context: __dirname,

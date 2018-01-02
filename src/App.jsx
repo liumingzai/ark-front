@@ -1,12 +1,20 @@
+import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
-import style from './App.css';
+import propTypes from 'prop-types';
+import Header from './components/Header';
+// import style from './App.css';
 
-function App() {
+function App(props) {
   return (
-    <header>
-      <h1 className={style.font}>Hello World</h1>
-    </header>
+    <section>
+      <Header />
+      {props.children}
+    </section>
   );
 }
+
+App.propTypes = {
+  children: propTypes.node.isRequired,
+};
 
 export default App;

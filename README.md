@@ -69,6 +69,11 @@ git config --global core.editor "vim"
 
 * [React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react)
 
+## Theme
+
+* [semantic-ui](https://react.semantic-ui.com/)
+* [material-ui](https://material-ui-next.com/)
+
 ## Problems
 
 * [x] Fonts can't load # Make webpack css-loader module: false, [More about css-modules](https://github.com/css-modules/css-modules)
@@ -87,8 +92,6 @@ git config --global core.editor "vim"
 ## More from Ark front end standard product
 
 > Use React@16 to build ProudArk front end standard.
-
-![README Example](./src/assets/images/docs/README.png)
 
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
@@ -136,23 +139,27 @@ componentWillUpdate 和 componentDidUpdate 依然可以被调用
 ```
 
 * super
-    > 派生类包含了一个构造函数，它 必须调用 super()，它会执行基类的构造函数。 而且，在构造函数里访问 this的属性之前，我们 一定要调用 super()。 这个是TypeScript强制执行的一条重要规则。
+  > 派生类包含了一个构造函数，它 必须调用 super()，它会执行基类的构造函数。 而且，在构造函数里访问 this 的属性之前，我们 一定要调用 super()。 这个是 TypeScript 强制执行的一条重要规则。
 
 ```ts
 class Animal {
-    name: string;
-    constructor(theName: string) { this.name = theName; }
-    move(distanceInMeters: number = 0) {
-        console.log(`${this.name} moved ${distanceInMeters}m.`);
-    }
+  name: string;
+  constructor(theName: string) {
+    this.name = theName;
+  }
+  move(distanceInMeters: number = 0) {
+    console.log(`${this.name} moved ${distanceInMeters}m.`);
+  }
 }
 
 class Snake extends Animal {
-    constructor(name: string) { super(name); }
-    move(distanceInMeters = 5) {
-        console.log("Slithering...");
-        super.move(distanceInMeters);
-    }
+  constructor(name: string) {
+    super(name);
+  }
+  move(distanceInMeters = 5) {
+    console.log('Slithering...');
+    super.move(distanceInMeters);
+  }
 }
 ```
 
@@ -164,8 +171,7 @@ constructor 内的 super(): 执行父类的构造函数。必须至少执行一�
 
 * state
 
-不要直接更新状态
-例如，此代码不会重新渲染组件：
+不要直接更新状态例如，此代码不会重新渲染组件：
 
 // Wrong
 
@@ -178,13 +184,13 @@ this.state.comment = 'Hello';
 // Correct
 
 ```jsx
-this.setState({comment: 'Hello'});
+this.setState({ comment: 'Hello' });
 ```
 
 构造函数是唯一能够初始化 this.state 的地方。
 
 状态更新可能是异步的
-React 可以将多个setState() 调用合并成一个调用来提高性能。
+React 可以将多个 setState() 调用合并成一个调用来提高性能。
 
 因为 this.props 和 this.state 可能是异步更新的，你不应该依靠它们的值来计算下一个状态。
 
@@ -195,4 +201,4 @@ this.setState((prevState, props) => ({
 }));
 ```
 
-Keys可以在DOM中的某些元素被增加或删除的时候帮助React识别哪些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识
+Keys 可以在 DOM 中的某些元素被增加或删除的时候帮助 React 识别哪些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识

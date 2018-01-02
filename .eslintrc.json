@@ -15,7 +15,12 @@
     "jest": true
   },
   "rules": {
-    
+    "no-param-reassign": 0,
+    "no-console": [2, {"allow": ["warn", "error"]}],
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "to" ]
+    }]
   },
   "plugins": [
     "react",
