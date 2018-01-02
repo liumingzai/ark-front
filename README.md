@@ -1,8 +1,4 @@
-# awesome-react
-
-Front-end with React@^16
-
-> You could use this template by CLI [create-awesome-react](https://github.com/TaylorPzreal/create-awesome-react)
+# Ark-front
 
 ## Installation And Usage
 
@@ -56,7 +52,7 @@ footer?
 type includes:
 
 ```json
-["add", "update", "feat", "fix", "docs", "style", "refactor", "test", "rever"]
+["add", "update", "delete", "feat", "fix", "docs", "style", "refactor", "test", "rever"]
 ```
 
 You could config vim as default editor for git commit, just do:
@@ -71,8 +67,7 @@ git config --global core.editor "vim"
 
 ## Theme
 
-* [semantic-ui](https://react.semantic-ui.com/)
-* [material-ui](https://material-ui-next.com/)
+* antd
 
 ## Problems
 
