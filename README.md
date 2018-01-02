@@ -67,7 +67,7 @@ git config --global core.editor "vim"
 
 ## Theme
 
-* antd
+* [antd](https://ant.design/)
 
 ## Problems
 

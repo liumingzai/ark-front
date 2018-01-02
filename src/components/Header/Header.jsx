@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Avatar, Icon } from 'antd';
 import Account from '../Account';
 
 function Header() {
@@ -9,7 +10,9 @@ function Header() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <Avatar><Icon type="pie-chart" /></Avatar>
+            </Link>
           </li>
         </ul>
       </nav>
