@@ -1,22 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Icon } from 'antd';
+import styled from 'styled-components';
 import Account from '../Account';
+import styles from './Header.css';
+
+const H3 = styled.h3`
+  margin: 0;
+
+  a {
+    color: #fff;
+  }
+`;
 
 function Header() {
   return (
-    <header>
-      <h3>ARK</h3>
-      <nav>
-        <ul>
+    <header className={styles.header}>
+      <H3>
+        <Link to="/">ARK-Front</Link>
+      </H3>
+      <nav className={styles.flex}>
+        {/* <ul>
           <li>
-            <Link to="/">
-              <Avatar><Icon type="pie-chart" /></Avatar>
-            </Link>
+            <Link to="/" />
           </li>
-        </ul>
+        </ul> */}
       </nav>
-
       <Account />
     </header>
   );
