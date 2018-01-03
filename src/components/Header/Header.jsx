@@ -11,7 +11,9 @@ function Header() {
         <ul>
           <li>
             <Link to="/">
-              <Avatar><Icon type="pie-chart" /></Avatar>
+              <Avatar>
+                <Icon type="pie-chart" />
+              </Avatar>
             </Link>
           </li>
         </ul>

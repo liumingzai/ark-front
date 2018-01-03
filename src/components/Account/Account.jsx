@@ -6,9 +6,7 @@ function Account() {
     <nav>
       <ul>
         <li>
-          <Link to="/login">
-            LogIn
-          </Link>
+          <Link to="/login">LogIn</Link>
         </li>
       </ul>
     </nav>
