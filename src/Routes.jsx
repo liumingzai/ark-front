@@ -17,6 +17,11 @@ const LogInAsync = Loadable({
   loading: Loading,
 });
 
+const UserAsync = Loadable({
+  loader: () => import('./pages/User'),
+  loading: Loading,
+});
+
 const NotFoundAsync = Loadable({
   loader: () => import('./pages/NotFound'),
   loading: Loading,
@@ -29,6 +34,7 @@ function Routes() {
         <Switch>
           <Route path="/" exact component={HomeAsync} />
           <Route path="/login" component={LogInAsync} />
+          <Route path="/user" component={UserAsync} />
           <Route component={NotFoundAsync} />
         </Switch>
       </App>
