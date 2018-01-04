@@ -2,7 +2,6 @@ import 'antd/dist/antd.css';
 import React from 'react';
 import propTypes from 'prop-types';
 import Header from './components/Header';
-// import style from './App.css';
 
 function App(props) {
   return (
