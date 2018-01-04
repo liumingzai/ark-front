@@ -20,22 +20,36 @@ class Http {
       },
     });
 
+    // request interceptors
     this.axios.interceptors.request.use(
-      (config) => {
-        // do somethings
-        console.error(config);
-
-        return config;
-      },
+      config => config,
       error => Promise.reject(error),
     );
 
+    // res interceptors
     this.axios.interceptors.response.use(
       (res) => {
-        // do somethings
-        console.warn(res);
+        if (res.status === 200) {
+          if (res.data.code === '2001') { // no login
+            localStorage.removeItem('account');
+            // 在需要登录授权的页面，应该跳转到首页或者登录页面
+          } else if (res.data.code === '2002') { // no auth
+            console.warn('您没有操作权限');
+            // redirect to homepage
+          } else if (res.data.code === '4004') { // error
+            console.error(res.data.message, res.data.code);
+          } else if (/[2|3|4][\d]{3}/.test(res.data.code) && !/2000/.test(res.data.code)) { // other errors
+            console.error(res.data.message, res.data.code);
+          }
+        } else if (/^5\d{2}/.test(res.status)) {
+          console.error('Server error');
+          console.error(res.data);
+        } else if (/^4\d{2}/.test(res.status)) {
+          console.warn('Something error, please admin do check!');
+          console.error(res.data);
+        }
 
-        return res;
+        return res.data;
       },
       error => Promise.reject(error),
     );

@@ -18,10 +18,11 @@ class LoginForm extends React.Component {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.warn('reviced values from of form', values);
-
         this.loginService.loginByPassword(values.username, values.password).then((data) => {
-          console.warn(data);
+          if (data.code === '2000') {
+            localStorage.setItem('account', JSON.stringify(data.data));
+            window.location.href = '/';
+          }
         });
       }
     });
