@@ -1,7 +1,7 @@
 /* Header */
 :local(.header) {
   align-items: center;
-  background-color: #085f63;
+  background-color: #38817a;
   display: flex;
   flex-direction: row;
   padding: 10px 16px;

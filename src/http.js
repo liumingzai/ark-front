@@ -1,13 +1,15 @@
 import axios from 'axios';
+import queryString from 'query-string';
 
 /**
  * Common http service defination
  *
- * @class Service
+ * @class Http
  */
-class Service {
+class Http {
   constructor() {
-    this.baseURL = 'http://192.168.1.203/api-portal';
+    this.baseURL = 'http://192.168.1.151/api-portal';
+    // this.baseURL = '/proxy/api-portal';
 
     this.axios = axios.create({
       baseURL: this.baseURL,
@@ -45,7 +47,7 @@ class Service {
    * @param {any} method
    * @param {any} params
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
   resolveURL(method, params) {
     if (!/^\//.test(method)) {
@@ -77,7 +79,7 @@ class Service {
    * @param {any} method
    * @param {any} params
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
   GET(method, params) {
     return this.axios.get(this.resolveURL(method, params));
@@ -89,7 +91,7 @@ class Service {
    * @param {any} method
    * @param {any} params
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
   DELETE(method, params) {
     return this.axios.delete(this.resolveURL(method, params));
@@ -100,10 +102,13 @@ class Service {
    *
    * @param {any} method
    * @param {any} data
+   * @param {any} options
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
-  resolveRequest(method, data) {
+  resolveRequest(method, data, options) {
+    const config = {};
+
     if (!/^\//.test(method)) {
       method = `/${method}`;
     }
@@ -117,7 +122,14 @@ class Service {
       }
     });
 
-    return { url, data };
+    if (options && options.isFormData) {
+      data = queryString.stringify(data);
+      config.headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+    }
+
+    return { url, data, config };
   }
 
   /**
@@ -125,12 +137,13 @@ class Service {
    *
    * @param {any} method
    * @param {any} reqData
+   * @param {any} options
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
-  POST(method, reqData) {
-    const { url, data } = this.resolveRequest(method, reqData);
-    return this.axios.post(url, data);
+  POST(method, reqData, options) {
+    const { url, data, config } = this.resolveRequest(method, reqData, options);
+    return this.axios.post(url, data, config);
   }
 
   /**
@@ -139,7 +152,7 @@ class Service {
    * @param {any} method
    * @param {any} reqData
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
   PUT(method, reqData) {
     const { url, data } = this.resolveRequest(method, reqData);
@@ -152,7 +165,7 @@ class Service {
    * @param {any} method
    * @param {any} reqData
    * @returns
-   * @memberof Service
+   * @memberof Http
    */
   PATCH(method, reqData) {
     const { url, data } = this.resolveRequest(method, reqData);
@@ -160,4 +173,4 @@ class Service {
   }
 }
 
-export default Service;
+export default Http;

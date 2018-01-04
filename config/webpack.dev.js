@@ -135,7 +135,7 @@ module.exports = merge(common, {
   ],
   devServer: {
     compress: true,
-    port: 9000,
+    port: 63342,
     historyApiFallback: true,
     overlay: true
   },
