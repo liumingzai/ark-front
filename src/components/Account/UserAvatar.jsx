@@ -12,7 +12,7 @@ const avatar = {
 const Figure = styled.figure`
   margin: 0;
   display: flex;
-  align-items: center; 
+  align-items: center;
   padding: 2px 0;
 
   span:last-child {
@@ -37,15 +37,28 @@ class UserAvatar extends React.Component {
   render() {
     return (
       <Menu style={avatar} mode="horizontal">
-        <Menu.SubMenu title={<Figure><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /> <span>{this.props.username}</span> </Figure>}>
+        <Menu.SubMenu
+          title={
+            <Figure>
+              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{' '}
+              <span>{this.props.username}</span>{' '}
+            </Figure>
+          }
+        >
           <Menu.Item key="setting:1">
-            <Link to="/manager/api"><Icon type="fork" /> API Manager </Link>
+            <Link to="/manager/api">
+              <Icon type="fork" /> API Manager{' '}
+            </Link>
           </Menu.Item>
           <Menu.Item key="setting:2">
-            <Link to="/manager/user"><Icon type="team" /> User Manager </Link>
+            <Link to="/manager/user">
+              <Icon type="team" /> User Manager{' '}
+            </Link>
           </Menu.Item>
           <Menu.Item key="setting:3">
-            <Link to="/manager/setting"><Icon type="setting" /> Setting </Link>
+            <Link to="/manager/setting">
+              <Icon type="setting" /> Setting{' '}
+            </Link>
           </Menu.Item>
           <Menu.Item key="setting:4">
             <Button onClick={this.logout}>

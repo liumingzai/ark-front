@@ -192,7 +192,7 @@ React 可以将多个 setState() 调用合并成一个调用来提高性能。
 ```jsx
 // Correct
 this.setState((prevState, props) => ({
-  counter: prevState.counter + props.increment
+  counter: prevState.counter + props.increment,
 }));
 ```
 

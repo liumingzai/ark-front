@@ -111,7 +111,10 @@
     };
     var loaded = false;
     script.onload = script.onreadystatechange = function() {
-      if (!loaded && (!script.readyState || 'loaded' === script.readyState || 'complete' === script.readyState)) {
+      if (
+        !loaded &&
+        (!script.readyState || 'loaded' === script.readyState || 'complete' === script.readyState)
+      ) {
         loaded = true;
         setTimeout(function() {
           cb(false);

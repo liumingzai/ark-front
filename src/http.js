@@ -21,24 +21,25 @@ class Http {
     });
 
     // request interceptors
-    this.axios.interceptors.request.use(
-      config => config,
-      error => Promise.reject(error),
-    );
+    this.axios.interceptors.request.use(config => config, error => Promise.reject(error));
 
     // res interceptors
     this.axios.interceptors.response.use(
       (res) => {
         if (res.status === 200) {
-          if (res.data.code === '2001') { // no login
+          if (res.data.code === '2001') {
+            // no login
             localStorage.removeItem('account');
             // 在需要登录授权的页面，应该跳转到首页或者登录页面
-          } else if (res.data.code === '2002') { // no auth
+          } else if (res.data.code === '2002') {
+            // no auth
             console.warn('您没有操作权限');
             // redirect to homepage
-          } else if (res.data.code === '4004') { // error
+          } else if (res.data.code === '4004') {
+            // error
             console.error(res.data.message, res.data.code);
-          } else if (/[2|3|4][\d]{3}/.test(res.data.code) && !/2000/.test(res.data.code)) { // other errors
+          } else if (/[2|3|4][\d]{3}/.test(res.data.code) && !/2000/.test(res.data.code)) {
+            // other errors
             console.error(res.data.message, res.data.code);
           }
         } else if (/^5\d{2}/.test(res.status)) {
@@ -131,7 +132,12 @@ class Http {
 
     // 从请求体中删除掉value为null,undefined的key
     Object.keys(data).forEach((key) => {
-      if (data[key] === null || data[key] === undefined || data[key] === 'null' || data[key] === 'undefined') {
+      if (
+        data[key] === null ||
+        data[key] === undefined ||
+        data[key] === 'null' ||
+        data[key] === 'undefined'
+      ) {
         delete data[key];
       }
     });

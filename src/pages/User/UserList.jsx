@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React from 'react';
-import { Table, Spin, Divider  } from 'antd';
+import { Table, Spin, Divider } from 'antd';
 
 class UserList extends React.Component {
   columns() {
