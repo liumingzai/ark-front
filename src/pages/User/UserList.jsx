@@ -8,33 +8,6 @@ class UserList extends React.Component {
       {
         title: 'Name',
         dataIndex: 'name',
-        filters: [
-          {
-            text: 'Joe',
-            value: 'Joe',
-          },
-          {
-            text: 'Jim',
-            value: 'Jim',
-          },
-          {
-            text: 'Submenu',
-            value: 'Submenu',
-            children: [
-              {
-                text: 'Green',
-                value: 'Green',
-              },
-              {
-                text: 'Black',
-                value: 'Black',
-              },
-            ],
-          },
-        ],
-        // specify the condition of filtering result
-        // here is that finding the name started with `value`
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
         sorter: (a, b) => a.name.length - b.name.length,
       },
       {
@@ -46,18 +19,6 @@ class UserList extends React.Component {
       {
         title: 'Address',
         dataIndex: 'address',
-        filters: [
-          {
-            text: 'London',
-            value: 'London',
-          },
-          {
-            text: 'New York',
-            value: 'New York',
-          },
-        ],
-        filterMultiple: false,
-        onFilter: (value, record) => record.address.indexOf(value) === 0,
         sorter: (a, b) => a.address.length - b.address.length,
       },
       {
@@ -112,7 +73,7 @@ class UserList extends React.Component {
       // <Spin tip="Loading...">
       <div>
         <h1>UserList</h1>
-        <Table columns={this.columns()} dataSource={this.data()} />
+        <Table rowKey={record => record.key} columns={this.columns()} dataSource={this.data()} />
       </div>
       // </Spin>
     );
