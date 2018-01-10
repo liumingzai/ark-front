@@ -8,7 +8,7 @@ import queryString from 'query-string';
  */
 class Http {
   constructor() {
-    this.baseURL = 'http://192.168.1.151/api-portal';
+    this.baseURL = 'http://192.168.1.151/ark-portal';
     // this.baseURL = '/proxy/api-portal';
 
     this.axios = axios.create({
@@ -30,6 +30,7 @@ class Http {
           if (res.data.code === '2001') {
             // no login
             localStorage.removeItem('account');
+            window.location.href = '/login';
             // 在需要登录授权的页面，应该跳转到首页或者登录页面
           } else if (res.data.code === '2002') {
             // no auth
