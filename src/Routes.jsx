@@ -17,11 +17,6 @@ const LogInAsync = Loadable({
   loading: Loading,
 });
 
-const UserAsync = Loadable({
-  loader: () => import('./pages/User'),
-  loading: Loading,
-});
-
 const ManagerAsync = Loadable({
   loader: () => import('./pages/Manager'),
   loading: Loading,
@@ -39,7 +34,6 @@ function Routes() {
         <Switch>
           <Route path="/" exact component={HomeAsync} />
           <Route path="/login" component={LogInAsync} />
-          <Route path="/user" component={UserAsync} />
           <Route path="/manager" component={ManagerAsync} />
           <Route component={NotFoundAsync} />
         </Switch>
