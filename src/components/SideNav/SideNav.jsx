@@ -1,8 +1,34 @@
 import React from 'react';
 import { Menu, Icon, Switch } from 'antd';
 import { Link } from 'react-router-dom';
+import siderData from './sider.json';
 
 const SubMent = Menu.SubMenu;
+
+// FIX: TODO: fix down
+const subMents = (function recursive(siderDataTmp) {
+  return siderDataTmp.map((e) => {
+    if (e.children) {
+      return (
+        <SubMent
+          key={`${e.key}`}
+          title={
+            <span>
+              <Icon type="team" /> <span>{e.name}</span>
+            </span>
+          }
+        >
+          recursive(e.children);
+        </SubMent>
+      );
+    }
+    return (
+      <Menu.Item key={`item-${e.key}`}>
+        <Link to="/account/user">User Manager</Link>
+      </Menu.Item>
+    );
+  });
+}(siderData));
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -14,6 +40,10 @@ class SideNav extends React.Component {
 
     this.changeTheme = this.changeTheme.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    console.warn(siderData);
   }
 
   handleClick(e) {
@@ -47,31 +77,7 @@ class SideNav extends React.Component {
           defaultOpenKeys={['sub1']}
           mode="inline"
         >
-          <SubMent
-            key="sub1"
-            title={
-              <span>
-                <Icon type="team" /> <span>Account Manager</span>
-              </span>
-            }
-          >
-            <Menu.Item key="sub11">
-              <Link to={`${this.props.match.path}/account/user`}>User Manager</Link>
-            </Menu.Item>
-          </SubMent>
-
-          <SubMent
-            key="sub2"
-            title={
-              <span>
-                <Icon type="fork" /> <span>API Manager</span>
-              </span>
-            }
-          >
-            <Menu.Item key="sub21">
-              <Link to={`${this.props.match.path}/api/whitelist`}>Whitelist</Link>
-            </Menu.Item>
-          </SubMent>
+          {subMents}
 
           <Menu.Item key="sub10">
             <Link to={`${this.props.match.path}/setting`}>
