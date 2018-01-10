@@ -1,34 +1,33 @@
 import React from 'react';
 import { Menu, Icon, Switch } from 'antd';
 import { Link } from 'react-router-dom';
-import siderData from './sider.json';
 
 const SubMent = Menu.SubMenu;
 
-// FIX: TODO: fix down
-const subMents = (function recursive(siderDataTmp) {
-  return siderDataTmp.map((e) => {
-    if (e.children) {
-      return (
-        <SubMent
-          key={`${e.key}`}
-          title={
-            <span>
-              <Icon type="team" /> <span>{e.name}</span>
-            </span>
-          }
-        >
-          recursive(e.children);
-        </SubMent>
-      );
-    }
-    return (
-      <Menu.Item key={`item-${e.key}`}>
-        <Link to="/account/user">User Manager</Link>
-      </Menu.Item>
-    );
-  });
-}(siderData));
+// FIX: TODO: fix down make a component.
+// const subMents = (function recursive(siderDataTmp) {
+//   return siderDataTmp.map((e) => {
+//     if (e.children) {
+//       return (
+//         <SubMent
+//           key={`${e.key}`}
+//           title={
+//             <span>
+//               <Icon type="team" /> <span>{e.name}</span>
+//             </span>
+//           }
+//         >
+//           recursive(e.children);
+//         </SubMent>
+//       );
+//     }
+//     return (
+//       <Menu.Item key={`item-${e.key}`}>
+//         <Link to="/account/user">User Manager</Link>
+//       </Menu.Item>
+//     );
+//   });
+// }());
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -40,10 +39,6 @@ class SideNav extends React.Component {
 
     this.changeTheme = this.changeTheme.bind(this);
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentDidMount() {
-    console.warn(siderData);
   }
 
   handleClick(e) {
@@ -77,7 +72,35 @@ class SideNav extends React.Component {
           defaultOpenKeys={['sub1']}
           mode="inline"
         >
-          {subMents}
+          <SubMent
+            key="p01"
+            title={
+              <span>
+                <Icon type="team" /> <span>账号管理</span>
+              </span>
+            }
+          >
+            <Menu.Item key="p01sub10">
+              <Link to={`${this.props.match.path}/user`}>
+                <Icon type="setting" /> 用户管理
+              </Link>
+            </Menu.Item>
+          </SubMent>
+
+          <SubMent
+            key="p02"
+            title={
+              <span>
+                <Icon type="team" /> <span>API管理</span>
+              </span>
+            }
+          >
+            <Menu.Item key="p02sub01">
+              <Link to={`${this.props.match.path}/overview`}>
+                <Icon type="setting" /> 接口管理
+              </Link>
+            </Menu.Item>
+          </SubMent>
 
           <Menu.Item key="sub10">
             <Link to={`${this.props.match.path}/setting`}>
