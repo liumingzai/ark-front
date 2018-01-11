@@ -100,6 +100,12 @@ class SideNav extends React.Component {
                 <Icon type="setting" /> 接口管理
               </Link>
             </Menu.Item>
+
+            <Menu.Item key="p02sub02">
+              <Link to={`${this.props.match.path}/api/scene`}>
+                <Icon type="setting" /> 场景管理
+              </Link>
+            </Menu.Item>
           </SubMent>
 
           <Menu.Item key="sub10">
