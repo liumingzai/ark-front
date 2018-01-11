@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon, Switch } from 'antd';
+import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
 const SubMent = Menu.SubMenu;
@@ -58,13 +58,13 @@ class SideNav extends React.Component {
   render() {
     return (
       <nav>
-        <Switch
+        {/* <Switch
           checked={this.state.theme === 'dark'}
           onChange={this.changeTheme}
           checkedChildren="Dark"
           unCheckedChildren="Light"
-        />
-        <br />
+        /> */}
+        {/* <br /> */}
         <Menu
           theme={this.state.theme}
           onClick={this.handleClick}
@@ -96,7 +96,7 @@ class SideNav extends React.Component {
             }
           >
             <Menu.Item key="p02sub01">
-              <Link to={`${this.props.match.path}/overview`}>
+              <Link to={`${this.props.match.path}/api/overview`}>
                 <Icon type="setting" /> 接口管理
               </Link>
             </Menu.Item>

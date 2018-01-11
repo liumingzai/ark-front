@@ -25,7 +25,6 @@ class UserAvatar extends React.Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
-    console.warn(this.props);
   }
 
   logout() {
