@@ -80,9 +80,21 @@ class SideNav extends React.Component {
               </span>
             }
           >
-            <Menu.Item key="p01sub10">
-              <Link to={`${this.props.match.path}/user`}>
+            <Menu.Item key="p01sub01">
+              <Link to={`${this.props.match.path}/account/user/list`}>
                 <Icon type="setting" /> 用户管理
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="p01sub02">
+              <Link to={`${this.props.match.path}/account/role/list`}>
+                <Icon type="setting" /> 角色管理
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="p01sub03">
+              <Link to={`${this.props.match.path}/account/auth/list`}>
+                <Icon type="setting" /> 权限管理
               </Link>
             </Menu.Item>
           </SubMent>

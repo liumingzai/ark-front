@@ -1,3 +1,3 @@
-import User from './User';
+import UserList from './UserList';
 
-export default User;
+export default UserList;
