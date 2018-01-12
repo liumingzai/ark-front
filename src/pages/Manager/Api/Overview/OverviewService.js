@@ -39,7 +39,11 @@ class OverviewService {
       page: pageNum, key: apiName, cat: apiCategory, sort: createTimeSort, publish,
     } = param;
     return this.http.GET(method, {
-      pageNum, apiName, apiCategory, createTimeSort, publish,
+      pageNum,
+      apiName,
+      apiCategory,
+      createTimeSort,
+      publish,
     });
   }
 
