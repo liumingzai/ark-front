@@ -7,10 +7,10 @@ import * as $ from 'jquery';
 
 @Injectable()
 export class AppService {
-  public readonly isProd: boolean = false; // OR true
+  public readonly isProd: boolean = true; // OR true
   public readonly base: string = this.isProd ? '' : 'http://192.168.1.151';
   private readonly host: string = window.location.protocol + '//' + window.location.host;
-  public readonly baseURL: string = `${this.base}/api-portal`;
+  public readonly baseURL: string = `${this.base}/ark-portal`;
   // public readonly imgPathPre: string = `${this.base || this.host}/images`; // 暂时无用
 
   constructor(private http?: HttpClient) {}

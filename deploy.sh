@@ -1,6 +1,7 @@
 #! /bin/bash
-server='ark@192.168.1.203'
-path='/ps_new/ark/service/www/ic'
+server='ark@192.168.1.151'
+path='/home/ark/service/www/ark'
 password='ark2016'
 
-npm run build && sshpass -p $password rsync -avz ./ $server:$path --exclude 'node_modules' --progress && sshpass -p $password rsync -avzhe ssh ./dist/index.html $server:$path
+sshpass -p $password ssh $server "cd $path && rm -rf *"
+scp -Cr ./dist/** $server:$path
