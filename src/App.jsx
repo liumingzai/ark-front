@@ -1,14 +1,15 @@
 import 'antd/dist/antd.css';
 import React from 'react';
 import propTypes from 'prop-types';
+import { Layout } from 'antd';
 import Header from './components/Header';
 
 function App(props) {
   return (
-    <section>
+    <Layout>
       <Header />
       {props.children}
-    </section>
+    </Layout>
   );
 }
 

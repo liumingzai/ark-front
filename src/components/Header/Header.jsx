@@ -1,23 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Layout } from 'antd';
 import Account from '../Account';
 import styles from './Header.css';
 
-const H3 = styled.h3`
-  margin: 0;
+const { Header } = Layout;
 
-  a {
-    color: #fff;
-  }
-`;
-
-function Header() {
+function HeaderLayout() {
   return (
-    <header className={styles.header}>
-      <H3>
-        <Link to="/">ARK-Front</Link>
-      </H3>
+    <Header className="header" style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="logo">
+        <Link style={{ color: '#fff' }} to="/">
+          ARK-Front
+        </Link>
+      </div>
       <nav className={styles.flex}>
         {/* <ul>
           <li>
@@ -26,8 +22,8 @@ function Header() {
         </ul> */}
       </nav>
       <Account />
-    </header>
+    </Header>
   );
 }
 
-export default Header;
+export default HeaderLayout;
