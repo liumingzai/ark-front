@@ -1,41 +1,51 @@
 import React from 'react';
 import { Table } from 'antd';
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  render: text => <a href="#a">{text}</a>,
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-}];
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-}, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-}, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-}, {
-  key: '4',
-  name: 'Disabled User',
-  age: 99,
-  address: 'Sidney No. 1 Lake Park',
-}];
+const columns = [
+  {
+    title: '接口ID',
+    dataIndex: 'apiId',
+    render: text => <a href="#a">{text}</a>,
+  },
+  {
+    title: '接口名称',
+    dataIndex: 'apiName',
+  },
+  {
+    title: '用户ID',
+    dataIndex: 'id',
+  },
+  {
+    title: '接入URL',
+    dataIndex: 'accessUrl',
+  },
+  {
+    title: '日期',
+    dataIndex: 'dailyDate',
+  },
+  {
+    title: '访问数量',
+    dataIndex: 'accessTotal',
+  },
+];
 
-function ApiRecordTable() {
-  return <Table columns={columns} dataSource={data} />;
+function ApiRecordTable(props) {
+  const { data } = props;
+  let dataSource = [];
+
+  if (data) {
+    dataSource = data.map(e => ({
+      key: e.id,
+      apiId: e.apiId,
+      apiName: e.apiName,
+      id: e.id,
+      accessUrl: e.accessUrl,
+      dailyDate: e.dailyDate,
+      accessTotal: e.accessTotal,
+    }));
+  }
+
+  return <Table columns={columns} dataSource={dataSource} />;
 }
 
 export default ApiRecordTable;

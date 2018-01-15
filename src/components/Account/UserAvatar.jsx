@@ -30,7 +30,7 @@ class UserAvatar extends React.Component {
   logout() {
     console.warn('click to log out.', this);
     localStorage.removeItem('account');
-    window.location.reload();
+    window.location.href = '/';
   }
 
   render() {

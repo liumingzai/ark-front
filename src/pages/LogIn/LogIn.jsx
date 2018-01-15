@@ -20,7 +20,25 @@ class LoginForm extends React.Component {
       if (!err) {
         this.loginService.loginByPassword(values.username, values.password).then((data) => {
           if (data.code === '2000') {
-            localStorage.setItem('account', JSON.stringify(data.data));
+            const typeList = [1, 4, 5]; // 1管理员，4临港，5普通用户
+            const idList = data.data.roles.map(item => item.id);
+            let userType = null; // 1-管理员，2-临港，3-普通用户
+            const typeNames = ['管理员', '临港用户', '普通用户'];
+            // 暂时的业务，用户和角色都是1对1
+            if (idList.length === 1 && typeList.indexOf(idList[0]) > -1) {
+              userType = typeList.indexOf(idList[0]) + 1;
+            }
+            const loginData = {
+              username: data.data.username,
+              roles: data.data.roles,
+              phone: data.data.phone,
+              logo: data.data.logo ? `${data.data.logo}` : 'assets/images/common/person.svg',
+              userType,
+              typeName: typeNames[userType - 1],
+              id: data.data.id,
+            };
+
+            localStorage.setItem('account', JSON.stringify(loginData));
             window.location.href = '/';
           }
         });
