@@ -1,12 +1,13 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Radio, Button, message, Row, Col } from 'antd';
+import { Form, Input, Radio, Select, Button, message, Row, Col } from 'antd';
 import AuthService from './AuthService';
 
 import _ from 'lodash';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
 class AuthForm extends Component {
@@ -14,6 +15,10 @@ class AuthForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authService = new AuthService();
+    this.state = {
+      filters: [],
+      scopes: [],
+    };
     this.getFilters();
     this.getScopes();
   }
@@ -26,23 +31,36 @@ class AuthForm extends Component {
   getFilters() {
     this.authService.getFilters().then(data => {
       if ('2000' === data.code) {
-        return data.data;
+        this.setState({
+          filters: data.data,
+        });
       }
     });
   }
 
-  getgetScopes() {
+  getScopes() {
     this.authService.getScopes().then(data => {
       if ('2000' === data.code) {
-        return data.data;
+        this.setState({
+          scopes: data.data,
+        });
       }
     });
+  }
+
+  handleFilterChange(value) {
+    console.warn('filter: ', value);
+  }
+
+  handleScopeChange(value) {
+    console.warn('scope: ', value);
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        console.warn(values);
         this.authService.addAuth(values).then(data => {
           if ('2000' === data.code) {
             message.success('create auth success！！！');
@@ -66,9 +84,11 @@ class AuthForm extends Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
     };
+
     const buttonItemLayout = {
       wrapperCol: { span: 14, offset: 7 },
     };
+
     return (
       <Form layout="horizontal" onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="权限名称">
@@ -102,7 +122,7 @@ class AuthForm extends Component {
           })(<Input placeholder="请输入路径" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="过滤器">
-          {getFieldDecorator('permissionFilter', {
+          {getFieldDecorator('filters', {
             rules: [
               {
                 required: true,
@@ -110,10 +130,19 @@ class AuthForm extends Component {
               },
             ],
           })(
-            <RadioGroup>
-              <Radio value="Y">有效</Radio>
-              <Radio value="N">无效</Radio>
-            </RadioGroup>
+            <Select
+              style={{ width: 200 }}
+              placeholder="请选择过滤器"
+              onChange={this.handleFilterChange.bind(this)}
+            >
+              {this.state.filters.map(item => {
+                return (
+                  <Option key={item} value={item}>
+                    {item}
+                  </Option>
+                );
+              })}
+            </Select>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="作用域">
@@ -125,10 +154,19 @@ class AuthForm extends Component {
               },
             ],
           })(
-            <RadioGroup>
-              <Radio value="Y">有效</Radio>
-              <Radio value="N">无效</Radio>
-            </RadioGroup>
+            <Select
+              style={{ width: 200 }}
+              placeholder="请选择作用域"
+              onChange={this.handleScopeChange.bind(this)}
+            >
+              {this.state.scopes.map(item => {
+                return (
+                  <Option key={item} value={item}>
+                    {item}
+                  </Option>
+                );
+              })}
+            </Select>
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="有效状态">

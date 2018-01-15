@@ -12,7 +12,7 @@ class AuthService {
    * @memberof AuthService
    */
   getScopes() {
-    const method = '/admin/pm/getPermissionsScope';
+    const method = '/admin/pm/getPermissionScope';
     return this.http.GET(method);
   }
 
@@ -23,7 +23,7 @@ class AuthService {
    * @memberof AuthService
    */
   getFilters() {
-    const method = '/admin/pm/getPermissionsFilters';
+    const method = '/admin/pm/getPermissionFilters';
     return this.http.GET(method);
   }
 

@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider } from 'antd';
+import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import UserService from './UserService';
 import moment from 'moment';
 import { truncate } from 'fs';
@@ -16,7 +16,10 @@ class UserList extends React.Component {
         username: null,
         uid: null,
       },
-      pagination: {},
+      pagination: {
+        total: 0,
+        pageSize: 10,
+      },
       loading: false,
       data: [],
     };
@@ -25,7 +28,7 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch();
+    this.handleSearch({ pageNum: 1 });
   }
 
   changeName(e) {
@@ -35,7 +38,6 @@ class UserList extends React.Component {
         uid: this.state.queryParam.uid,
       },
     });
-    console.warn(this.state.queryParam);
   }
 
   changeUid(e) {
@@ -45,6 +47,11 @@ class UserList extends React.Component {
         uid: e.target.value,
       },
     });
+  }
+
+  /*分页事件*/
+  onChange(current) {
+    this.handleSearch({ pageNum: current });
   }
 
   handleDeleteUser(e) {
@@ -58,7 +65,7 @@ class UserList extends React.Component {
         _that.userService.deleteUserById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
-            handleSearch();
+            _that.handleSearch({ pageNum: 1 });
           }
         });
       },
@@ -67,6 +74,9 @@ class UserList extends React.Component {
 
   handleSearch(e) {
     this.setState({ loading: true });
+    let queryParam = Object.assign({}, e);
+    if (this.state.queryParam) {
+    }
     this.userService.getUserList(e).then(data => {
       if ('2000' === data.code) {
         const pagination = { ...this.state.pagination };
@@ -151,7 +161,8 @@ class UserList extends React.Component {
 
     return (
       <div>
-        <h1>UserList</h1>
+        <h1>用户管理</h1>
+        <br />
         <Link to="/manager/account/user/edit" className="item">
           创建用户
         </Link>
@@ -178,22 +189,21 @@ class UserList extends React.Component {
             </Button>
           </FormItem>
         </Form>
-        <Table
-          rowKey={record => record.id}
-          columns={columns}
-          dataSource={this.state.data}
-          loading={this.state.loading}
-          pagination={{
-            total: this.state.pagination.total,
-            pageSize: 10,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            onChange(current) {},
-            onShowSizeChange(current, pageSize) {
-              self.toSelectChange(current, pageSize);
-            },
-          }}
-        />
+        <Spin spinning={this.state.loading}>
+          <Table
+            rowKey={record => record.id}
+            columns={columns}
+            dataSource={this.state.data}
+            loading={this.state.loading}
+            pagination={{
+              defaultCurrent: 1,
+              total: this.state.pagination.total,
+              pageSize: this.state.pagination.pageSize,
+              hideOnSinglePage: true,
+              onChange: this.onChange.bind(this),
+            }}
+          />
+        </Spin>
       </div>
     );
   }

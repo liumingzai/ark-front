@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider } from 'antd';
+import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import AuthService from './AuthService';
 import moment from 'moment';
 import { truncate } from 'fs';
@@ -13,10 +13,13 @@ class RoleList extends React.Component {
     super(props);
     this.state = {
       queryParam: {
-        username: null,
-        uid: null,
+        username: '',
+        uid: '',
       },
-      pagination: {},
+      pagination: {
+        total: 0,
+        pageSize: 10,
+      },
       loading: false,
       data: [],
     };
@@ -25,7 +28,7 @@ class RoleList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch();
+    this.handleSearch({ pageNum: 1 });
   }
 
   changeName(e) {
@@ -37,13 +40,14 @@ class RoleList extends React.Component {
     });
   }
 
-  changeUid(e) {
-    this.setState({
-      queryParam: {
-        username: this.state.queryParam.username,
-        uid: e.target.value,
-      },
-    });
+  /*翻页事件 用于扩展*/
+  onShowSizeChange(current) {
+    this.handleSearch({ pageNum: current });
+  }
+
+  /*分页事件*/
+  onChange(current) {
+    this.handleSearch({ pageNum: current });
   }
 
   handleDeleteUser(e) {
@@ -57,7 +61,7 @@ class RoleList extends React.Component {
         _that.authService.deleteAuthById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete auth success！！！');
-            handleSearch();
+            _that.handleSearch({ pageNum: 1 });
           }
         });
       },
@@ -109,7 +113,7 @@ class RoleList extends React.Component {
       {
         title: '作用域',
         dataIndex: 'permissionScope',
-        key: 'path',
+        key: 'permissionScope',
       },
       {
         title: '创建时间',
@@ -126,7 +130,7 @@ class RoleList extends React.Component {
         dataIndex: 'active',
         key: 'state',
         filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
-        render: text => <span>{text ? '有效' : '无效'}</span>,
+        render: text => <span>{text === 'Y' ? '有效' : '无效'}</span>,
       },
       {
         title: '操作',
@@ -154,11 +158,12 @@ class RoleList extends React.Component {
 
     return (
       <div>
-        <h1>UserList</h1>
+        <h1>权限管理</h1>
+        <br />
         <Link to="/manager/account/auth/edit" className="item">
           创建权限
         </Link>
-        <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
+        <Form layout="inline" onSubmit={this.handleSearch}>
           <FormItem label="权限名">
             <Input
               type="text"
@@ -173,22 +178,22 @@ class RoleList extends React.Component {
             </Button>
           </FormItem>
         </Form>
-        <Table
-          rowKey={record => record.id}
-          columns={columns}
-          dataSource={this.state.data}
-          loading={this.state.loading}
-          pagination={{
-            total: this.state.pagination.total,
-            pageSize: 10,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            onChange(current) {},
-            onShowSizeChange(current, pageSize) {
-              self.toSelectChange(current, pageSize);
-            },
-          }}
-        />
+        <Spin spinning={this.state.loading}>
+          <Table
+            rowKey={record => record.id}
+            columns={columns}
+            dataSource={this.state.data}
+            loading={this.state.loading}
+            pagination={{
+              defaultCurrent: 1,
+              total: this.state.pagination.total,
+              pageSize: this.state.pagination.pageSize,
+              hideOnSinglePage: true,
+              onShowSizeChange: this.onShowSizeChange.bind(this),
+              onChange: this.onChange.bind(this),
+            }}
+          />
+        </Spin>
       </div>
     );
   }

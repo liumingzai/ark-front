@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider } from 'antd';
+import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import RoleService from './RoleService';
 import moment from 'moment';
 
@@ -12,10 +12,13 @@ class RoleList extends React.Component {
     super(props);
     this.state = {
       queryParam: {
-        username: null,
-        uid: null,
+        username: '',
+        uid: '',
       },
-      pagination: {},
+      pagination: {
+        total: 0,
+        pageSize: 10,
+      },
       loading: false,
       data: [],
     };
@@ -24,7 +27,7 @@ class RoleList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch();
+    this.handleSearch({ pageNum: 1 });
   }
 
   changeName(e) {
@@ -34,6 +37,11 @@ class RoleList extends React.Component {
         uid: this.state.queryParam.uid,
       },
     });
+  }
+
+  /*分页事件*/
+  onChange(current) {
+    this.handleSearch({ pageNum: current });
   }
 
   changeUid(e) {
@@ -56,7 +64,7 @@ class RoleList extends React.Component {
         _that.roleService.deleteRoleById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
-            handleSearch();
+            _that.handleSearch();
           }
         });
       },
@@ -138,7 +146,8 @@ class RoleList extends React.Component {
 
     return (
       <div>
-        <h1>UserList</h1>
+        <h1>角色管理</h1>
+        <br />
         <Link to="/manager/account/auth/edit" className="item">
           创建角色
         </Link>
@@ -157,22 +166,21 @@ class RoleList extends React.Component {
             </Button>
           </FormItem>
         </Form>
-        <Table
-          rowKey={record => record.id}
-          columns={columns}
-          dataSource={this.state.data}
-          loading={this.state.loading}
-          pagination={{
-            total: this.state.pagination.total,
-            pageSize: 10,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            onChange(current) {},
-            onShowSizeChange(current, pageSize) {
-              self.toSelectChange(current, pageSize);
-            },
-          }}
-        />
+        <Spin spinning={this.state.loading}>
+          <Table
+            rowKey={record => record.id}
+            columns={columns}
+            dataSource={this.state.data}
+            loading={this.state.loading}
+            pagination={{
+              defaultCurrent: 1,
+              total: this.state.pagination.total,
+              pageSize: this.state.pagination.pageSize,
+              hideOnSinglePage: true,
+              onChange: this.onChange.bind(this),
+            }}
+          />
+        </Spin>
       </div>
     );
   }
