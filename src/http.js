@@ -177,7 +177,7 @@ class Http {
    */
   PUT(method, reqData) {
     const { url, data } = this.resolveRequest(method, reqData);
-    return this.axios.post(url, data);
+    return this.axios.put(url, data);
   }
 
   /**

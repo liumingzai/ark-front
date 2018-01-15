@@ -12,42 +12,44 @@ const RadioGroup = Radio.Group;
 class UserForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: {
-        username: '',
-      },
-    };
+    this.state = this.props.match.params.id
+      ? {
+          user: {
+            username: '',
+            uid: '',
+            email: '',
+            phone: '',
+            state: '',
+            roles: [],
+          },
+        }
+      : {};
     this.handleSubmit = this.handleSubmit.bind(this);
     this.userService = new UserService();
-    if (this.props.match.params.id) {
-      this.getUserById(this.props.match.params.id);
-    }
-    console.warn('construct');
   }
 
   componentWillMount() {
-    console.warn('will mount');
-
-    this.props.form.setFieldsValue({
-      username: 'ddd',
-    });
+    if (this.props.match.params.id) {
+      this.getUserById(this.props.match.params.id);
+    }
   }
 
   componentDidMount() {
     // 表单校验未成功，提交按钮不可点击
-    console.warn('did mount');
     this.props.form.validateFields();
   }
 
   getUserById(id) {
-    console.warn('1111111111111');
     this.userService.getUserById(id).then(data => {
       if ('2000' === data.code) {
-        console.warn(data.data);
-        this.setState({
-          user: data.data,
+        let entity = Object.assign({}, data.data);
+        entity.roles = [];
+        data.data.roles.map(function(item) {
+          entity.roles.push(item.name);
         });
-        console.warn('22222222222222', this.state.user);
+        this.setState({
+          user: entity,
+        });
       }
     });
   }
@@ -69,12 +71,22 @@ class UserForm extends Component {
           });
           queryParam.roles.push(roles[index]);
         });
-        this.userService.addUser(queryParam).then(data => {
-          if ('2000' === data.code) {
-            message.success('create user success！！！');
-            this.props.form.resetFields();
-          }
-        });
+        if (this.props.match.params.id) {
+          queryParam.id = this.props.match.params.id;
+          this.userService.updateUser(queryParam).then(data => {
+            if ('2000' === data.code) {
+              message.success('update user success！！！');
+              this.props.form.resetFields();
+            }
+          });
+        } else {
+          this.userService.addUser(queryParam).then(data => {
+            if ('2000' === data.code) {
+              message.success('create user success！！！');
+              this.props.form.resetFields();
+            }
+          });
+        }
       }
     });
   }
@@ -103,58 +115,87 @@ class UserForm extends Component {
     return (
       <Form layout="horizontal" onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="用户名">
-          {getFieldDecorator('username', {
-            initialValue: this.state.user.username || '',
-            rules: [
-              {
-                required: true,
-                message: '用户名不能为空',
-              },
-            ],
-          })(<Input placeholder="请输入用户名" />)}
+          {getFieldDecorator(
+            'username',
+            {
+              initialValue: this.state.user.username || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '用户名不能为空',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入用户名" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="用户UID">
-          {getFieldDecorator('uid', {
-            rules: [
-              {
-                required: false,
-              },
-            ],
-          })(<Input placeholder="请输入用户UID" />)}
+          {getFieldDecorator(
+            'uid',
+            {
+              initialValue: this.state.user.uid || '',
+            },
+            {
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            }
+          )(<Input placeholder="请输入用户UID" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="邮箱">
-          {getFieldDecorator('email', {
-            rules: [
-              {
-                required: true,
-                message: '邮箱不能为空',
-              },
-              {
-                type: 'email',
-                message: '邮箱格式不对',
-              },
-            ],
-          })(<Input placeholder="请输入邮箱" />)}
+          {getFieldDecorator(
+            'email',
+            {
+              initialValue: this.state.user.email || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '邮箱不能为空',
+                },
+                {
+                  type: 'email',
+                  message: '邮箱格式不对',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入邮箱" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="手机">
-          {getFieldDecorator('phone', {
-            rules: [
-              {
-                required: true,
-                message: '手机不能为空',
-              },
-            ],
-          })(<Input placeholder="请输入手机" />)}
+          {getFieldDecorator(
+            'phone',
+            {
+              initialValue: this.state.user.phone || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '手机不能为空',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入手机" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="用户状态">
-          {getFieldDecorator('state', {
-            rules: [
-              {
-                required: true,
-                message: '请选择用户状态',
-              },
-            ],
-          })(
+          {getFieldDecorator(
+            'state',
+            {
+              initialValue: _.toString(this.state.user.state) || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择用户状态',
+                },
+              ],
+            }
+          )(
             <RadioGroup>
               <Radio value="1">有效</Radio>
               <Radio value="0">无效</Radio>
@@ -162,7 +203,7 @@ class UserForm extends Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="绑定角色">
-          {getFieldDecorator('roles')(
+          {getFieldDecorator('roles', { initialValue: this.state.user.roles || [] })(
             <Checkbox.Group style={{ width: '100%' }} onChange={this.handleChange}>
               <Row>
                 <Col span={8}>

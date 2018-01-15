@@ -6,6 +6,7 @@ import AuthForm from './Auth/AuthForm';
 import AuthList from './Auth/AuthList';
 import RoleForm from './Role/RoleForm';
 import RoleList from './Role/RoleList';
+import RoleAuth from './Role/RoleAuth';
 
 function Account({ match }) {
   return (
@@ -18,6 +19,7 @@ function Account({ match }) {
             <Route exact path={`${match.path}/user/edit/:id`} component={UserForm} />
             <Route exact path={`${match.path}/role/list`} component={RoleList} />
             <Route exact path={`${match.path}/role/edit`} component={RoleForm} />
+            <Route exact path={`${match.path}/role/bind`} component={RoleAuth} />
             <Route exact path={`${match.path}/role/edit/:id`} component={RoleForm} />
             <Route exact path={`${match.path}/auth/list`} component={AuthList} />
             <Route exact path={`${match.path}/auth/edit`} component={AuthForm} />

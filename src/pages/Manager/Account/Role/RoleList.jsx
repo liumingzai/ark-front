@@ -100,8 +100,8 @@ class RoleList extends React.Component {
       },
       {
         title: '描述',
-        dataIndex: 'descripition',
-        key: 'descripition',
+        dataIndex: 'description',
+        key: 'description',
       },
       {
         title: '创建时间',
@@ -125,6 +125,8 @@ class RoleList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
+            <Link to={'/manager/account/role/bind'}>BindAuth</Link>
+            <Divider type="vertical" />
             <Link to={'/manager/account/role/edit/' + record.id}>Edit</Link>
             <Divider type="vertical" />
             <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
