@@ -1,21 +1,9 @@
 import React from 'react';
-import { Form, Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import SceneService from './SceneService';
+import SceneForm from './SceneForm';
 
 const ButtonGroup = Button.Group;
-
-function SceneForm(props) {
-  const { data } = props;
-  return (
-    <Form onSubmit={props.handleSubmit}>
-      <Row>
-        <Col span={8}>
-          <span>{data.applicationName}</span>
-        </Col>
-      </Row>
-    </Form>
-  );
-}
 
 class Scene extends React.Component {
   constructor(props) {
@@ -27,9 +15,10 @@ class Scene extends React.Component {
 
     this.accountId = JSON.parse(localStorage.getItem('account')).id;
     this.service = new SceneService();
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getAppWhiteList();
   }
 
@@ -51,12 +40,26 @@ class Scene extends React.Component {
     console.warn(this.props);
   }
 
+  handleChange(e) {
+    const index = e.target.getAttribute('name');
+    this.setState({
+      sceneItem: this.state.data[index],
+    });
+  }
+
   render() {
     return (
       <section>
-        <ButtonGroup>
-          {this.state.data.map(item => <Button key={item.id}>{item.applicationName}</Button>)}
-        </ButtonGroup>
+        <div className="flex flex-h-between">
+          <ButtonGroup>
+            {this.state.data.map((item, index) => (
+              <Button key={item.id} name={index} onClick={this.handleChange}>
+                {item.applicationName}
+              </Button>
+            ))}
+          </ButtonGroup>
+          <Button type="primary">Add new</Button>
+        </div>
 
         {this.state.sceneItem && <SceneForm data={this.state.sceneItem} />}
       </section>

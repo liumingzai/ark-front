@@ -1,3 +1,4 @@
+import 'primary-style/dist/css/primary-style.min.css';
 import 'antd/dist/antd.css';
 import React from 'react';
 import propTypes from 'prop-types';

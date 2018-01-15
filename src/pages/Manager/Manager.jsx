@@ -13,7 +13,7 @@ function Manager({ match }) {
       <div style={{ display: 'flex' }}>
         <SideNav match={match} data={sideNavData}>
           <Layout>
-            <main style={{ flex: 1 }}>
+            <main style={{ flex: 1, padding: '15px' }}>
               <Route path={`${match.path}/api`} component={Api} />
               <Route path={`${match.path}/account`} component={Account} />
               <Route path={`${match.path}/setting`} component={Setting} />
