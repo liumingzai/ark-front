@@ -56,6 +56,18 @@ function SideNav(props) {
                 <Icon type="setting" /> 场景管理
               </Link>
             </Menu.Item>
+
+            <Menu.Item key="p02sub03">
+              <Link to={`${props.match.path}/api/whitelist`}>
+                <Icon type="setting" /> 白名单请求记录
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item key="p02sub04">
+              <Link to={`${props.match.path}/api/apirecord`}>
+                <Icon type="setting" /> API调用记录
+              </Link>
+            </Menu.Item>
           </SubMent>
 
           <Menu.Item key="sub10">
