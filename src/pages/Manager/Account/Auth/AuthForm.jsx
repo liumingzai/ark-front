@@ -15,12 +15,37 @@ class AuthForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authService = new AuthService();
-    this.state = {
-      filters: [],
-      scopes: [],
-    };
+    this.state = this.props.match.params.id
+      ? {
+          auth: {
+            permissionName: '',
+            displayName: '',
+            path: '',
+            filters: '',
+            permissionScope: '',
+          },
+          filters: [],
+          scopes: [],
+        }
+      : {};
     this.getFilters();
     this.getScopes();
+  }
+
+  componentWillMount() {
+    if (this.props.match.params.id) {
+      this.getAuthById();
+    }
+  }
+
+  getAuthById() {
+    this.authService.getAuthById(this.props.match.params.id).then(data => {
+      if (data.code === '2000') {
+        this.setState({
+          auth: data.data,
+        });
+      }
+    });
   }
 
   componentDidMount() {
@@ -60,13 +85,22 @@ class AuthForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.warn(values);
-        this.authService.addAuth(values).then(data => {
-          if ('2000' === data.code) {
-            message.success('create auth success！！！');
-            this.props.form.resetFields();
-          }
-        });
+        if (this.props.match.params.id) {
+          values.id = this.props.match.params.id;
+          this.authService.updateAuth(values).then(data => {
+            if ('2000' === data.code) {
+              message.success('update auth success！！！');
+              this.props.form.resetFields();
+            }
+          });
+        } else {
+          this.authService.addAuth(values).then(data => {
+            if ('2000' === data.code) {
+              message.success('create auth success！！！');
+              this.props.form.resetFields();
+            }
+          });
+        }
       }
     });
   }
@@ -92,44 +126,68 @@ class AuthForm extends Component {
     return (
       <Form layout="horizontal" onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="权限名称">
-          {getFieldDecorator('permissionName', {
-            rules: [
-              {
-                required: true,
-                message: '权限名称不能为空',
-              },
-            ],
-          })(<Input placeholder="请输入权限名称" />)}
+          {getFieldDecorator(
+            'permissionName',
+            {
+              initialValue: this.state.auth.permissionName || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '权限名称不能为空',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入权限名称" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="显示名称">
-          {getFieldDecorator('displayName', {
-            rules: [
-              {
-                required: true,
-                message: '显示名称不能为空',
-              },
-            ],
-          })(<Input placeholder="请输入显示名称" />)}
+          {getFieldDecorator(
+            'displayName',
+            {
+              initialValue: this.state.auth.displayName || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '显示名称不能为空',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入显示名称" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="路径">
-          {getFieldDecorator('path', {
-            rules: [
-              {
-                required: true,
-                message: '路径不能为空',
-              },
-            ],
-          })(<Input placeholder="请输入路径" />)}
+          {getFieldDecorator(
+            'path',
+            {
+              initialValue: this.state.auth.path || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '路径不能为空',
+                },
+              ],
+            }
+          )(<Input placeholder="请输入路径" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="过滤器">
-          {getFieldDecorator('filters', {
-            rules: [
-              {
-                required: true,
-                message: '请选择过滤器',
-              },
-            ],
-          })(
+          {getFieldDecorator(
+            'filters',
+            {
+              initialValue: this.state.auth.filters || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择过滤器',
+                },
+              ],
+            }
+          )(
             <Select
               style={{ width: 200 }}
               placeholder="请选择过滤器"
@@ -146,14 +204,20 @@ class AuthForm extends Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="作用域">
-          {getFieldDecorator('permissionScope', {
-            rules: [
-              {
-                required: true,
-                message: '请选择作用域',
-              },
-            ],
-          })(
+          {getFieldDecorator(
+            'permissionScope',
+            {
+              initialValue: this.state.auth.permissionScope || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择作用域',
+                },
+              ],
+            }
+          )(
             <Select
               style={{ width: 200 }}
               placeholder="请选择作用域"
@@ -170,14 +234,20 @@ class AuthForm extends Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="有效状态">
-          {getFieldDecorator('active', {
-            rules: [
-              {
-                required: true,
-                message: '请选择有效状态',
-              },
-            ],
-          })(
+          {getFieldDecorator(
+            'active',
+            {
+              initialValue: this.state.auth.active || '',
+            },
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择有效状态',
+                },
+              ],
+            }
+          )(
             <RadioGroup>
               <Radio value="Y">有效</Radio>
               <Radio value="N">无效</Radio>
