@@ -30,8 +30,15 @@ const columns = [
 ];
 
 function ApiRecordTable(props) {
-  const { data } = props;
+  const { data, onChange, pageConf } = props;
   let dataSource = [];
+  const pagination = {
+    defaultCurrent: 1,
+    total: pageConf.total,
+    pageSize: pageConf.pageSize,
+    hideOnSinglePage: true,
+    onChange,
+  };
 
   if (data) {
     dataSource = data.map(e => ({
@@ -45,7 +52,7 @@ function ApiRecordTable(props) {
     }));
   }
 
-  return <Table columns={columns} dataSource={dataSource} />;
+  return <Table columns={columns} dataSource={dataSource} pagination={pagination} />;
 }
 
 export default ApiRecordTable;

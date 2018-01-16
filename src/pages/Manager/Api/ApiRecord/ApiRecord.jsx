@@ -13,28 +13,34 @@ class ApiRecord extends React.Component {
     super(props);
     this.state = {
       data: null,
-      size: 0,
+      pageConf: {
+        total: 0,
+        pageSize: 10,
+      },
     };
     this.service = new ApiRecordService();
     console.warn(this.state.data);
   }
 
   componentDidMount() {
-    if (getUserType() === 1) {
-      this.adminGetCountAsscssApi({
-        page: 1,
-      });
-    } else {
-      this.getCountAsscssApi();
-    }
+    this.initData();
+  }
+
+  onPageChange(currentPage) {
+    this.initData({ page: currentPage });
   }
 
   getCountAsscssApi(page = 1, id) {
     this.service.getCountAsscssApi(page, id).then((data) => {
       if (data.code === '2000') {
+        const pageConf = {
+          total: data.size,
+          pageConf: this.state.pageConf.pageSize,
+        };
+
         this.setState({
           data: data.data,
-          size: data.size,
+          pageConf,
         });
       }
     });
@@ -43,20 +49,38 @@ class ApiRecord extends React.Component {
   adminGetCountAsscssApi(param) {
     this.service.adminGetCountAsscssApi(param).then((data) => {
       if (data.code === '2000') {
+        const pageConf = {
+          total: data.size,
+          pageConf: this.state.pageConf.pageSize,
+        };
+
         this.setState({
           data: data.data,
-          size: data.size,
+          pageConf,
         });
       }
     });
+  }
+
+  initData(param) {
+    if (getUserType() === 1) {
+      this.adminGetCountAsscssApi({
+        page: (param && param.page) || 1,
+      });
+    } else {
+      this.getCountAsscssApi(param && param.page);
+    }
   }
 
   render() {
     return (
       <section>
         <ApiRecordSearch />
-        <h3>{this.state.size}</h3>
-        <ApiRecordTable data={this.state.data} />
+        <ApiRecordTable
+          data={this.state.data}
+          pageConf={this.state.pageConf}
+          onChange={this.onPageChange}
+        />
       </section>
     );
   }

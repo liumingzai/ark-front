@@ -46,7 +46,15 @@ const columns = [
 ];
 
 function WhitelistTable(props) {
-  const { data } = props;
+  const { data, pageConf, onChange } = props;
+  const pagination = {
+    defaultCurrent: 1,
+    total: pageConf.total,
+    pageSize: pageConf.pageSize,
+    hideOnSinglePage: true,
+    onChange,
+  };
+
   let dataSource = [];
   if (data) {
     dataSource = data.map(e => ({
@@ -64,7 +72,7 @@ function WhitelistTable(props) {
     }));
   }
 
-  return <Table columns={columns} dataSource={dataSource} />;
+  return <Table columns={columns} dataSource={dataSource} pagination={pagination} />;
 }
 
 export default WhitelistTable;

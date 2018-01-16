@@ -8,19 +8,33 @@ class Whitelist extends React.Component {
     super(props);
     this.state = {
       data: null,
+      pageConf: {
+        total: 0,
+        pageSize: 10,
+      },
     };
     this.service = new WhitelistService();
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
-    this.getSummaryWhiteListLog({ pageNum: 1 });
+    this.getSummaryWhiteListLog({ page: 1 });
+  }
+
+  onPageChange(currentPage) {
+    this.getSummaryWhiteListLog({ page: currentPage });
   }
 
   getSummaryWhiteListLog(param) {
     this.service.getSummaryWhiteListLog(param).then((data) => {
       if (data.code === '2000') {
+        const pageConf = {
+          total: data.size,
+          pageSize: this.state.pageConf.pageSize,
+        };
         this.setState({
           data: data.data,
+          pageConf,
         });
       }
     });
@@ -30,7 +44,11 @@ class Whitelist extends React.Component {
     return (
       <section>
         <WhitelistSearch />
-        <WhitelistTable data={this.state.data} />
+        <WhitelistTable
+          data={this.state.data}
+          pageConf={this.state.pageConf}
+          onChange={this.onPageChange}
+        />
       </section>
     );
   }
