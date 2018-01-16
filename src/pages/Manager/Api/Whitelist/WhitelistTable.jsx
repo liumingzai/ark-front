@@ -3,48 +3,68 @@ import { Table } from 'antd';
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: 'UID',
+    dataIndex: 'uid',
     render: text => <a href="#a">{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
+    title: '用户ID',
+    dataIndex: 'accountId',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-];
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    title: 'API ID',
+    dataIndex: 'apiId',
   },
   {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    title: '资源名称',
+    dataIndex: 'url',
   },
   {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
+    title: '客户端IP',
+    dataIndex: 'clientIp',
   },
   {
-    key: '4',
-    name: 'Disabled User',
-    age: 99,
-    address: 'Sidney No. 1 Lake Park',
+    title: '通过标识',
+    dataIndex: 'passFlag',
+  },
+  {
+    title: '返回信息',
+    dataIndex: 'rtnMessage',
+  },
+  {
+    title: '访问日期',
+    dataIndex: 'dailyDate',
+  },
+  {
+    title: '访问数量',
+    dataIndex: 'accessTotal',
+  },
+  {
+    title: '访问主机名',
+    dataIndex: 'domain',
   },
 ];
 
-function WhitelistTable() {
-  return <Table columns={columns} dataSource={data} />;
+function WhitelistTable(props) {
+  const { data } = props;
+  let dataSource = [];
+  if (data) {
+    dataSource = data.map(e => ({
+      key: e.id,
+      uid: e.uid,
+      accountId: e.accountId,
+      apiId: e.apiId,
+      url: e.url,
+      clientIp: e.clientIp,
+      passFlag: e.passFlag,
+      rtnMessage: e.rtnMessage,
+      dailyDate: e.dailyDate,
+      accessTotal: e.accessTotal,
+      domain: e.domain,
+    }));
+  }
+
+  return <Table columns={columns} dataSource={dataSource} />;
 }
 
 export default WhitelistTable;

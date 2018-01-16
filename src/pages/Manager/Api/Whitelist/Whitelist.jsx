@@ -1,6 +1,7 @@
 import React from 'react';
 import WhitelistSearch from './WhitelistSearch';
 import WhitelistTable from './WhitelistTable';
+import WhitelistService from './WhitelistService';
 
 class Whitelist extends React.Component {
   constructor(props) {
@@ -8,16 +9,28 @@ class Whitelist extends React.Component {
     this.state = {
       data: null,
     };
+    this.service = new WhitelistService();
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getSummaryWhiteListLog({ pageNum: 1 });
+  }
+
+  getSummaryWhiteListLog(param) {
+    this.service.getSummaryWhiteListLog(param).then((data) => {
+      if (data.code === '2000') {
+        this.setState({
+          data: data.data,
+        });
+      }
+    });
+  }
 
   render() {
     return (
       <section>
         <WhitelistSearch />
-        <h3>content {this.state.data}</h3>
-        <WhitelistTable />
+        <WhitelistTable data={this.state.data} />
       </section>
     );
   }
