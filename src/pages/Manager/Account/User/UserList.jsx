@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import UserService from './UserService';
 import moment from 'moment';
-import { truncate } from 'fs';
 
 const FormItem = Form.Item;
 
@@ -12,10 +11,7 @@ class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      queryParam: {
-        username: null,
-        uid: null,
-      },
+      username: '',
       pagination: {
         total: 0,
         pageSize: 10,
@@ -25,6 +21,7 @@ class UserList extends React.Component {
     };
     this.userService = new UserService();
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -33,19 +30,7 @@ class UserList extends React.Component {
 
   changeName(e) {
     this.setState({
-      queryParam: {
-        username: e.target.value,
-        uid: this.state.queryParam.uid,
-      },
-    });
-  }
-
-  changeUid(e) {
-    this.setState({
-      queryParam: {
-        username: this.state.queryParam.username,
-        uid: e.target.value,
-      },
+      username: e.target.value,
     });
   }
 
@@ -86,6 +71,16 @@ class UserList extends React.Component {
           pagination: pagination,
           data: data.data,
         });
+      }
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let _that = this;
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        _that.handleSearch({ username: this.state.username, pageNum: 1 });
       }
     });
   }
@@ -166,25 +161,17 @@ class UserList extends React.Component {
         <Link to="/manager/account/user/edit" className="item">
           创建用户
         </Link>
-        <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
+        <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem label="用户名">
             <Input
               type="text"
-              value={this.state.queryParam.username}
+              value={this.state.username}
               placeholder="请输入用户名"
               onChange={this.changeName.bind(this)}
             />
           </FormItem>
-          <FormItem label="UID">
-            <Input
-              type="text"
-              value={this.state.queryParam.uid}
-              placeholder="请输入uid"
-              onChange={this.changeUid.bind(this)}
-            />
-          </FormItem>
           <FormItem {...buttonItemLayout}>
-            <Button type="primary" size="default" onClick={this.handleSearch}>
+            <Button type="primary" htmlType="submit">
               查询
             </Button>
           </FormItem>
@@ -209,4 +196,5 @@ class UserList extends React.Component {
   }
 }
 
-export default UserList;
+const WrappedUserList = Form.create()(UserList);
+export default WrappedUserList;
