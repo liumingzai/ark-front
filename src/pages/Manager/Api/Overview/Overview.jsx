@@ -77,10 +77,15 @@ class Overview extends React.Component {
     };
     this.service = new OverviewService();
     this.adminGetApiOverview = this.adminGetApiOverview.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentWillMount() {
     this.adminGetApiOverview({ page: 1 });
+  }
+
+  onPageChange(page) {
+    this.adminGetApiOverview({ page });
   }
 
   adminGetApiOverview(param) {
@@ -100,7 +105,7 @@ class Overview extends React.Component {
         <BreadNav />
         <Header match={this.props.match} />
         <Row>{this.state.data.length > 0 && itemList(this.state.data)}</Row>
-        <Pagination defaultCurrent={1} total={this.state.size} />
+        <Pagination defaultCurrent={1} total={this.state.size} onChange={this.onPageChange} />
       </section>
     );
   }
