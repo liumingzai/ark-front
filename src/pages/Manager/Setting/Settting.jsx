@@ -12,25 +12,15 @@ class Setting extends React.Component {
       account = JSON.parse(account);
     }
     this.state = {
-      account,
-      previewVisible: false,
-      previewImage: '',
+      account: account,
       fileList: [],
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handlePreview = this.handlePreview.bind(this);
+
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-  }
-
-  handlePreview(file) {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
   }
 
   handleChange({ fileList }) {
@@ -39,7 +29,7 @@ class Setting extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { fileList } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -66,8 +56,8 @@ class Setting extends React.Component {
                 <Upload
                   action="http://192.168.1.151/ark-portal/common/uploadPicture"
                   listType="picture-card"
+                  accept={'image/*'}
                   fileList={fileList}
-                  onPreview={this.handlePreview}
                   onChange={this.handleChange}
                 >
                   {fileList.length >= 1 ? null : uploadButton}
@@ -92,7 +82,7 @@ class Setting extends React.Component {
           <FormItem label="用户类型" {...formItemLayout}>
             {
               <div>
-                <span>{this.state.account.roles[0].name}</span>
+                <span>{this.state.account.typeName}</span>
               </div>
             }
           </FormItem>

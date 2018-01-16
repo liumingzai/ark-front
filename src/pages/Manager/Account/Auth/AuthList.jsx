@@ -4,17 +4,16 @@ import { Link } from 'react-router-dom';
 import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import AuthService from './AuthService';
 import moment from 'moment';
-import { truncate } from 'fs';
 
 const FormItem = Form.Item;
 
-class RoleList extends React.Component {
+class AuthList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       queryParam: {
-        username: '',
-        uid: '',
+        permissionName: '',
+        path: '',
       },
       pagination: {
         total: 0,
@@ -25,17 +24,27 @@ class RoleList extends React.Component {
     };
     this.authService = new AuthService();
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     this.handleSearch({ pageNum: 1 });
   }
 
-  changeName(e) {
+  changePermissionName(e) {
     this.setState({
       queryParam: {
-        username: e.target.value,
-        uid: this.state.queryParam.uid,
+        permissionName: e.target.value,
+        path: this.state.queryParam.path,
+      },
+    });
+  }
+
+  changePathName(e) {
+    this.setState({
+      queryParam: {
+        permissionName: this.state.queryParam.permissionName,
+        path: e.target.value,
       },
     });
   }
@@ -79,6 +88,18 @@ class RoleList extends React.Component {
           pagination: pagination,
           data: data.data,
         });
+      }
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let _that = this;
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        let params = Object.assign({}, this.state.queryParam);
+        params.pageNum = 1;
+        _that.handleSearch(params);
       }
     });
   }
@@ -163,17 +184,25 @@ class RoleList extends React.Component {
         <Link to="/manager/account/auth/edit" className="item">
           创建权限
         </Link>
-        <Form layout="inline" onSubmit={this.handleSearch}>
-          <FormItem label="权限名">
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <FormItem label="权限名称">
             <Input
               type="text"
               value={this.state.queryParam.permissionName}
-              placeholder="请输入角色名"
-              onChange={this.changeName.bind(this)}
+              placeholder="请输入权限名称"
+              onChange={this.changePermissionName.bind(this)}
+            />
+          </FormItem>
+          <FormItem label="路径名称">
+            <Input
+              type="text"
+              value={this.state.queryParam.path}
+              placeholder="请输入路径名称"
+              onChange={this.changePathName.bind(this)}
             />
           </FormItem>
           <FormItem {...buttonItemLayout}>
-            <Button type="primary" size="default" onClick={this.handleSearch}>
+            <Button type="primary" htmlType="submit">
               查询
             </Button>
           </FormItem>
@@ -199,4 +228,5 @@ class RoleList extends React.Component {
   }
 }
 
-export default RoleList;
+const WrappedAuthList = Form.create()(AuthList);
+export default WrappedAuthList;

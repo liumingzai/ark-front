@@ -64,6 +64,56 @@ class RoleService {
     const method = '/admin/pm/deleteRole';
     return this.http.DELETE(method, { id });
   }
+
+  /**
+   * 获取已绑定的资源列表
+   *
+   * @param {any} id
+   * @returns
+   * @memberof RoleService
+   */
+  getBindsByRoleId(id, pageNum) {
+    const method = '/admin/pm/getRoleBindPermissions';
+    return this.http.GET(method, { id, pageNum });
+  }
+
+  /**
+   * 获取未绑定资源列表
+   *
+   * @param {any} id
+   * @returns
+   * @memberof RoleService
+   */
+  getUnBindsByRoleId(id, pageNum) {
+    const method = '/admin/pm/getRoleUnbindPermissions';
+    return this.http.GET(method, { id, pageNum });
+  }
+
+  /**
+   * 添加绑定
+   *
+   * @param {any} id
+   * @param {any} permissions
+   * @returns
+   * @memberof RoleService
+   */
+  addBind(id, permissions) {
+    const method = '/admin/pm/addRolePermissions';
+    return this.http.POST(method, { id, permissions });
+  }
+
+  /**
+   * 解除绑定
+   *
+   * @param {any} id
+   * @param {any} permissions
+   * @returns
+   * @memberof RoleService
+   */
+  deleteBind(id, permissions) {
+    const method = '/admin/pm/deleteRolePermissions';
+    return this.http.POST(method, { id, permissions });
+  }
 }
 
 export default RoleService;

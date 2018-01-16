@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import UserList from './User/UserList';
 import UserForm from './User/UserForm';
 import AuthForm from './Auth/AuthForm';
@@ -10,24 +10,18 @@ import RoleAuth from './Role/RoleAuth';
 
 function Account({ match }) {
   return (
-    <section>
-      <Router>
-        <div style={{ display: 'flex' }}>
-          <main>
-            <Route exact path={`${match.path}/user/list`} component={UserList} />
-            <Route exact path={`${match.path}/user/edit`} component={UserForm} />
-            <Route exact path={`${match.path}/user/edit/:id`} component={UserForm} />
-            <Route exact path={`${match.path}/role/list`} component={RoleList} />
-            <Route exact path={`${match.path}/role/edit`} component={RoleForm} />
-            <Route exact path={`${match.path}/role/bind`} component={RoleAuth} />
-            <Route exact path={`${match.path}/role/edit/:id`} component={RoleForm} />
-            <Route exact path={`${match.path}/auth/list`} component={AuthList} />
-            <Route exact path={`${match.path}/auth/edit`} component={AuthForm} />
-            <Route exact path={`${match.path}/auth/edit/:id`} component={AuthForm} />
-          </main>
-        </div>
-      </Router>
-    </section>
+    <div>
+      <Route exact path={`${match.path}/user`} component={UserList} />
+      <Route exact path={`${match.path}/user/edit`} component={UserForm} />
+      <Route exact path={`${match.path}/user/edit/:id`} component={UserForm} />
+      <Route exact path={`${match.path}/role`} component={RoleList} />
+      <Route exact path={`${match.path}/role/edit`} component={RoleForm} />
+      <Route exact path={`${match.path}/role/bind/:id`} component={RoleAuth} />
+      <Route exact path={`${match.path}/role/edit/:id`} component={RoleForm} />
+      <Route exact path={`${match.path}/auth`} component={AuthList} />
+      <Route exact path={`${match.path}/auth/edit`} component={AuthForm} />
+      <Route exact path={`${match.path}/auth/edit/:id`} component={AuthForm} />
+    </div>
   );
 }
 

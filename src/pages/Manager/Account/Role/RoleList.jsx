@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
 import RoleService from './RoleService';
 import moment from 'moment';
+import Search from 'antd/lib/input/Search';
 
 const FormItem = Form.Item;
 
@@ -11,10 +12,7 @@ class RoleList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      queryParam: {
-        username: '',
-        uid: '',
-      },
+      name: '',
       pagination: {
         total: 0,
         pageSize: 10,
@@ -24,33 +22,24 @@ class RoleList extends React.Component {
     };
     this.roleService = new RoleService();
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
+    // 表单校验未成功，提交按钮不可点击
+    this.props.form.validateFields();
     this.handleSearch({ pageNum: 1 });
   }
 
   changeName(e) {
     this.setState({
-      queryParam: {
-        username: e.target.value,
-        uid: this.state.queryParam.uid,
-      },
+      name: e.target.value,
     });
   }
 
   /*分页事件*/
   onChange(current) {
     this.handleSearch({ pageNum: current });
-  }
-
-  changeUid(e) {
-    this.setState({
-      queryParam: {
-        username: this.state.queryParam.username,
-        uid: e.target.value,
-      },
-    });
   }
 
   handleDeleteUser(e) {
@@ -82,6 +71,16 @@ class RoleList extends React.Component {
           pagination: pagination,
           data: data.data,
         });
+      }
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let _that = this;
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        _that.handleSearch({ name: this.state.name, pageNum: 1 });
       }
     });
   }
@@ -125,7 +124,7 @@ class RoleList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/role/bind'}>BindAuth</Link>
+            <Link to={'/manager/account/role/bind/' + record.id}>BindAuth</Link>
             <Divider type="vertical" />
             <Link to={'/manager/account/role/edit/' + record.id}>Edit</Link>
             <Divider type="vertical" />
@@ -153,17 +152,17 @@ class RoleList extends React.Component {
         <Link to="/manager/account/auth/edit" className="item">
           创建角色
         </Link>
-        <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
+        <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem label="角色名">
             <Input
               type="text"
-              value={this.state.queryParam.name}
+              value={this.state.name}
               placeholder="请输入角色名"
               onChange={this.changeName.bind(this)}
             />
           </FormItem>
           <FormItem {...buttonItemLayout}>
-            <Button type="primary" size="default" onClick={this.handleSearch}>
+            <Button type="primary" htmlType="submit">
               查询
             </Button>
           </FormItem>
@@ -188,4 +187,5 @@ class RoleList extends React.Component {
   }
 }
 
-export default RoleList;
+const WrappedRoleList = Form.create()(RoleList);
+export default WrappedRoleList;

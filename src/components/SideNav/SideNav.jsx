@@ -19,19 +19,19 @@ function SideNav(props) {
             }
           >
             <Menu.Item key="p01sub01">
-              <Link to={`${props.match.path}/account/user/list`}>
+              <Link to={`${props.match.path}/account/user`}>
                 <Icon type="setting" /> 用户管理
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p01sub02">
-              <Link to={`${props.match.path}/account/role/list`}>
+              <Link to={`${props.match.path}/account/role`}>
                 <Icon type="setting" /> 角色管理
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p01sub03">
-              <Link to={`${props.match.path}/account/auth/list`}>
+              <Link to={`${props.match.path}/account/auth`}>
                 <Icon type="setting" /> 权限管理
               </Link>
             </Menu.Item>
