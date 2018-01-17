@@ -3,6 +3,17 @@ import ApiRecordSearch from './ApiRecordSearch';
 import ApiRecordTable from './ApiRecordTable';
 import ApiRecordService from './ApiRecordService';
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const Y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const M = m < 10 ? `0${m}` : m;
+  const d = date.getDate();
+  const D = d < 10 ? `0${d}` : d;
+
+  return `${Y}-${M}-${D}`;
+}
+
 function getUserType() {
   const account = JSON.parse(localStorage.getItem('account'));
   return account.userType;
@@ -19,6 +30,7 @@ class ApiRecord extends React.Component {
       },
     };
     this.service = new ApiRecordService();
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +39,26 @@ class ApiRecord extends React.Component {
 
   onPageChange(currentPage) {
     this.initData({ page: currentPage });
+  }
+
+  onSearch(data) {
+    const { uid: { value: uid }, apiName: { value: apiName }, url: { value: url } } = data;
+    let { startDate: { value: startDate }, endDate: { value: endDate } } = data;
+    if (startDate) {
+      startDate = formatDate(startDate);
+    }
+    if (endDate) {
+      endDate = formatDate(endDate);
+    }
+
+    this.initData({
+      uid,
+      apiName,
+      url,
+      startDate,
+      endDate,
+      page: 1,
+    });
   }
 
   getCountAsscssApi(page = 1, id) {
@@ -64,6 +96,7 @@ class ApiRecord extends React.Component {
   initData(param) {
     if (getUserType() === 1) {
       this.adminGetCountAsscssApi({
+        ...param,
         page: (param && param.page) || 1,
       });
     } else {
@@ -74,7 +107,7 @@ class ApiRecord extends React.Component {
   render() {
     return (
       <section>
-        <ApiRecordSearch />
+        <ApiRecordSearch onSearch={this.onSearch} />
         <ApiRecordTable
           data={this.state.data}
           pageConf={this.state.pageConf}
