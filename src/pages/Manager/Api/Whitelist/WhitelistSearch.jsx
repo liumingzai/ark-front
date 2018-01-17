@@ -1,49 +1,127 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col, DatePicker } from 'antd';
+// import { Form, Input, Button, Row, Col, DatePicker } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
 
 const FormItem = Form.Item;
-
-function WhitelistSearch() {
+const SearchForm = Form.create({
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  },
+  mapPropsToFields(props) {
+    return {
+      uid: Form.createFormField({
+        ...props.uid,
+        value: props.uid.value,
+      }),
+      apiId: Form.createFormField({
+        ...props.apiId,
+        value: props.apiId.value,
+      }),
+      dailyDate: Form.createFormField({
+        ...props.dailyDate,
+        value: props.dailyDate.value,
+      }),
+      clientIp: Form.createFormField({
+        ...props.clientIp,
+        value: props.clientIp.value,
+      }),
+      url: Form.createFormField({
+        ...props.url,
+        value: props.url.value,
+      }),
+    };
+  },
+  onValuesChange(_, values) {
+    console.warn(values);
+  },
+})((props) => {
+  const { getFieldDecorator } = props.form;
   return (
-    <Form>
-      <Row>
-        <Col span={8}>
-          <FormItem label="UID">
-            <Input placeholder="UID" />
-          </FormItem>
-        </Col>
-        <Col span={8}>
-          <FormItem label="API ID">
-            <Input placeholder="API ID" />
-          </FormItem>
-        </Col>
+    <Form layout="inline">
+      <FormItem label="UID">
+        {getFieldDecorator('uid', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
 
-        <Col span={8}>
-          <FormItem label="Access Date">
-            <DatePicker />
-          </FormItem>
-        </Col>
-      </Row>
+      <FormItem label="API ID">
+        {getFieldDecorator('apiId', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
 
-      <Row>
-        <Col span={8}>
-          <FormItem label="Client IP">
-            <Input placeholder="Client IP" />
-          </FormItem>
-        </Col>
-        <Col span={8}>
-          <FormItem label="API URL">
-            <Input placeholder="API URL" />
-          </FormItem>
-        </Col>
-        <Col span={8}>
-          <FormItem label="Search">
-            <Button>Search</Button>
-          </FormItem>
-        </Col>
-      </Row>
+      <FormItem label="Daily Date">
+        {getFieldDecorator('dailyDate', {
+          rules: [],
+        })(<DatePicker />)}
+      </FormItem>
+
+      <FormItem label="Client IP">
+        {getFieldDecorator('clientIp', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
+
+      <FormItem label="URL">
+        {getFieldDecorator('url', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
+
+      <FormItem label="Search">
+        <Button onClick={props.onSearch}>Search</Button>
+      </FormItem>
     </Form>
   );
+});
+
+class WhitelistSearch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fields: {
+        uid: {
+          value: '',
+        },
+        apiId: {
+          value: '',
+        },
+        clientIp: {
+          value: '',
+        },
+        url: {
+          value: '',
+        },
+        dailyDate: {
+          value: null,
+        },
+      },
+    };
+
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch() {
+    const data = this.state.fields;
+    this.props.onSearch(data);
+  }
+
+  handleFormChange(changedFields) {
+    this.setState({
+      fields: { ...this.state.fields, ...changedFields },
+    });
+  }
+
+  render() {
+    const { fields } = this.state;
+
+    return (
+      <div>
+        <SearchForm {...fields} onChange={this.handleFormChange} onSearch={this.handleSearch} />
+      </div>
+    );
+  }
 }
 
 export default WhitelistSearch;

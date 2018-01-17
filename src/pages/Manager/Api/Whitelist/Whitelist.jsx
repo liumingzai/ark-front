@@ -3,6 +3,17 @@ import WhitelistSearch from './WhitelistSearch';
 import WhitelistTable from './WhitelistTable';
 import WhitelistService from './WhitelistService';
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const Y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const M = m < 10 ? `0${m}` : m;
+  const d = date.getDate();
+  const D = d < 10 ? `0${d}` : d;
+
+  return `${Y}-${M}-${D}`;
+}
+
 class Whitelist extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +26,7 @@ class Whitelist extends React.Component {
     };
     this.service = new WhitelistService();
     this.onPageChange = this.onPageChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
@@ -23,6 +35,30 @@ class Whitelist extends React.Component {
 
   onPageChange(currentPage) {
     this.getSummaryWhiteListLog({ page: currentPage });
+  }
+
+  onSearch(data) {
+    const {
+      uid: { value: uid },
+      apiId: { value: apiId },
+      clientIp: { value: clientIp },
+      url: { value: url },
+    } = data;
+
+    let { dailyDate: { value: dailyDate } } = data;
+
+    if (dailyDate) {
+      dailyDate = formatDate(dailyDate);
+    }
+
+    this.getSummaryWhiteListLog({
+      uid,
+      apiId,
+      dailyDate,
+      clientIp,
+      url,
+      page: 1,
+    });
   }
 
   getSummaryWhiteListLog(param) {
@@ -43,7 +79,7 @@ class Whitelist extends React.Component {
   render() {
     return (
       <section>
-        <WhitelistSearch />
+        <WhitelistSearch onSearch={this.onSearch} />
         <WhitelistTable
           data={this.state.data}
           pageConf={this.state.pageConf}
