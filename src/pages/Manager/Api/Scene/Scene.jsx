@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Modal, message } from 'antd';
 import SceneService from './SceneService';
 import SceneForm from './SceneForm';
 
@@ -13,18 +13,72 @@ class Scene extends React.Component {
       sceneItem: null,
     };
 
-    this.accountId = JSON.parse(localStorage.getItem('account')).id;
+    const account = JSON.parse(localStorage.getItem('account'));
+    this.accountId = account.id;
+    this.userType = account.userType;
     this.service = new SceneService();
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.deleteAppWhiteList = this.deleteAppWhiteList.bind(this);
+    this.onAddNewScene = this.onAddNewScene.bind(this);
   }
 
   componentDidMount() {
     this.getAppWhiteList();
   }
 
+  onSubmit(data) {
+    const formatData = { accountId: this.accountId };
+    Object.keys(data).forEach((key) => {
+      formatData[key] = data[key].value;
+    });
+    formatData.active = formatData.active === true ? 'Y' : 'N';
+    console.warn(formatData.appMd5);
+    if (formatData.appMd5) {
+      // update
+      if (this.userType === 1) {
+        this.adminupdateAppWhiteList(formatData);
+      } else {
+        this.updateAppWhiteList(formatData);
+      }
+    } else if (this.userType === 1) {
+      // admin new add
+      this.adminAddAppWhiteList(formatData);
+    } else {
+      // common user add
+      this.addAppWhiteList(formatData);
+    }
+  }
+
+  onDelete(appMd5, accountId) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteAppWhiteList(appMd5, accountId);
+      },
+      onCancel: () => {
+        message.success('Cancel success');
+      },
+    });
+  }
+
+  onAddNewScene() {
+    this.setState({
+      sceneItem: {},
+    });
+  }
+
   getAppWhiteList() {
     this.service.getAppWhiteList(this.accountId).then((data) => {
       if (data.code === '2000') {
+        data.data.map(e => ({
+          ...e,
+          active: e.active === 'Y',
+        }));
         this.setState({
           data: data.data,
         });
@@ -36,8 +90,47 @@ class Scene extends React.Component {
     });
   }
 
-  handleSubmit() {
-    console.warn(this.props);
+  updateAppWhiteList(p) {
+    this.service.updateAppWhiteList(p).then((data) => {
+      if (data.code === '2000') {
+        message.success('Update success');
+      }
+    });
+  }
+
+  adminupdateAppWhiteList(p) {
+    this.service.adminUpdateAppWhiteList(p).then((data) => {
+      if (data.code === '2000') {
+        message.success('Update success');
+      }
+    });
+  }
+
+  addAppWhiteList(p) {
+    this.service.addAppWhiteList(p).then((data) => {
+      if (data.code === '2000') {
+        message.success('Add success');
+        this.getAppWhiteList();
+      }
+    });
+  }
+
+  adminAddAppWhiteList(p) {
+    this.service.adminAddAppWhiteList(p).then((data) => {
+      if (data.code === '2000') {
+        message.success('Add success');
+        this.getAppWhiteList();
+      }
+    });
+  }
+
+  deleteAppWhiteList(appMd5, accountId) {
+    this.service.deleteAppWhiteList(appMd5, accountId).then((data) => {
+      if (data.code === '2000') {
+        message.success('Delete success!');
+        this.getAppWhiteList();
+      }
+    });
   }
 
   handleChange(e) {
@@ -58,10 +151,18 @@ class Scene extends React.Component {
               </Button>
             ))}
           </ButtonGroup>
-          <Button type="primary">Add new</Button>
+          <Button type="primary" onClick={this.onAddNewScene}>
+            Add new
+          </Button>
         </div>
 
-        {this.state.sceneItem && <SceneForm data={this.state.sceneItem} />}
+        {this.state.sceneItem && (
+          <SceneForm
+            onSubmit={this.onSubmit}
+            onDelete={this.onDelete}
+            data={this.state.sceneItem}
+          />
+        )}
       </section>
     );
   }

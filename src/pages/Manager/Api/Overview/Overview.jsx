@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Button, Pagination, Breadcrumb } from 'antd';
+import { Row, Button, Pagination, Breadcrumb, message, Modal } from 'antd';
 import OverviewItem from './OverviewItem';
 import SearchList from '../../../../components/SearchList';
 import OverviewService from './OverviewService';
@@ -50,22 +50,13 @@ function Header(props) {
       <div>
         <SearchList match={props.match} data={searchList} />
       </div>
-      <div>
-        <Button type="primary">New</Button>
-        <Button type="primary">Update</Button>
+      <div style={{ textAlign: 'right' }}>
+        <Button type="primary" onClick={props.onAddNew}>
+          Add new
+        </Button>
       </div>
     </header>
   );
-}
-
-/**
- * Get all items
- *
- * @param {any} data
- * @returns
- */
-function itemList(data) {
-  return data.map(e => <OverviewItem key={e.apiId} item={e} />);
 }
 
 class Overview extends React.Component {
@@ -88,6 +79,25 @@ class Overview extends React.Component {
     this.adminGetApiOverview({ page });
   }
 
+  handleAddNew() {
+    console.warn(this);
+  }
+
+  handleDelete(apiId) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteApi(apiId);
+      },
+      onCancel: () => {
+        message.success('Cancel delete');
+      },
+    });
+  }
+
   adminGetApiOverview(param) {
     this.service.adminGetApiOverview(param).then((data) => {
       if (data.code === '2000') {
@@ -99,12 +109,26 @@ class Overview extends React.Component {
     });
   }
 
+  deleteApi(apiId) {
+    this.service.deleteApi(apiId).then((data) => {
+      if (data.code === '2000') {
+        message.success('Delete success');
+        this.adminGetApiOverview({ page: 1 });
+      }
+    });
+  }
+
   render() {
     return (
       <section>
         <BreadNav />
-        <Header match={this.props.match} />
-        <Row>{this.state.data.length > 0 && itemList(this.state.data)}</Row>
+        <Header onAddNew={this.handleAddNew} match={this.props.match} />
+        <Row style={{ display: 'flex', flexFlow: 'wrap', marginTop: '10px' }}>
+          {this.state.data.length > 0 &&
+            this.state.data.map(e => (
+              <OverviewItem key={e.apiId} item={e} onDelete={this.handleDelete} />
+            ))}
+        </Row>
         <Pagination defaultCurrent={1} total={this.state.size} onChange={this.onPageChange} />
       </section>
     );

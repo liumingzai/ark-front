@@ -1,5 +1,21 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Ul = styled.ul`
+  display: inline-flex;
+  margin: 0;
+  list-style-type: none;
+
+  li {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  a {
+    padding: 3px 10px;
+  }
+`;
 
 /**
  *
@@ -21,7 +37,7 @@ function SearchItem(props) {
   return (
     <div>
       <span>{data.label}</span>
-      <ul>{liList}</ul>
+      <Ul>{liList}</Ul>
     </div>
   );
 }
