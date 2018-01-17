@@ -22,9 +22,7 @@ class RoleAuth extends React.Component {
       },
     };
     this.roleService = new RoleService();
-  }
-
-  componentWillMount() {
+    this.handleChange = this.handleChange.bind(this);
     this.getBinds({ pageNum: 1 });
     this.getUnBinds({ pageNum: 1 });
   }
@@ -62,7 +60,7 @@ class RoleAuth extends React.Component {
 
   /*分页事件*/
   onUnBindChange(current) {
-    this.handleSearch({ pageNum: current });
+    this.getUnBinds({ pageNum: current });
   }
 
   handleBind(authId) {
@@ -74,7 +72,7 @@ class RoleAuth extends React.Component {
         this.setState({
           binds: data.data,
         });
-        this.getBinds({ pageNum: 1 });
+        this.getUnBinds({ pageNum: 1 });
       }
     });
   }
@@ -88,9 +86,19 @@ class RoleAuth extends React.Component {
         this.setState({
           binds: data.data,
         });
-        this.getUnBinds({ pageNum: 1 });
+        this.getBinds({ pageNum: 1 });
       }
     });
+  }
+
+  handleChange(activeKey) {
+    if (activeKey == 1) {
+      console.warn('tab1');
+      this.getBinds({ pageNum: 1 });
+    } else {
+      console.warn('tab2');
+      this.getUnBinds({ pageNum: 1 });
+    }
   }
 
   render() {
@@ -197,7 +205,7 @@ class RoleAuth extends React.Component {
     ];
 
     return (
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" onChange={this.handleChange}>
         <TabPane tab="已绑定资源" key="1">
           <Table
             rowKey={record => record.id}
@@ -208,7 +216,7 @@ class RoleAuth extends React.Component {
               total: this.state.bindPagination.total,
               pageSize: this.state.bindPagination.pageSize,
               hideOnSinglePage: true,
-              onChange: this.onUnBindChange.bind(this),
+              onChange: this.onBindChange.bind(this),
             }}
           />
         </TabPane>
@@ -222,7 +230,7 @@ class RoleAuth extends React.Component {
               total: this.state.unBindPagination.total,
               pageSize: this.state.unBindPagination.pageSize,
               hideOnSinglePage: true,
-              onChange: this.onBindChange.bind(this),
+              onChange: this.onUnBindChange.bind(this),
             }}
           />
         </TabPane>
