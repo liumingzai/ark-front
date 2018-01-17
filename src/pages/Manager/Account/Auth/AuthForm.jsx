@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import createHistory from 'history/createBrowserHistory';
 import { Form, Input, Radio, Select, Button, message, Row, Col } from 'antd';
 import AuthService from './AuthService';
 
@@ -9,6 +10,7 @@ import _ from 'lodash';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const history = createHistory();
 
 class AuthForm extends Component {
   constructor(props) {
@@ -88,7 +90,7 @@ class AuthForm extends Component {
           this.authService.updateAuth(values).then(data => {
             if ('2000' === data.code) {
               message.success('update auth success！！！');
-              this.props.form.resetFields();
+              history.goBack();
             }
           });
         } else {
@@ -96,6 +98,7 @@ class AuthForm extends Component {
             if ('2000' === data.code) {
               message.success('create auth success！！！');
               this.props.form.resetFields();
+              history.goBack();
             }
           });
         }

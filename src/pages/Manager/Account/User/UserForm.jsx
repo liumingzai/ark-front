@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import createHistory from 'history/createBrowserHistory';
 import { Form, Input, Radio, Checkbox, Button, message, Row, Col } from 'antd';
 import UserService from './UserService';
 
@@ -8,6 +9,7 @@ import _ from 'lodash';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const history = createHistory();
 
 class UserForm extends Component {
   constructor(props) {
@@ -74,7 +76,7 @@ class UserForm extends Component {
           this.userService.updateUser(queryParam).then(data => {
             if ('2000' === data.code) {
               message.success('update user success！！！');
-              this.props.form.resetFields();
+              history.goBack();
             }
           });
         } else {
@@ -82,6 +84,7 @@ class UserForm extends Component {
             if ('2000' === data.code) {
               message.success('create user success！！！');
               this.props.form.resetFields();
+              history.goBack();
             }
           });
         }
