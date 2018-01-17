@@ -2,7 +2,7 @@ import 'primary-style/dist/css/primary-style.min.css';
 import 'antd/dist/antd.css';
 import React from 'react';
 import propTypes from 'prop-types';
-import { Layout } from 'antd';
+import { Layout, BackTop } from 'antd';
 import Header from './components/Header';
 
 function App(props) {
@@ -10,6 +10,7 @@ function App(props) {
     <Layout>
       <Header />
       {props.children}
+      <BackTop />
     </Layout>
   );
 }

@@ -19,7 +19,6 @@ class ApiRecord extends React.Component {
       },
     };
     this.service = new ApiRecordService();
-    console.warn(this.state.data);
   }
 
   componentDidMount() {
