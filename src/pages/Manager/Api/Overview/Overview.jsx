@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Button, Pagination, Breadcrumb, message, Modal } from 'antd';
 import OverviewItem from './OverviewItem';
 import SearchList from '../../../../components/SearchList';
@@ -51,8 +52,8 @@ function Header(props) {
         <SearchList match={props.match} data={searchList} />
       </div>
       <div style={{ textAlign: 'right' }}>
-        <Button type="primary" onClick={props.onAddNew}>
-          Add new
+        <Button type="primary">
+          <Link to="/manager/api/overviewedit">Add new</Link>
         </Button>
       </div>
     </header>
@@ -77,10 +78,6 @@ class Overview extends React.Component {
 
   onPageChange(page) {
     this.adminGetApiOverview({ page });
-  }
-
-  handleAddNew() {
-    console.warn(this);
   }
 
   handleDelete(apiId) {
@@ -122,7 +119,7 @@ class Overview extends React.Component {
     return (
       <section>
         <BreadNav />
-        <Header onAddNew={this.handleAddNew} match={this.props.match} />
+        <Header match={this.props.match} />
         <Row style={{ display: 'flex', flexFlow: 'wrap', marginTop: '10px' }}>
           {this.state.data.length > 0 &&
             this.state.data.map(e => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Col, Button, Card } from 'antd';
 import defaultLogo from '../../../../assets/images/common/no-img-default.png';
 
@@ -19,7 +20,9 @@ class OverviewItem extends React.Component {
       <Col span={6} style={{ paddingLeft: '6px', paddingRight: '6px', marginBottom: '10px' }}>
         <Card cover={<img src={defaultLogo} alt="Logo" />}>
           <div className="card-body">
-            <h4 className="card-title">{item.apiName}</h4>
+            <h4 className="card-title">
+              <Link to={`/manager/api/overview/${item.apiId}`}>{item.apiName}</Link>
+            </h4>
             <h5>
               分类： <span className="text-gray">{item.apiCategory}</span>
             </h5>
@@ -29,7 +32,9 @@ class OverviewItem extends React.Component {
             <h5>
               更新时间：<span>{item.updateTime}</span>
             </h5>
-            <Button type="primary">编辑</Button>
+            <Button type="primary">
+              <Link to={`/manager/api/overviewedit/${item.apiId}`}>编辑</Link>
+            </Button>
             <Button type="danger" onClick={this.handleDelete}>
               删除
             </Button>
