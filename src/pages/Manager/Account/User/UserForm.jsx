@@ -12,18 +12,16 @@ const RadioGroup = Radio.Group;
 class UserForm extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.match.params.id
-      ? {
-          user: {
-            username: '',
-            uid: '',
-            email: '',
-            phone: '',
-            state: '',
-            roles: [],
-          },
-        }
-      : {};
+    this.state = {
+      user: {
+        username: '',
+        uid: '',
+        email: '',
+        phone: '',
+        state: '',
+        roles: [],
+      },
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.userService = new UserService();
   }
@@ -118,7 +116,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'username',
             {
-              initialValue: this.state.user.username || '',
+              initialValue: this.state.user.username ? this.state.user.username : '',
             },
             {
               rules: [
@@ -134,7 +132,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'uid',
             {
-              initialValue: this.state.user.uid || '',
+              initialValue: this.state.user.uid ? this.state.user.uid : '',
             },
             {
               rules: [
@@ -149,7 +147,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'email',
             {
-              initialValue: this.state.user.email || '',
+              initialValue: this.state.user.email ? this.state.user.email : '',
             },
             {
               rules: [
@@ -169,7 +167,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'phone',
             {
-              initialValue: this.state.user.phone || '',
+              initialValue: this.state.user.phone ? this.state.user.phone : '',
             },
             {
               rules: [
@@ -185,7 +183,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'state',
             {
-              initialValue: _.toString(this.state.user.state) || '',
+              initialValue: this.state.user.state ? _.toString(this.state.user.state) : '',
             },
             {
               rules: [
@@ -203,7 +201,9 @@ class UserForm extends Component {
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="绑定角色">
-          {getFieldDecorator('roles', { initialValue: this.state.user.roles || [] })(
+          {getFieldDecorator('roles', {
+            initialValue: this.state.user.roles ? this.state.user.roles : [],
+          })(
             <Checkbox.Group style={{ width: '100%' }} onChange={this.handleChange}>
               <Row>
                 <Col span={8}>

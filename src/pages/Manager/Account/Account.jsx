@@ -16,8 +16,8 @@ function Account({ match }) {
       <Route exact path={`${match.path}/user/edit/:id`} component={UserForm} />
       <Route exact path={`${match.path}/role`} component={RoleList} />
       <Route exact path={`${match.path}/role/edit`} component={RoleForm} />
-      <Route exact path={`${match.path}/role/bind/:id`} component={RoleAuth} />
       <Route exact path={`${match.path}/role/edit/:id`} component={RoleForm} />
+      <Route exact path={`${match.path}/role/bind/:id`} component={RoleAuth} />
       <Route exact path={`${match.path}/auth`} component={AuthList} />
       <Route exact path={`${match.path}/auth/edit`} component={AuthForm} />
       <Route exact path={`${match.path}/auth/edit/:id`} component={AuthForm} />

@@ -12,15 +12,13 @@ const RadioGroup = Radio.Group;
 class RoleForm extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.match.params.id
-      ? {
-          role: {
-            name: '',
-            description: '',
-            active: '',
-          },
-        }
-      : {};
+    this.state = {
+      role: {
+        name: '',
+        description: '',
+        active: '',
+      },
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.roleService = new RoleService();
   }

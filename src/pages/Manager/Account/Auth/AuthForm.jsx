@@ -15,19 +15,17 @@ class AuthForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authService = new AuthService();
-    this.state = this.props.match.params.id
-      ? {
-          auth: {
-            permissionName: '',
-            displayName: '',
-            path: '',
-            filters: '',
-            permissionScope: '',
-          },
-          filters: [],
-          scopes: [],
-        }
-      : {};
+    this.state = {
+      auth: {
+        permissionName: '',
+        displayName: '',
+        path: '',
+        filters: '',
+        permissionScope: '',
+      },
+      filters: [],
+      scopes: [],
+    };
     this.getFilters();
     this.getScopes();
   }
