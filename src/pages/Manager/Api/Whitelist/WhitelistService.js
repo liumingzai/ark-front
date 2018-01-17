@@ -19,7 +19,12 @@ class WhitelistService {
     } = p;
 
     return this.http.GET(method, {
-      pageNum, uid, apiId, clientIp, url, dailyDate,
+      pageNum,
+      uid,
+      apiId,
+      clientIp,
+      url,
+      dailyDate,
     });
   }
 }

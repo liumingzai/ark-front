@@ -128,8 +128,8 @@ class AuthList extends React.Component {
       },
       {
         title: '过滤器',
-        dataIndex: 'permissionFilters',
-        key: 'permissionFilters',
+        dataIndex: 'filters',
+        key: 'filters',
       },
       {
         title: '作用域',

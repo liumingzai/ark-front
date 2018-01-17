@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import createHistory from 'history/createBrowserHistory';
 import { Form, Input, Radio, Button, message, Row, Col } from 'antd';
 import RoleService from './RoleService';
 
@@ -8,19 +9,18 @@ import _ from 'lodash';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const history = createHistory();
 
 class RoleForm extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.match.params.id
-      ? {
-          role: {
-            name: '',
-            description: '',
-            active: '',
-          },
-        }
-      : {};
+    this.state = {
+      role: {
+        name: '',
+        description: '',
+        active: '',
+      },
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.roleService = new RoleService();
   }
@@ -55,6 +55,7 @@ class RoleForm extends Component {
           this.roleService.updateRole(values).then(data => {
             if ('2000' === data.code) {
               message.success('update role success！！！');
+              history.goBack();
             }
           });
         } else {
@@ -62,6 +63,7 @@ class RoleForm extends Component {
             if ('2000' === data.code) {
               message.success('create role success！！！');
               this.props.form.resetFields();
+              history.goBack();
             }
           });
         }

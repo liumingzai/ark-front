@@ -149,7 +149,7 @@ class RoleList extends React.Component {
       <div>
         <h1>角色管理</h1>
         <br />
-        <Link to="/manager/account/auth/edit" className="item">
+        <Link to="/manager/account/role/edit" className="item">
           创建角色
         </Link>
         <Form layout="inline" onSubmit={this.handleSubmit}>

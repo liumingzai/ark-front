@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import createHistory from 'history/createBrowserHistory';
 import { Form, Input, Radio, Select, Button, message, Row, Col } from 'antd';
 import AuthService from './AuthService';
 
@@ -9,25 +10,24 @@ import _ from 'lodash';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const history = createHistory();
 
 class AuthForm extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authService = new AuthService();
-    this.state = this.props.match.params.id
-      ? {
-          auth: {
-            permissionName: '',
-            displayName: '',
-            path: '',
-            filters: '',
-            permissionScope: '',
-          },
-          filters: [],
-          scopes: [],
-        }
-      : {};
+    this.state = {
+      auth: {
+        permissionName: '',
+        displayName: '',
+        path: '',
+        filters: '',
+        permissionScope: '',
+      },
+      filters: [],
+      scopes: [],
+    };
     this.getFilters();
     this.getScopes();
   }
@@ -90,7 +90,7 @@ class AuthForm extends Component {
           this.authService.updateAuth(values).then(data => {
             if ('2000' === data.code) {
               message.success('update auth success！！！');
-              this.props.form.resetFields();
+              history.goBack();
             }
           });
         } else {
@@ -98,6 +98,7 @@ class AuthForm extends Component {
             if ('2000' === data.code) {
               message.success('create auth success！！！');
               this.props.form.resetFields();
+              history.goBack();
             }
           });
         }
