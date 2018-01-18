@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Layout } from 'antd';
 import SideNav from '../../components/SideNav';
-import sideNavData from './sider.json';
 import Api from './Api';
 import Setting from './Setting';
 import Account from './Account';
@@ -11,7 +10,7 @@ function Manager({ match }) {
   return (
     <section>
       <div style={{ display: 'flex' }}>
-        <SideNav match={match} data={sideNavData}>
+        <SideNav match={match}>
           <Layout>
             <main style={{ flex: 1, padding: '15px' }}>
               <Route path={`${match.path}/api`} component={Api} />
