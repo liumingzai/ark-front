@@ -21,6 +21,7 @@
       "components": [ "Link" ],
       "specialLink": [ "to" ]
     }],
+    "no-plusplus": 0,
     "react/prop-types": 0
   },
   "plugins": [
