@@ -1,11 +1,12 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
+import { Table, Form, Input, Select, Button, Modal, message, Divider, Spin } from 'antd';
 import AuthService from './AuthService';
 import moment from 'moment';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class AuthList extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class AuthList extends React.Component {
       queryParam: {
         permissionName: '',
         path: '',
+        active: '',
       },
       pagination: {
         total: 0,
@@ -25,6 +27,7 @@ class AuthList extends React.Component {
     this.authService = new AuthService();
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +39,7 @@ class AuthList extends React.Component {
       queryParam: {
         permissionName: e.target.value,
         path: this.state.queryParam.path,
+        active: this.state.active,
       },
     });
   }
@@ -45,13 +49,19 @@ class AuthList extends React.Component {
       queryParam: {
         permissionName: this.state.queryParam.permissionName,
         path: e.target.value,
+        active: this.state.active,
       },
     });
   }
 
-  /*翻页事件 用于扩展*/
-  onShowSizeChange(current) {
-    this.handleSearch({ pageNum: current });
+  changeState(value) {
+    this.setState({
+      queryParam: {
+        permissionName: this.state.queryParam.permissionName,
+        path: this.state.path,
+        active: value,
+      },
+    });
   }
 
   /*分页事件*/
@@ -74,6 +84,17 @@ class AuthList extends React.Component {
           }
         });
       },
+    });
+  }
+
+  // 排序变化
+  handleChange(pagination, filters, sorter) {
+    this.handleSearch({
+      permissionName: this.state.queryParam.permissionName,
+      path: this.state.queryParam.path,
+      active: this.state.queryParam.active,
+      pageNum: pagination.current,
+      entryDatatime: sorter.order == 'ascend' ? 1 : 0,
     });
   }
 
@@ -144,13 +165,11 @@ class AuthList extends React.Component {
           return moment(val).format('YYYY-MM-DD HH:mm:ss');
         },
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.entryDatatime - b.entryDatatime,
       },
       {
         title: '有效标识',
         dataIndex: 'active',
         key: 'state',
-        filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
         render: text => <span>{text === 'Y' ? '有效' : '无效'}</span>,
       },
       {
@@ -201,6 +220,17 @@ class AuthList extends React.Component {
               onChange={this.changePathName.bind(this)}
             />
           </FormItem>
+          <FormItem label="状态">
+            <Select
+              style={{ width: 200 }}
+              placeholder="选择有效状态"
+              onChange={this.changeState.bind(this)}
+            >
+              <Option value="">全部</Option>
+              <Option value="Y">有效</Option>
+              <Option value="N">无效</Option>
+            </Select>
+          </FormItem>
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
@@ -213,12 +243,13 @@ class AuthList extends React.Component {
             columns={columns}
             dataSource={this.state.data}
             loading={this.state.loading}
+            onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,
-              onShowSizeChange: this.onShowSizeChange.bind(this),
+              // onShowSizeChange: this.onShowSizeChange.bind(this),
               onChange: this.onChange.bind(this),
             }}
           />

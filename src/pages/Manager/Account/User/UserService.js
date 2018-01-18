@@ -42,6 +42,17 @@ class UserService {
   }
 
   /**
+   *  获取角色列表
+   *
+   * @returns
+   * @memberof UserService
+   */
+  getRoleList() {
+    const method = '/admin/pm/getAllRole';
+    return this.http.GET(method);
+  }
+
+  /**
    * Get User By UserId
    *
    * @param {number} id

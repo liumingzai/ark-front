@@ -1,18 +1,20 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
+import { Table, Form, Input, Button, Select, Modal, message, Divider, Spin } from 'antd';
 import RoleService from './RoleService';
 import moment from 'moment';
 import Search from 'antd/lib/input/Search';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class RoleList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
+      active: '',
       pagination: {
         total: 0,
         pageSize: 10,
@@ -29,6 +31,12 @@ class RoleList extends React.Component {
     // 表单校验未成功，提交按钮不可点击
     this.props.form.validateFields();
     this.handleSearch({ pageNum: 1 });
+  }
+
+  changeState(value) {
+    this.setState({
+      active: value,
+    });
   }
 
   changeName(e) {
@@ -60,6 +68,16 @@ class RoleList extends React.Component {
     });
   }
 
+  // 排序变化
+  handleChange(pagination, filters, sorter) {
+    this.handleSearch({
+      username: this.state.username,
+      pageNum: pagination.current,
+      active: this.state.active,
+      entryDatatime: sorter.order == 'ascend' ? 1 : 0,
+    });
+  }
+
   handleSearch(e) {
     this.setState({ loading: true });
     this.roleService.getRoleList(e).then(data => {
@@ -80,7 +98,7 @@ class RoleList extends React.Component {
     let _that = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _that.handleSearch({ name: this.state.name, pageNum: 1 });
+        _that.handleSearch({ name: this.state.name, active: this.state.active, pageNum: 1 });
       }
     });
   }
@@ -110,14 +128,12 @@ class RoleList extends React.Component {
           return moment(val).format('YYYY-MM-DD HH:mm:ss');
         },
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.entryDatatime - b.entryDatatime,
       },
       {
         title: '有效标识',
         dataIndex: 'active',
         key: 'state',
-        filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
-        render: text => <span>{text ? '有效' : '无效'}</span>,
+        render: text => <span>{text == 'Y' ? '有效' : '无效'}</span>,
       },
       {
         title: '操作',
@@ -161,6 +177,17 @@ class RoleList extends React.Component {
               onChange={this.changeName.bind(this)}
             />
           </FormItem>
+          <FormItem label="状态">
+            <Select
+              style={{ width: 200 }}
+              placeholder="选择有效状态"
+              onChange={this.changeState.bind(this)}
+            >
+              <Option value="">全部</Option>
+              <Option value="Y">有效</Option>
+              <Option value="N">无效</Option>
+            </Select>
+          </FormItem>
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
@@ -173,6 +200,7 @@ class RoleList extends React.Component {
             columns={columns}
             dataSource={this.state.data}
             loading={this.state.loading}
+            onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,

@@ -12,9 +12,9 @@ class SettingService {
    * @returns
    * @memberof SettingService
    */
-  upload(formData, config) {
+  upload(formData) {
     const method = '/common/uploadPicture';
-    return this.http.POST(method, formData, config);
+    return this.http.POST(method, formData, { isFormData: false });
   }
 }
 
