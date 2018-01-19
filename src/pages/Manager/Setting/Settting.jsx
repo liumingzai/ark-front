@@ -62,7 +62,6 @@ class Setting extends React.Component {
     reader.onload = () => {
       var image = new Image();
       image.src = reader.result;
-      console.warn('________________________________', reader);
       this.name = file.name;
     };
     reader.readAsDataURL(file);
@@ -92,14 +91,14 @@ class Setting extends React.Component {
     if (fileList.length) {
       const formData = new FormData();
       formData.append('upload', fileList[0]);
-      formData.append('entity', 'headPic');
+      formData.append('accountId', this.state.account.id);
       console.warn(formData);
       this.settingService.upload(formData).then(data => {
         if ('2000' === data.code) {
           this.setState({
             fileList: [
               {
-                uid: -1,
+                uid: this.state.account.id,
                 name: 'logo',
                 status: 'done',
                 url: data.message,

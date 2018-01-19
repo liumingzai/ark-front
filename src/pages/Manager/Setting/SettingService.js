@@ -13,7 +13,7 @@ class SettingService {
    * @memberof SettingService
    */
   upload(formData) {
-    const method = '/common/uploadPicture';
+    const method = '/common/uploadHeadPicture';
     const config = {};
     config.headers = {
       'Content-Type': false,
