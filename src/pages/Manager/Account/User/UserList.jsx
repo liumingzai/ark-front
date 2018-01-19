@@ -136,6 +136,7 @@ class UserList extends React.Component {
           return moment(val).format('YYYY-MM-DD HH:mm:ss');
         },
         defaultSortOrder: 'descend',
+        sorter: (a, b) => a.createTime - b.createTime,
       },
       {
         title: '用户状态',

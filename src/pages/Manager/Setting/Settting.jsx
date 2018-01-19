@@ -70,7 +70,7 @@ class Setting extends React.Component {
     });
     if (fileList.length) {
       const formData = new FormData();
-      formData.append('upload', fileList[0].name);
+      formData.append('filename', fileList[0].name);
       formData.append('entity', 'headPic');
       this.settingService.upload(formData);
     }

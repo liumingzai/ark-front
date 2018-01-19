@@ -128,6 +128,7 @@ class RoleList extends React.Component {
           return moment(val).format('YYYY-MM-DD HH:mm:ss');
         },
         defaultSortOrder: 'descend',
+        sorter: (a, b) => a.entryDatatime - b.entryDatatime,
       },
       {
         title: '有效标识',
