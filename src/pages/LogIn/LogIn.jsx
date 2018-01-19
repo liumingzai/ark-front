@@ -30,11 +30,14 @@ class LoginForm extends React.Component {
             }
             const loginData = {
               username: data.data.username,
+              uid: data.data.uid,
               roles: data.data.roles,
               phone: data.data.phone,
+              email: data.data.email,
               logo: data.data.headPic ? `${data.data.headPic}` : 'assets/images/common/person.svg',
               userType,
               typeName: typeNames[userType - 1],
+              state: data.data.state ? '有效' : '无效',
               id: data.data.id,
             };
 

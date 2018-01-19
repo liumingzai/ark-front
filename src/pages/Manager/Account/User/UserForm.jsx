@@ -52,6 +52,7 @@ class UserForm extends Component {
         this.setState({
           user: entity,
         });
+        console.log(this.state.user);
       }
     });
   }
@@ -199,7 +200,7 @@ class UserForm extends Component {
           {getFieldDecorator(
             'state',
             {
-              initialValue: this.state.user.state ? _.toString(this.state.user.state) : '',
+              initialValue: this.state.user.state ? '1' : '0',
             },
             {
               rules: [
