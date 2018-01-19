@@ -23,9 +23,11 @@ class UserForm extends Component {
         state: '',
         roles: [],
       },
+      roles: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.userService = new UserService();
+    this.getRoles();
   }
 
   componentWillMount() {
@@ -49,6 +51,17 @@ class UserForm extends Component {
         });
         this.setState({
           user: entity,
+        });
+      }
+    });
+  }
+
+  getRoles() {
+    this.userService.getRoleList().then(data => {
+      if ('2000' === data.code) {
+        console.warn(data);
+        this.setState({
+          roles: data.data,
         });
       }
     });
@@ -209,15 +222,11 @@ class UserForm extends Component {
           })(
             <Checkbox.Group style={{ width: '100%' }} onChange={this.handleChange}>
               <Row>
-                <Col span={8}>
-                  <Checkbox value="admin">admin</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="customize_user">customize</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="register_user">register</Checkbox>
-                </Col>
+                {this.state.roles.map(e => (
+                  <Col key={e.id} span={8}>
+                    <Checkbox value={e.name}>{e.name}</Checkbox>
+                  </Col>
+                ))}
               </Row>
             </Checkbox.Group>
           )}

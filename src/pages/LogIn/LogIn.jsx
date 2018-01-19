@@ -32,7 +32,7 @@ class LoginForm extends React.Component {
               username: data.data.username,
               roles: data.data.roles,
               phone: data.data.phone,
-              logo: data.data.logo ? `${data.data.logo}` : 'assets/images/common/person.svg',
+              logo: data.data.headPic ? `${data.data.headPic}` : 'assets/images/common/person.svg',
               userType,
               typeName: typeNames[userType - 1],
               id: data.data.id,

@@ -1,17 +1,19 @@
 /*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Form, Input, Button, Modal, message, Divider, Spin } from 'antd';
+import { Table, Form, Input, Select, Button, Modal, message, Divider, Spin } from 'antd';
 import UserService from './UserService';
 import moment from 'moment';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
+      state: '',
       pagination: {
         total: 0,
         pageSize: 10,
@@ -20,12 +22,18 @@ class UserList extends React.Component {
       data: [],
     };
     this.userService = new UserService();
-    this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     this.handleSearch({ pageNum: 1 });
+  }
+
+  changeState(value) {
+    this.setState({
+      state: value,
+    });
   }
 
   changeName(e) {
@@ -36,6 +44,7 @@ class UserList extends React.Component {
 
   /*分页事件*/
   onChange(current) {
+    console.warn('111111111111');
     this.handleSearch({ pageNum: current });
   }
 
@@ -57,11 +66,18 @@ class UserList extends React.Component {
     });
   }
 
+  // 排序变化
+  handleChange(pagination, filters, sorter) {
+    this.handleSearch({
+      username: this.state.username,
+      pageNum: pagination.current,
+      state: this.state.state,
+      createTimeSort: sorter.order == 'ascend' ? 1 : 0,
+    });
+  }
+
   handleSearch(e) {
     this.setState({ loading: true });
-    let queryParam = Object.assign({}, e);
-    if (this.state.queryParam) {
-    }
     this.userService.getUserList(e).then(data => {
       if ('2000' === data.code) {
         const pagination = { ...this.state.pagination };
@@ -80,7 +96,7 @@ class UserList extends React.Component {
     let _that = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _that.handleSearch({ username: this.state.username, pageNum: 1 });
+        _that.handleSearch({ username: this.state.username, state: this.state.state, pageNum: 1 });
       }
     });
   }
@@ -126,8 +142,6 @@ class UserList extends React.Component {
         title: '用户状态',
         dataIndex: 'state',
         key: 'state',
-        filters: [{ text: '无效', value: '0' }, { text: '有效', value: '1' }],
-        onFilter: (value, record) => record.state.indexOf(value) === 0,
         render: text => <span>{text ? '有效' : '无效'}</span>,
       },
       {
@@ -170,6 +184,17 @@ class UserList extends React.Component {
               onChange={this.changeName.bind(this)}
             />
           </FormItem>
+          <FormItem label="状态">
+            <Select
+              style={{ width: 200 }}
+              placeholder="选择有效状态"
+              onChange={this.changeState.bind(this)}
+            >
+              <Option value="">全部</Option>
+              <Option value="1">有效</Option>
+              <Option value="0">无效</Option>
+            </Select>
+          </FormItem>
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
@@ -182,12 +207,13 @@ class UserList extends React.Component {
             columns={columns}
             dataSource={this.state.data}
             loading={this.state.loading}
+            onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,
-              onChange: this.onChange.bind(this),
+              onChange: this.onChange,
             }}
           />
         </Spin>
