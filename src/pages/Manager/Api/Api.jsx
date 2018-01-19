@@ -12,7 +12,8 @@ function Api({ match }) {
     <div>
       <Route exact path={`${match.path}/overview`} component={Overview} />
       <Route path={`${match.path}/overview/:id`} component={OverviewDetail} />
-      <Route path={`${match.path}/overviewedit`} component={OverviewEdit} />
+      <Route path={`${match.path}/overview/update/:id`} component={OverviewEdit} />
+      <Route path={`${match.path}/overview/new`} component={OverviewEdit} />
       <Route path={`${match.path}/scene`} component={Scene} />
       <Route path={`${match.path}/whitelist`} component={Whitelist} />
       <Route path={`${match.path}/apirecord`} component={ApiRecord} />

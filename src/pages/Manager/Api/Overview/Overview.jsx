@@ -53,7 +53,7 @@ function Header(props) {
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button type="primary">
-          <Link to="/manager/api/overviewedit">Add new</Link>
+          <Link to="/manager/api/overview/new">Add new</Link>
         </Button>
       </div>
     </header>
@@ -70,6 +70,7 @@ class Overview extends React.Component {
     this.service = new OverviewService();
     this.adminGetApiOverview = this.adminGetApiOverview.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentWillMount() {

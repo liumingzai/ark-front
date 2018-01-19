@@ -35,7 +35,7 @@ const SearchForm = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
   const uploadOption = {
-    action: '//jsonplaceholder.typicode.com/posts/',
+    action: 'http://192.168.1.151/ark-portal/common/uploadPicture?entity=interface',
     listType: 'picture',
   };
 
@@ -96,20 +96,28 @@ class OverviewEdit extends React.Component {
       },
     };
     this.service = new OverviewEditService();
-    this.apiId = null;
+    this.apiId = this.props.match.params.id;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
 
   componentDidMount() {
-    // this.getApiOverView();
+    if (this.apiId) {
+      this.getApiOverView(this.apiId);
+    }
   }
 
   getApiOverView(apiId) {
     this.service.getApiOverView(apiId).then((data) => {
       if (data.code === '2000') {
+        const fields = {};
+        Object.keys(data.data).forEach((key) => {
+          fields[key] = {
+            value: data.data[key],
+          };
+        });
         this.setState({
-          fields: data.data,
+          fields,
         });
       }
     });
@@ -156,8 +164,13 @@ class OverviewEdit extends React.Component {
     const { fields } = this.state;
     const selectOptions = [];
     const cats = ['企业', '专利', '工商', '其他'];
-    for (let i = 10; i < 36; i++) {
-      selectOptions.push(<Option key={i.toString(36) + i}>{cats[i]}</Option>);
+    for (let i = 0; i < cats.length; i++) {
+      const tmp = (
+        <Option key={i} value={cats[i]}>
+          {cats[i]}
+        </Option>
+      );
+      selectOptions.push(tmp);
     }
 
     return (

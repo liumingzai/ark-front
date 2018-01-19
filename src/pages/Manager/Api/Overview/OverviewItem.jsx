@@ -33,7 +33,7 @@ class OverviewItem extends React.Component {
               更新时间：<span>{item.updateTime}</span>
             </h5>
             <Button type="primary">
-              <Link to={`/manager/api/overviewedit/${item.apiId}`}>编辑</Link>
+              <Link to={`/manager/api/overview/update/${item.apiId}`}>编辑</Link>
             </Button>
             <Button type="danger" onClick={this.handleDelete}>
               删除
