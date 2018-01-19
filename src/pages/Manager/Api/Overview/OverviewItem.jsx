@@ -21,7 +21,7 @@ class OverviewItem extends React.Component {
         <Card cover={<img src={defaultLogo} alt="Logo" />}>
           <div className="card-body">
             <h4 className="card-title">
-              <Link to={`/manager/api/overview/${item.apiId}`}>{item.apiName}</Link>
+              <Link to={`/manager/api/overview/detail/${item.apiId}`}>{item.apiName}</Link>
             </h4>
             <h5>
               分类： <span className="text-gray">{item.apiCategory}</span>
