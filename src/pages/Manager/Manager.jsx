@@ -7,10 +7,14 @@ import Setting from './Setting';
 import Account from './Account';
 
 function Manager({ match }) {
+  let account = localStorage.getItem('account');
+  if (account) {
+    account = JSON.parse(account);
+  }
   return (
     <section>
       <div style={{ display: 'flex' }}>
-        <SideNav match={match}>
+        <SideNav match={match} account={account}>
           <Layout>
             <main style={{ flex: 1, padding: '15px' }}>
               <Route path={`${match.path}/api`} component={Api} />
