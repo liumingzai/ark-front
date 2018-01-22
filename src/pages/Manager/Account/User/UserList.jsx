@@ -24,6 +24,7 @@ class UserList extends React.Component {
     this.userService = new UserService();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -44,7 +45,6 @@ class UserList extends React.Component {
 
   /*分页事件*/
   onChange(current) {
-    console.warn('111111111111');
     this.handleSearch({ pageNum: current });
   }
 
@@ -213,7 +213,7 @@ class UserList extends React.Component {
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,
-              onChange: this.onChange,
+              onChange: this.onChange.bind(this),
             }}
           />
         </Spin>

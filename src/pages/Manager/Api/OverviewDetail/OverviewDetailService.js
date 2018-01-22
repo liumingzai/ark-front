@@ -45,7 +45,13 @@ class OverviewDetailService {
         {},
         { apiId },
         {
-          accessUrl, queryType, returnType, accessSample, returnSample, errorCodeList, paramList,
+          accessUrl,
+          queryType,
+          returnType,
+          accessSample,
+          returnSample,
+          errorCodeList,
+          paramList,
         },
       ),
     );

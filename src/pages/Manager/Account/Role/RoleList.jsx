@@ -25,6 +25,7 @@ class RoleList extends React.Component {
     this.roleService = new RoleService();
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {

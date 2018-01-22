@@ -13,8 +13,13 @@ class SettingService {
    * @memberof SettingService
    */
   upload(formData) {
-    const method = '/common/uploadPicture';
-    return this.http.POST(method, formData, { isFormData: false });
+    const method = '/common/uploadHeadPicture';
+    const config = {};
+    config.headers = {
+      'Content-Type': false,
+    };
+    config.isFormData = false;
+    return this.http.POST(method, formData, config);
   }
 }
 

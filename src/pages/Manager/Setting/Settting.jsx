@@ -18,7 +18,7 @@ class Setting extends React.Component {
       previewImage: '',
       fileList: [
         {
-          uid: -1,
+          uid: account.id,
           name: 'logo',
           status: 'done',
           url: account.logo,
@@ -48,6 +48,26 @@ class Setting extends React.Component {
     });
   }
 
+  beforeUpload(file) {
+    let reader = new FileReader();
+
+    // 上一次上传图片的base64
+    let oldFileUrl = this.state.fileList[0] ? this.state.fileList[0].url : '';
+
+    if (file && file.size > 5242880) {
+      message.warn('请上传图片小于5M');
+      return;
+    }
+
+    reader.onload = () => {
+      var image = new Image();
+      image.src = reader.result;
+      this.name = file.name;
+    };
+    reader.readAsDataURL(file);
+    return false;
+  }
+
   /**
    * 处理图片上传
    * @param {*} fileList
@@ -70,9 +90,23 @@ class Setting extends React.Component {
     });
     if (fileList.length) {
       const formData = new FormData();
-      formData.append('filename', fileList[0].name);
-      formData.append('entity', 'headPic');
-      this.settingService.upload(formData);
+      formData.append('upload', fileList[0]);
+      formData.append('accountId', this.state.account.id);
+      console.warn(formData);
+      this.settingService.upload(formData).then(data => {
+        if ('2000' === data.code) {
+          this.setState({
+            fileList: [
+              {
+                uid: this.state.account.id,
+                name: 'logo',
+                status: 'done',
+                url: data.message,
+              },
+            ],
+          });
+        }
+      });
     }
     this.setState({ fileList: fileList });
     return fileList;
@@ -120,9 +154,11 @@ class Setting extends React.Component {
                   listType="picture-card"
                   accept={'image/*'}
                   fileList={fileList}
+                  beforeUpload={this.beforeUpload.bind(this)}
                   onPreview={this.handlePreview.bind(this)}
                   onRemove={this.handleCancel.bind(this)}
                   onChange={this.handleChange.bind(this)}
+                  multiple={false}
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>
