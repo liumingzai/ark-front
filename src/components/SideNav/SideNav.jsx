@@ -10,6 +10,11 @@ function SideNav(props) {
     <Layout>
       <Sider width={256} style={{ background: '#fff' }}>
         <Menu style={{ height: '100%', borderRight: 0 }} defaultOpenKeys={['sub1']} mode="inline">
+          <Menu.Item key="sub01">
+            <Link to={`${props.match.path}/dashboard`}>
+              <Icon type="Dashboard" /> Dashboard
+            </Link>
+          </Menu.Item>
           {props.account.typeName === '管理员' ? (
             <SubMent
               key="p01"

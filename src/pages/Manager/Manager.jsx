@@ -5,6 +5,7 @@ import SideNav from '../../components/SideNav';
 import Api from './Api';
 import Setting from './Setting';
 import Account from './Account';
+import Dashboard from './Dashboard/Dashboard';
 
 function Manager({ match }) {
   let account = localStorage.getItem('account');
@@ -20,6 +21,7 @@ function Manager({ match }) {
               <Route path={`${match.path}/api`} component={Api} />
               <Route path={`${match.path}/account`} component={Account} />
               <Route path={`${match.path}/setting`} component={Setting} />
+              <Route path={`${match.path}/dashboard`} component={Dashboard} />
             </main>
           </Layout>
         </SideNav>
