@@ -112,6 +112,17 @@ class SceneService {
       applicationName,
     });
   }
+
+  /**
+   * generate userToken
+   *
+   * @returns
+   * @memberof SceneService
+   */
+  getUserToken() {
+    const method = 'admin/um/getUserToken';
+    return this.http.GET(method);
+  }
 }
 
 export default SceneService;

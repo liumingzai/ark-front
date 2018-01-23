@@ -118,9 +118,10 @@ const CustomForm = Form.create({
 
         <Col span={8}>
           <FormItem label="User token">
+            <Button onClick={props.generateUserToken}>Generate Token</Button>
             {getFieldDecorator('userToken', {
               rules: [{ required: true, message: 'UserToken is required!' }],
-            })(<Input />)}
+            })(<Input disabled readOnly />)}
           </FormItem>
         </Col>
       </Row>
@@ -165,6 +166,7 @@ class SceneForm extends React.Component {
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUserToken = this.handleUserToken.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -214,11 +216,19 @@ class SceneForm extends React.Component {
     });
   }
 
+  handleUserToken() {
+    this.props.generateUserToken(this.state.fields.appMd5.value);
+  }
+
   render() {
     const { fields } = this.state;
     return (
       <div style={{ padding: '10px', backgroundColor: '#fff', marginTop: '10px' }}>
-        <CustomForm {...fields} onChange={this.handleFormChange} />
+        <CustomForm
+          {...fields}
+          generateUserToken={this.handleUserToken}
+          onChange={this.handleFormChange}
+        />
         <Row>
           <Col span={16} style={{ textAlign: 'center' }}>
             <Button style={{ marginRight: '10px' }} onClick={this.handleSubmit} type="primary">

@@ -22,6 +22,7 @@ class Scene extends React.Component {
     this.onDelete = this.onDelete.bind(this);
     this.deleteAppWhiteList = this.deleteAppWhiteList.bind(this);
     this.onAddNewScene = this.onAddNewScene.bind(this);
+    this.handleUserToken = this.handleUserToken.bind(this);
   }
 
   componentDidMount() {
@@ -140,6 +141,30 @@ class Scene extends React.Component {
     });
   }
 
+  handleUserToken(appMd5) {
+    this.service.getUserToken().then((data) => {
+      if (data.code === '2000') {
+        const userToken = data.data;
+        const dataArray = this.state.data.map((e) => {
+          if (e.appMd5 === appMd5) {
+            return {
+              ...e,
+              userToken,
+            };
+          }
+          return e;
+        });
+
+        const sceneItem = dataArray.filter(item => item.appMd5 === appMd5)[0];
+
+        this.setState({
+          data: dataArray,
+          sceneItem: { ...sceneItem },
+        });
+      }
+    });
+  }
+
   render() {
     return (
       <section>
@@ -161,6 +186,7 @@ class Scene extends React.Component {
             onSubmit={this.onSubmit}
             onDelete={this.onDelete}
             data={this.state.sceneItem}
+            generateUserToken={this.handleUserToken}
           />
         )}
       </section>
