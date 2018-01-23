@@ -10,32 +10,39 @@ function SideNav(props) {
     <Layout>
       <Sider width={256} style={{ background: '#fff' }}>
         <Menu style={{ height: '100%', borderRight: 0 }} defaultOpenKeys={['sub1']} mode="inline">
-          <SubMent
-            key="p01"
-            title={
-              <span>
-                <Icon type="team" /> <span>账号管理</span>
-              </span>
-            }
-          >
-            <Menu.Item key="p01sub01">
-              <Link to={`${props.match.path}/account/user`}>
-                <Icon type="setting" /> 用户管理
-              </Link>
-            </Menu.Item>
+          <Menu.Item key="sub01">
+            <Link to={`${props.match.path}/dashboard`}>
+              <Icon type="Dashboard" /> Dashboard
+            </Link>
+          </Menu.Item>
+          {props.account.typeName === '管理员' ? (
+            <SubMent
+              key="p01"
+              title={
+                <span>
+                  <Icon type="team" /> <span>账号管理</span>
+                </span>
+              }
+            >
+              <Menu.Item key="p01sub01">
+                <Link to={`${props.match.path}/account/user`}>
+                  <Icon type="setting" /> 用户管理
+                </Link>
+              </Menu.Item>
 
-            <Menu.Item key="p01sub02">
-              <Link to={`${props.match.path}/account/role`}>
-                <Icon type="setting" /> 角色管理
-              </Link>
-            </Menu.Item>
+              <Menu.Item key="p01sub02">
+                <Link to={`${props.match.path}/account/role`}>
+                  <Icon type="setting" /> 角色管理
+                </Link>
+              </Menu.Item>
 
-            <Menu.Item key="p01sub03">
-              <Link to={`${props.match.path}/account/auth`}>
-                <Icon type="setting" /> 权限管理
-              </Link>
-            </Menu.Item>
-          </SubMent>
+              <Menu.Item key="p01sub03">
+                <Link to={`${props.match.path}/account/auth`}>
+                  <Icon type="setting" /> 权限管理
+                </Link>
+              </Menu.Item>
+            </SubMent>
+          ) : null}
 
           <SubMent
             key="p02"

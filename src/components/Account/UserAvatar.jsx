@@ -44,6 +44,11 @@ class UserAvatar extends React.Component {
             </Figure>
           }
         >
+          <Menu.Item key="setting:0">
+            <Link to="/manager/dashboard">
+              <Icon type="dashboard" /> DashBoard{' '}
+            </Link>
+          </Menu.Item>
           <Menu.Item key="setting:1">
             <Link to="/manager/api">
               <Icon type="fork" /> API Manager{' '}
