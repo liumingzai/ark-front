@@ -1,19 +1,10 @@
 import React from 'react';
-import { Form, Input, Col, Button, Table, Popconfirm } from 'antd';
+import { Form, Input, Col, Button } from 'antd';
+import CodeError from './CodeError';
 import OverviewDetailService from './OverviewDetailService';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
-
-const EditableCell = ({ editable, value, onChange }) => (
-  <div>
-    {editable ? (
-      <Input style={{ margin: '-5px 0' }} value={value} onChange={e => onChange(e.target.value)} />
-    ) : (
-      value
-    )}
-  </div>
-);
 
 const DetailForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -49,49 +40,8 @@ const DetailForm = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
 
-  // format data source
-  const dataSource = [];
-  props.errorCodeList.value.forEach((e) => {
-    dataSource.push({
-      key: e.apiErrorCodeId,
-      errorCode: e.errorCode,
-      errorDesc: e.errorDesc,
-    });
-  });
-
-  const columns = [
-    {
-      title: 'Code',
-      dataIndex: 'errorCode',
-      width: '20%',
-    },
-    {
-      title: '说明',
-      dataIndex: 'errorDesc',
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      width: '20%',
-      render: (text, record) =>
-        (dataSource.length > 0 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => props.onDelete(record.key)}>
-            <Button>Delete</Button>
-          </Popconfirm>
-        ) : null),
-    },
-  ];
-
   return (
     <Form>
-      <Col span={24}>
-        {/* <FormItem label="接口名称">
-          {getFieldDecorator('apiName', {
-            rules: [],
-          })(<Input />)}
-        </FormItem> */}
-      </Col>
-
       <Col span={24}>
         <FormItem label="调用地址">
           {getFieldDecorator('accessUrl', {
@@ -131,15 +81,6 @@ const DetailForm = Form.create({
           })(<TextArea />)}
         </FormItem>
       </Col>
-
-      <Col span={24}>
-        <FormItem label="错误Code">
-          <Button className="editable-add-btn" onClick={props.handleAdd}>
-            Add
-          </Button>
-          <Table bordered dataSource={dataSource} columns={columns} />
-        </FormItem>
-      </Col>
     </Form>
   );
 });
@@ -177,6 +118,11 @@ class OverviewDetail extends React.Component {
     this.service = new OverviewDetailService();
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -226,7 +172,7 @@ class OverviewDetail extends React.Component {
     });
   }
 
-  update(apiId, param) {
+  updateApiInfo(apiId, param) {
     this.service.updateApiInfo(apiId, param).then((data) => {
       if (data.code === '2000') {
         console.warn(data.data);
@@ -234,23 +180,55 @@ class OverviewDetail extends React.Component {
     });
   }
 
-  handleChange(value, key, column) {
-    const newData = [...this.state.data];
-    const target = newData.filter(item => key === item.key)[0];
-    if (target) {
-      target[column] = value;
-      this.setState({ data: newData });
+  handleEdit(apiErrorCodeId) {
+    const errorCodeList = [...this.state.fields.errorCodeList.value];
+    const errorCodeItem = errorCodeList.filter(item => apiErrorCodeId === item.apiErrorCodeId)[0];
+    if (errorCodeItem) {
+      errorCodeItem.editable = true;
+      const { fields } = this.state;
+      fields.errorCodeList.value = errorCodeList;
+      this.setState({ fields });
     }
   }
 
-  renderColumns(text, record, column) {
-    return (
-      <EditableCell
-        editable={record.editable}
-        value={text}
-        onChange={value => this.handleChange(value, record.key, column)}
-      />
-    );
+  handleCancel(apiErrorCodeId) {
+    const errorCodeList = [...this.state.fields.errorCodeList.value];
+    const errorCodeItem = errorCodeList.filter(item => apiErrorCodeId === item.apiErrorCodeId)[0];
+    if (errorCodeItem) {
+      errorCodeItem.editable = false;
+      const { fields } = this.state;
+      fields.errorCodeList.value = errorCodeList;
+      this.setState({ fields });
+    }
+  }
+
+  handleSave(errorCodeItem) {
+    const errorCodeList = [...this.state.fields.errorCodeList.value].map((e) => {
+      if (e.apiErrorCodeId === errorCodeItem.apiErrorCodeId) {
+        errorCodeItem.editable = false;
+        return errorCodeItem;
+      }
+      return e;
+    });
+
+    const { fields } = this.state;
+    fields.errorCodeList.value = errorCodeList;
+
+    this.setState({ fields });
+  }
+
+  handleFormChange(changeFields) {
+    this.setState({
+      fields: { ...this.state.fields, ...changeFields },
+    });
+  }
+
+  handleSubmit() {
+    const fieldsObj = this.state.fields;
+    Object.keys(fieldsObj).forEach((key) => {
+      fieldsObj[key] = fieldsObj[key].value;
+    });
+    this.updateApiInfo(this.apiId, fieldsObj);
   }
 
   render() {
@@ -258,9 +236,25 @@ class OverviewDetail extends React.Component {
 
     return (
       <div>
-        <DetailForm {...fields} handleAdd={this.handleAdd} onDelete={this.handleDelete} />
+        <DetailForm {...fields} onChange={this.handleFormChange} />
+
+        <Col span={24}>
+          <FormItem label="错误Code">
+            <CodeError
+              handleAdd={this.handleAdd}
+              onDelete={this.handleDelete}
+              onEdit={this.handleEdit}
+              onSave={this.handleSave}
+              onCancel={this.handleCancel}
+              data={this.state.fields.errorCodeList.value}
+            />
+          </FormItem>
+        </Col>
+
         <Col span={24} style={{ textAlign: 'center' }}>
-          <Button type="primary">Save</Button>
+          <Button type="primary" onClick={this.handleSubmit}>
+            Save
+          </Button>
         </Col>
       </div>
     );
