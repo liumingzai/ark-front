@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Col, Button } from 'antd';
+import { Form, Input, Col, Button, Switch, message } from 'antd';
 import CodeError from './CodeError';
+import RequestBody from './RequestBody';
 import OverviewDetailService from './OverviewDetailService';
 
 const { TextArea } = Input;
@@ -113,15 +114,34 @@ class OverviewDetail extends React.Component {
         errorCodeList: {
           value: [],
         },
+        paramList: {
+          header: {
+            value: [],
+          },
+          bodys: {
+            value: [],
+          },
+          querys: {
+            value: [],
+          },
+        },
+        publish: {
+          value: true,
+        },
       },
     };
     this.service = new OverviewDetailService();
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleParamListAdd = this.handleParamListAdd.bind(this);
+    this.handleHeaderAdd = this.handleHeaderAdd.bind(this);
+    this.handleQueryAdd = this.handleQueryAdd.bind(this);
+    this.handleBodyAdd = this.handleBodyAdd.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.handlePublishChange = this.handlePublishChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -135,9 +155,40 @@ class OverviewDetail extends React.Component {
         const fields = {};
         if (data.data) {
           Object.keys(data.data).forEach((key) => {
-            fields[key] = {
-              value: data.data[key],
-            };
+            if (key !== 'paramList') {
+              // ignore paramList
+              fields[key] = {
+                value: data.data[key],
+              };
+            } else {
+              const params = {
+                header: {
+                  value: [],
+                },
+                bodys: {
+                  value: [],
+                },
+                querys: {
+                  value: [],
+                },
+              };
+
+              data.data[key].forEach((e) => {
+                switch (e.argumentType) {
+                  case 'header':
+                    params.header.value.push(e);
+                    break;
+                  case 'querys':
+                    params.querys.value.push(e);
+                    break;
+                  case 'bodys':
+                  default:
+                    params.bodys.value.push(e);
+                }
+              });
+
+              fields[key] = params;
+            }
           });
           this.setState({
             fields,
@@ -161,11 +212,47 @@ class OverviewDetail extends React.Component {
     });
   }
 
-  handleDelete(apiErrorCodeId) {
+  handleParamListAdd(type) {
+    const newData = {
+      apiQueryId: new Date().valueOf(),
+      argumentType: type,
+      queryColumnName: ' ',
+      queryColumnType: ' ',
+      queryOption: ' ',
+      queryColumnDesc: ' ',
+    };
+
     const { fields } = this.state;
-    let { value } = fields.errorCodeList;
-    value = value.filter(e => e.apiErrorCodeId !== apiErrorCodeId);
-    fields.errorCodeList.value = value;
+    fields.paramList[type].value.push(newData);
+    this.setState({
+      fields: { ...fields },
+    });
+  }
+
+  handleHeaderAdd() {
+    this.handleParamListAdd('header');
+  }
+
+  handleBodyAdd() {
+    this.handleParamListAdd('bodys');
+  }
+
+  handleQueryAdd() {
+    this.handleParamListAdd('querys');
+  }
+
+  handleDelete(param) {
+    const { fields } = this.state;
+    let value = param.childType
+      ? [...this.state.fields[param.type][param.childType].value]
+      : [...this.state.fields[param.type].value];
+    value = value.filter(e => e[param.key] !== param.value);
+
+    if (param.childType) {
+      fields[param.type][param.childType].value = value;
+    } else {
+      fields[param.type].value = value;
+    }
 
     this.setState({
       fields: { ...fields },
@@ -175,44 +262,71 @@ class OverviewDetail extends React.Component {
   updateApiInfo(apiId, param) {
     this.service.updateApiInfo(apiId, param).then((data) => {
       if (data.code === '2000') {
-        console.warn(data.data);
+        message.success('Update success');
       }
     });
   }
 
-  handleEdit(apiErrorCodeId) {
-    const errorCodeList = [...this.state.fields.errorCodeList.value];
-    const errorCodeItem = errorCodeList.filter(item => apiErrorCodeId === item.apiErrorCodeId)[0];
-    if (errorCodeItem) {
-      errorCodeItem.editable = true;
+  /**
+   * edit
+   *
+   * In order to support codeerror and paramlist.
+   * @param {key: string, value: string, type: string, childType: string } param
+   * @memberof OverviewDetail
+   */
+  handleEdit(param) {
+    const value = param.childType
+      ? [...this.state.fields[param.type][param.childType].value]
+      : [...this.state.fields[param.type].value];
+    const valueItem = value.filter(item => param.value === item[param.key])[0];
+    if (valueItem) {
+      valueItem.editable = true;
       const { fields } = this.state;
-      fields.errorCodeList.value = errorCodeList;
+      if (param.childType) {
+        fields[param.type][param.childType].value = value;
+      } else {
+        fields[param.type].value = value;
+      }
       this.setState({ fields });
     }
   }
 
-  handleCancel(apiErrorCodeId) {
-    const errorCodeList = [...this.state.fields.errorCodeList.value];
-    const errorCodeItem = errorCodeList.filter(item => apiErrorCodeId === item.apiErrorCodeId)[0];
-    if (errorCodeItem) {
-      errorCodeItem.editable = false;
+  handleCancel(param) {
+    const value = param.childType
+      ? [...this.state.fields[param.type][param.childType].value]
+      : [...this.state.fields[param.type].value];
+    const valueItem = value.filter(item => param.value === item[param.key])[0];
+    if (valueItem) {
+      valueItem.editable = false;
       const { fields } = this.state;
-      fields.errorCodeList.value = errorCodeList;
+      if (param.childType) {
+        fields[param.type][param.childType].value = value;
+      } else {
+        fields[param.type].value = value;
+      }
       this.setState({ fields });
     }
   }
 
-  handleSave(errorCodeItem) {
-    const errorCodeList = [...this.state.fields.errorCodeList.value].map((e) => {
-      if (e.apiErrorCodeId === errorCodeItem.apiErrorCodeId) {
-        errorCodeItem.editable = false;
-        return errorCodeItem;
+  handleSave(param) {
+    const { data } = param;
+    const value = (param.childType
+      ? [...this.state.fields[param.type][param.childType].value]
+      : [...this.state.fields[param.type].value]
+    ).map((e) => {
+      if (e.apiErrorCodeId === data.apiErrorCodeId) {
+        data.editable = false;
+        return data;
       }
       return e;
     });
 
     const { fields } = this.state;
-    fields.errorCodeList.value = errorCodeList;
+    if (param.childType) {
+      fields[param.type][param.childType].value = value;
+    } else {
+      fields[param.type].value = value;
+    }
 
     this.setState({ fields });
   }
@@ -223,10 +337,28 @@ class OverviewDetail extends React.Component {
     });
   }
 
+  handlePublishChange(checked) {
+    const { fields } = this.state;
+
+    fields.publish.value = checked ? 1 : 0;
+
+    this.setState({
+      fields,
+    });
+  }
+
   handleSubmit() {
-    const fieldsObj = this.state.fields;
+    const fieldsObj = { ...this.state.fields };
     Object.keys(fieldsObj).forEach((key) => {
-      fieldsObj[key] = fieldsObj[key].value;
+      if (key !== 'paramList') {
+        fieldsObj[key] = fieldsObj[key].value;
+      } else {
+        fieldsObj[key] = [].concat(
+          fieldsObj[key].header.value,
+          fieldsObj[key].bodys.value,
+          fieldsObj[key].querys.value,
+        );
+      }
     });
     this.updateApiInfo(this.apiId, fieldsObj);
   }
@@ -239,6 +371,51 @@ class OverviewDetail extends React.Component {
         <DetailForm {...fields} onChange={this.handleFormChange} />
 
         <Col span={24}>
+          <FormItem label="Header(header)">
+            <Button className="editable-add-btn" onClick={this.handleHeaderAdd}>
+              Add
+            </Button>
+            <RequestBody
+              onEdit={this.handleEdit}
+              onDelete={this.handleDelete}
+              onSave={this.handleSave}
+              onCancel={this.handleCancel}
+              data={this.state.fields.paramList.header.value}
+            />
+          </FormItem>
+        </Col>
+
+        <Col span={24}>
+          <FormItem label="Header(query)">
+            <Button className="editable-add-btn" onClick={this.handleQueryAdd}>
+              Add
+            </Button>
+            <RequestBody
+              onEdit={this.handleEdit}
+              onDelete={this.handleDelete}
+              onSave={this.handleSave}
+              onCancel={this.handleCancel}
+              data={this.state.fields.paramList.querys.value}
+            />
+          </FormItem>
+        </Col>
+
+        <Col span={24}>
+          <FormItem label="Header(body)">
+            <Button className="editable-add-btn" onClick={this.handleBodyAdd}>
+              Add
+            </Button>
+            <RequestBody
+              onEdit={this.handleEdit}
+              onDelete={this.handleDelete}
+              onSave={this.handleSave}
+              onCancel={this.handleCancel}
+              data={this.state.fields.paramList.bodys.value}
+            />
+          </FormItem>
+        </Col>
+
+        <Col span={24}>
           <FormItem label="错误Code">
             <CodeError
               handleAdd={this.handleAdd}
@@ -249,6 +426,16 @@ class OverviewDetail extends React.Component {
               data={this.state.fields.errorCodeList.value}
             />
           </FormItem>
+        </Col>
+
+        <Col span={24}>
+          <span style={{ marginRight: '10px' }}>发布状态</span>
+          <Switch
+            checkedChildren="发布"
+            unCheckedChildren="保存"
+            onChange={this.handlePublishChange}
+            checked={this.state.fields.publish.value === 1}
+          />
         </Col>
 
         <Col span={24} style={{ textAlign: 'center' }}>

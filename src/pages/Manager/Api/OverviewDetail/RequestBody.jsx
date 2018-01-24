@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Popconfirm, Input } from 'antd';
+import { Button, Popconfirm, Input, Table } from 'antd';
 
 const EditableCell = ({ editable, value, onChange }) => (
   <div>
@@ -11,7 +11,7 @@ const EditableCell = ({ editable, value, onChange }) => (
   </div>
 );
 
-class CodeError extends React.Component {
+class RequestBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,24 +24,43 @@ class CodeError extends React.Component {
     const dataSource = [];
     nextProps.data.forEach((e) => {
       dataSource.push({
-        key: e.apiErrorCodeId,
-        apiErrorCodeId: e.apiErrorCodeId,
-        errorCode: e.errorCode,
-        errorDesc: e.errorDesc,
+        key: e.apiQueryId,
         editable: e.editable || false,
+        apiQueryId: e.apiQueryId,
+        argumentType: e.argumentType,
+        queryColumnName: e.queryColumnName,
+        queryColumnType: e.queryColumnType,
+        queryOption: e.queryOption,
+        queryColumnDesc: e.queryColumnDesc,
       });
     });
+
     const columns = [
       {
-        title: 'Code',
-        dataIndex: 'errorCode',
+        title: '参数类型',
+        dataIndex: 'argumentType',
         width: '20%',
-        render: (text, record) => this.renderColumns(text, record, 'errorCode'),
+        render: (text, record) => this.renderColumns(text, record, 'argumentType'),
       },
       {
-        title: '说明',
-        dataIndex: 'errorDesc',
-        render: (text, record) => this.renderColumns(text, record, 'errorDesc'),
+        title: '参数名称',
+        dataIndex: 'queryColumnName',
+        render: (text, record) => this.renderColumns(text, record, 'queryColumnName'),
+      },
+      {
+        title: '参数基本类型',
+        dataIndex: 'queryColumnType',
+        render: (text, record) => this.renderColumns(text, record, 'queryColumnType'),
+      },
+      {
+        title: '是否必须',
+        dataIndex: 'queryOption',
+        render: (text, record) => this.renderColumns(text, record, 'queryOption'),
+      },
+      {
+        title: '参数描述',
+        dataIndex: 'queryColumnDesc',
+        render: (text, record) => this.renderColumns(text, record, 'queryColumnDesc'),
       },
       {
         title: 'operation',
@@ -49,9 +68,10 @@ class CodeError extends React.Component {
         width: '20%',
         render: (text, record) => {
           const param = {
-            key: 'apiErrorCodeId',
+            key: 'apiQueryId',
             value: record.key,
-            type: 'errorCodeList',
+            type: 'paramList',
+            childType: record.argumentType,
             data: record,
           };
           const tmp =
@@ -104,9 +124,6 @@ class CodeError extends React.Component {
   render() {
     return (
       <div>
-        <Button className="editable-add-btn" onClick={this.props.handleAdd}>
-          Add
-        </Button>
         <Table
           bordered
           pagination={false}
@@ -118,4 +135,4 @@ class CodeError extends React.Component {
   }
 }
 
-export default CodeError;
+export default RequestBody;

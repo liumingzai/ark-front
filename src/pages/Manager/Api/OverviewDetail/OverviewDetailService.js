@@ -33,12 +33,40 @@ class OverviewDetailService {
       returnType,
       accessSample,
       returnSample,
-      errorCodeList,
-      header,
-      body,
-      query,
+      publish,
     } = p;
-    const paramList = Object.assign({}, header, body, query);
+    let {
+      errorCodeList,
+      paramList,
+    } = p;
+
+    errorCodeList = errorCodeList.map((e) => {
+      const tmp = {
+        errorCode: e.errorCode,
+        errorDesc: e.errorDesc,
+      };
+
+      if (e.updateTime) {
+        tmp.apiErrorCodeId = e.apiErrorCodeId;
+      }
+      return tmp;
+    });
+
+    paramList = paramList.map((e) => {
+      const tmp = {
+        argumentType: e.argumentType,
+        queryColumnDesc: e.queryColumnDesc,
+        queryColumnName: e.queryColumnName,
+        queryColumnType: e.queryColumnType,
+        queryOption: e.queryOption,
+      };
+
+      if (e.updateTime) {
+        tmp.apiQueryId = e.apiQueryId;
+      }
+      return tmp;
+    });
+
     return this.http.PUT(
       method,
       Object.assign(
@@ -52,6 +80,7 @@ class OverviewDetailService {
           returnSample,
           errorCodeList,
           paramList,
+          publish,
         },
       ),
     );
