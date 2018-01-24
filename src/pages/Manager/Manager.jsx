@@ -6,6 +6,7 @@ import Api from './Api';
 import Setting from './Setting';
 import Account from './Account';
 import Dashboard from './Dashboard/Dashboard';
+import DataManager from './DataManager';
 
 function Manager({ match }) {
   let account = localStorage.getItem('account');
@@ -22,6 +23,7 @@ function Manager({ match }) {
               <Route path={`${match.path}/account`} component={Account} />
               <Route path={`${match.path}/setting`} component={Setting} />
               <Route path={`${match.path}/dashboard`} component={Dashboard} />
+              <Route path={`${match.path}/data`} component={DataManager} />
             </main>
           </Layout>
         </SideNav>

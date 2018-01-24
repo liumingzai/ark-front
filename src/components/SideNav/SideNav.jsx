@@ -12,7 +12,7 @@ function SideNav(props) {
         <Menu style={{ height: '100%', borderRight: 0 }} defaultOpenKeys={['sub1']} mode="inline">
           <Menu.Item key="sub01">
             <Link to={`${props.match.path}/dashboard`}>
-              <Icon type="Dashboard" /> Dashboard
+              <Icon type="dashboard" /> Dashboard
             </Link>
           </Menu.Item>
           {props.account.typeName === '管理员' ? (
@@ -26,19 +26,19 @@ function SideNav(props) {
             >
               <Menu.Item key="p01sub01">
                 <Link to={`${props.match.path}/account/user`}>
-                  <Icon type="setting" /> 用户管理
+                  <Icon type="info-circle" /> 用户管理
                 </Link>
               </Menu.Item>
 
               <Menu.Item key="p01sub02">
                 <Link to={`${props.match.path}/account/role`}>
-                  <Icon type="setting" /> 角色管理
+                  <Icon type="info-circle" /> 角色管理
                 </Link>
               </Menu.Item>
 
               <Menu.Item key="p01sub03">
                 <Link to={`${props.match.path}/account/auth`}>
-                  <Icon type="setting" /> 权限管理
+                  <Icon type="info-circle" /> 权限管理
                 </Link>
               </Menu.Item>
             </SubMent>
@@ -48,31 +48,46 @@ function SideNav(props) {
             key="p02"
             title={
               <span>
-                <Icon type="team" /> <span>API管理</span>
+                <Icon type="api" /> <span>API管理</span>
               </span>
             }
           >
             <Menu.Item key="p02sub01">
               <Link to={`${props.match.path}/api/overview`}>
-                <Icon type="setting" /> 接口管理
+                <Icon type="info-circle" /> 接口管理
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p02sub02">
               <Link to={`${props.match.path}/api/scene`}>
-                <Icon type="setting" /> 场景管理
+                <Icon type="info-circle" /> 场景管理
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p02sub03">
               <Link to={`${props.match.path}/api/whitelist`}>
-                <Icon type="setting" /> 白名单请求记录
+                <Icon type="info-circle" /> 白名单请求记录
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p02sub04">
               <Link to={`${props.match.path}/api/apirecord`}>
-                <Icon type="setting" /> API调用记录
+                <Icon type="info-circle" /> API调用记录
+              </Link>
+            </Menu.Item>
+          </SubMent>
+
+          <SubMent
+            key="p03"
+            title={
+              <span>
+                <Icon type="database" /> <span>数据管理</span>
+              </span>
+            }
+          >
+            <Menu.Item key="p03sub01">
+              <Link to={`${props.match.path}/data/keyword/ent`}>
+                <Icon type="info-circle" /> 企业关键字
               </Link>
             </Menu.Item>
           </SubMent>
