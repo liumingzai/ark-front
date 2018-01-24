@@ -40,7 +40,9 @@ function Search(props) {
 
       <Row>
         <Col span={12} style={{ float: 'right', marginTop: '8px', textAlign: 'right' }}>
-          <Button style={{ marginRight: '10px' }}>下载模板</Button>
+          <Button style={{ marginRight: '10px' }} onClick={props.onDownload}>
+            下载模板
+          </Button>
           <Button type="primary" style={{ marginRight: '10px' }}>
             批量新增
           </Button>
