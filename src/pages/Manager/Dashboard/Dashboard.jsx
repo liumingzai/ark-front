@@ -3,8 +3,8 @@ import React from 'react';
 import { Row, Col, Card } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts';
-
 import DashboardService from './DashBoardService';
+import _ from 'lodash';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -18,13 +18,18 @@ class Dashboard extends React.Component {
       lastLoginTotalNum: 0,
       curApiAccessTotalNum: 0,
       curLoginTotalNum: 0,
-      countLastApiAccess: [],
-      countCurApiAccess: [],
-      countLastLogin: [],
-      countCurLogin: [],
-      loginTop: [],
-      accessApiTop: [],
-      countWhiteListDenied: [],
+      countLastApiAccessDatas: [],
+      countCurApiAccessCategory: [],
+      countCurApiAccessDatas: [],
+      countLastLoginDatas: [],
+      countCurLoginCategory: [],
+      countCurLoginDatas: [],
+      loginTopCategory: [],
+      loginTopDatas: [],
+      accessApiTopCategory: [],
+      accessApiTopDatas: [],
+      countWhiteListDeniedCategory: [],
+      countWhiteListDeniedDatas: [],
       financeTotalNum: 0,
       orderTotalNum: 0,
     };
@@ -43,9 +48,6 @@ class Dashboard extends React.Component {
         // countCurApiAccess: data.data.countCurApiAccess, // ? JSON.parse(this.state.countCurApiAccess) : [],
         // countLastLogin: data.data.countLastLogin, // ? JSON.parse(this.state.countLastLogin) : [],
         // countCurLogin: data.data.countCurLogin, // ? JSON.parse(this.state.countCurLogin) : [],
-        // loginTop: data.data.loginTop, // ? JSON.parse(this.state.loginTop) : [],
-        // accessApiTop: data.data.accountTotalNum, // ? JSON.parse(this.state.accountTotalNum) : [],
-        // countWhiteListDenied: data.data.countWhiteListDenied, // ? JSON.parse(this.state.countWhiteListDenied) : [],
         this.setState({
           apiTotalNum: data.data.apiTotalNum,
           apiIncrementTotalNum: data.data.apiIncrementTotalNum,
@@ -58,6 +60,93 @@ class Dashboard extends React.Component {
           financeTotalNum: data.data.financeTotalNum,
           orderTotalNum: data.data.orderTotalNum,
         });
+
+        // 上月，本月接口访问量对比数据解析
+        if (data.data.countCurApiAccess) {
+          let tempCurDatas = [];
+          let tempLastDatas = [];
+          let tempCategory = [];
+          data.data.countCurApiAccess = JSON.parse(data.data.countCurApiAccess);
+          data.data.countCurApiAccess.map(function(item) {
+            tempCurDatas.push(item.sumNumber);
+            tempCategory.push(item.dailyDate);
+          });
+          data.data.countLastApiAccess = JSON.parse(data.data.countLastApiAccess);
+          data.data.countLastApiAccess.map(function(item) {
+            tempLastDatas.push(item.sumNumber);
+          });
+          this.setState({
+            countLastApiAccessDatas: tempLastDatas,
+            countCurApiAccessCategory: tempCategory,
+            countCurApiAccessDatas: tempCurDatas,
+          });
+        }
+
+        // 上月，本月接口访问量对比数据解析
+        if (data.data.countCurLogin) {
+          let tempCurDatas = [];
+          let tempLastDatas = [];
+          let tempCategory = [];
+          data.data.countCurLogin = JSON.parse(data.data.countCurLogin);
+          data.data.countCurLogin.map(function(item) {
+            tempCurDatas.push(item.sumNumber);
+            tempCategory.push(item.dailyDate);
+          });
+          data.data.countLastLogin = JSON.parse(data.data.countLastLogin);
+          data.data.countLastLogin.map(function(item) {
+            tempLastDatas.push(item.sumNumber);
+          });
+          this.setState({
+            countLastLoginDatas: tempLastDatas,
+            countCurLoginCategory: tempCategory,
+            countCurLoginDatas: tempCurDatas,
+          });
+        }
+
+        // 登录次数Top5数据解析
+        if (data.data.loginTop) {
+          let tempDatas = [];
+          let tempCategory = [];
+          data.data.loginTop = JSON.parse(data.data.loginTop);
+          data.data.loginTop.map(function(item) {
+            tempDatas.push(item.sumLoginNum);
+            tempCategory.push(item.username);
+          });
+          this.setState({
+            loginTopCategory: tempCategory || [],
+            loginTopDatas: tempDatas || [],
+          });
+        }
+
+        // 接口访问次数Top5数据解析
+        if (data.data.accessApiTop) {
+          let tempDatas = [];
+          let tempCategory = [];
+          data.data.accessApiTop = JSON.parse(data.data.accessApiTop);
+          data.data.accessApiTop.map(function(item) {
+            tempDatas.push(item.sumAccessNum);
+            tempCategory.push(item.apiName);
+          });
+          this.setState({
+            accessApiTopCategory: tempCategory || [],
+            accessApiTopDatas: tempDatas || [],
+          });
+        }
+
+        // 白名单拦截记录统计数据解析
+        if (data.data.countWhitelistDenied) {
+          let tempDatas = [];
+          let tempCategory = [];
+          data.data.countWhitelistDenied = JSON.parse(data.data.countWhitelistDenied);
+          data.data.countWhitelistDenied.map(function(item) {
+            tempCategory.push(item.dailyDate);
+            tempDatas.push(item.sumNumber);
+          });
+          this.setState({
+            countWhiteListDeniedCategory: tempCategory || [],
+            countWhiteListDeniedDatas: tempDatas || [],
+          });
+        }
       }
     });
   }
@@ -82,7 +171,7 @@ class Dashboard extends React.Component {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        data: this.state.countCurApiAccessCategory,
       },
       yAxis: {
         type: 'value',
@@ -92,53 +181,116 @@ class Dashboard extends React.Component {
           name: '本月',
           type: 'line',
           stack: '接口访问量',
-          data: [120, 132, 101, 134, 90, 230, 210],
+          data: this.state.countCurApiAccessDatas,
         },
         {
           name: '上月',
           type: 'line',
           stack: '接口访问量',
-          data: [220, 182, 191, 234, 290, 330, 310],
+          data: this.state.countLastApiAccessDatas,
+        },
+      ],
+    };
+
+    const accountVisitOption = {
+      title: {
+        text: '上月，本月接口访问量对比',
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['本月', '上月'],
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: this.state.countCurLoginCategory,
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: '本月',
+          type: 'line',
+          stack: '接口访问量',
+          data: this.state.countCurLoginDatas,
+        },
+        {
+          name: '上月',
+          type: 'line',
+          stack: '接口访问量',
+          data: this.state.countLastLoginDatas,
         },
       ],
     };
 
     const apiVisitTop = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+        },
+      },
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        data: this.state.accessApiTopCategory,
+        axisLabel: {
+          rotate: 30,
+          interval: 0,
+        },
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          data: [120, 200, 150, 80, 70, 110, 130],
+          name: '访问次数',
           type: 'bar',
+          barWidth: '40%',
+          data: this.state.accessApiTopDatas,
         },
       ],
     };
 
     const accountVisitTop = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+        },
+      },
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        data: this.state.loginTopCategory,
+        axisLabel: {
+          rotate: 30,
+          interval: 0,
+        },
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          data: [120, 200, 150, 80, 70, 110, 130],
+          name: '登录次数',
           type: 'bar',
+          barWidth: '40%',
+          data: this.state.loginTopDatas,
         },
       ],
     };
 
     const whiteListOption = {
-      title: {
-        text: '白名单拦截记录统计',
-      },
       tooltip: {
         trigger: 'axis',
       },
@@ -151,7 +303,7 @@ class Dashboard extends React.Component {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        data: this.state.countWhiteListDeniedCategory,
       },
       yAxis: {
         type: 'value',
@@ -161,7 +313,7 @@ class Dashboard extends React.Component {
           name: '白名单拦截',
           type: 'line',
           stack: '接口访问量',
-          data: [120, 132, 101, 134, 90, 230, 210],
+          data: this.state.countWhiteListDeniedDatas,
         },
       ],
     };
@@ -241,9 +393,22 @@ class Dashboard extends React.Component {
           </Col>
         </Row>
         <Row gutter={16} style={{ marginBottom: 16 }}>
+          <Col className="gutter-row" md={24}>
+            <div className="gutter-box">
+              <Card title="用户登录趋势">
+                <ReactEcharts
+                  option={accountVisitOption}
+                  style={{ height: '300px', width: '1200px' }}
+                  className="react_for_echarts"
+                />
+              </Card>
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col className="gutter-row" md={12}>
             <div className="gutter-box">
-              <Card title="柱状图">
+              <Card title="访问接口次数top5">
                 <ReactEcharts
                   option={apiVisitTop}
                   style={{ height: '300px', width: '600px' }}
@@ -254,7 +419,7 @@ class Dashboard extends React.Component {
           </Col>
           <Col className="gutter-row" md={12}>
             <div className="gutter-box">
-              <Card title="柱状图">
+              <Card title="登录次数用户top5">
                 <ReactEcharts
                   option={accountVisitTop}
                   style={{ height: '300px', width: '600px' }}
@@ -267,7 +432,7 @@ class Dashboard extends React.Component {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col className="gutter-row" md={24}>
             <div className="gutter-box">
-              <Card title="折线图">
+              <Card title="白名单拦截记录统计">
                 <ReactEcharts
                   option={whiteListOption}
                   style={{ height: '300px', width: '1200px' }}
