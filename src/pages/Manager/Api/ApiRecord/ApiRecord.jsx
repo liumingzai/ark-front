@@ -22,6 +22,8 @@ function getUserType() {
 class ApiRecord extends React.Component {
   constructor(props) {
     super(props);
+    this.isAdmin = JSON.parse(localStorage.getItem('account')).userType === 1;
+    this.userId = JSON.parse(localStorage.getItem('account')).uid;
     this.state = {
       data: null,
       pageConf: {
@@ -29,6 +31,7 @@ class ApiRecord extends React.Component {
         pageSize: 10,
       },
     };
+
     this.service = new ApiRecordService();
     this.onSearch = this.onSearch.bind(this);
   }
@@ -61,8 +64,8 @@ class ApiRecord extends React.Component {
     });
   }
 
-  getCountAsscssApi(page = 1, id) {
-    this.service.getCountAsscssApi(page, id).then((data) => {
+  getCountAsscssApi(param, id) {
+    this.service.getCountAsscssApi(param, id).then((data) => {
       if (data.code === '2000') {
         const pageConf = {
           total: data.size,
@@ -100,15 +103,22 @@ class ApiRecord extends React.Component {
         page: (param && param.page) || 1,
       });
     } else {
-      this.getCountAsscssApi(param && param.page);
+      this.getCountAsscssApi(
+        {
+          ...param,
+          page: (param && param.page) || 1,
+        },
+        this.userId,
+      );
     }
   }
 
   render() {
     return (
       <section>
-        <ApiRecordSearch onSearch={this.onSearch} />
+        <ApiRecordSearch isAdmin={this.isAdmin} onSearch={this.onSearch} />
         <ApiRecordTable
+          isAdmin={this.isAdmin}
           data={this.state.data}
           pageConf={this.state.pageConf}
           onChange={this.onPageChange}

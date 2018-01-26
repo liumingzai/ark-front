@@ -37,11 +37,13 @@ const SearchForm = Form.create({
   const { getFieldDecorator } = props.form;
   return (
     <Form layout="inline">
-      <FormItem label="UID">
-        {getFieldDecorator('uid', {
-          rules: [],
-        })(<Input />)}
-      </FormItem>
+      {props.isAdmin ? (
+        <FormItem label="UID">
+          {getFieldDecorator('uid', {
+            rules: [],
+          })(<Input />)}{' '}
+        </FormItem>
+      ) : null}
 
       <FormItem label="Api Name">
         {getFieldDecorator('apiName', {
@@ -117,7 +119,12 @@ class ApiRecordSearch extends React.Component {
 
     return (
       <div>
-        <SearchForm {...fields} onChange={this.handleFormChange} onSearch={this.handleSearch} />
+        <SearchForm
+          {...fields}
+          isAdmin={this.props.isAdmin}
+          onChange={this.handleFormChange}
+          onSearch={this.handleSearch}
+        />
       </div>
     );
   }

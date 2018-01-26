@@ -36,9 +36,19 @@ class ApiRecordService {
    * @returns
    * @memberof ApiRecordService
    */
-  getCountAsscssApi(pageNum, id) {
+  getCountAsscssApi(param, uid) {
     const method = 'common/getCountAsscssApi';
-    return this.http.GET(method, { pageNum, id });
+    const {
+      page: pageNum, apiName, url, startDate, endDate,
+    } = param;
+    return this.http.GET(method, {
+      pageNum,
+      apiName,
+      url,
+      startDate,
+      endDate,
+      uid,
+    });
   }
 }
 

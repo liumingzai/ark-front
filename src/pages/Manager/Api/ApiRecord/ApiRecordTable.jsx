@@ -1,19 +1,10 @@
 import React from 'react';
 import { Table } from 'antd';
 
-const columns = [
-  {
-    title: '接口ID',
-    dataIndex: 'apiId',
-    render: text => <a href="#a">{text}</a>,
-  },
+const commonColumns = [
   {
     title: '接口名称',
     dataIndex: 'apiName',
-  },
-  {
-    title: '用户ID',
-    dataIndex: 'id',
   },
   {
     title: '接入URL',
@@ -29,7 +20,23 @@ const columns = [
   },
 ];
 
+const adminColumns = [
+  {
+    title: 'UID',
+    dataIndex: 'uid',
+    render: text => <a href="#a">{text}</a>,
+  },
+  ...commonColumns,
+];
+
 function ApiRecordTable(props) {
+  let columns;
+  if (props.isAdmin) {
+    columns = adminColumns;
+  } else {
+    columns = commonColumns;
+  }
+
   const { data, onChange, pageConf } = props;
   let dataSource = [];
   const pagination = {
@@ -43,9 +50,8 @@ function ApiRecordTable(props) {
   if (data) {
     dataSource = data.map(e => ({
       key: e.id,
-      apiId: e.apiId,
+      uid: e.uid,
       apiName: e.apiName,
-      id: e.id,
       accessUrl: e.accessUrl,
       dailyDate: e.dailyDate,
       accessTotal: e.accessTotal,
