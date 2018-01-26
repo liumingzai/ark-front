@@ -22,7 +22,8 @@
       "specialLink": [ "to" ]
     }],
     "no-plusplus": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "function-paren-newline": 0
   },
   "plugins": [
     "react",

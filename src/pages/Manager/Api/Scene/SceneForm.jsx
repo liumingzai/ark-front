@@ -108,11 +108,13 @@ const CustomForm = Form.create({
           <FormItem label="是否有效">
             {getFieldDecorator('active', {
               rules: [],
-            })(<Switch
-              checkedChildren="有效"
-              unCheckedChildren="无效"
-              checked={props.active.value}
-            />)}
+            })(
+              <Switch
+                checkedChildren="有效"
+                unCheckedChildren="无效"
+                checked={props.active.value}
+              />,
+            )}
           </FormItem>
         </Col>
 

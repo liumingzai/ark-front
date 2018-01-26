@@ -2,7 +2,15 @@ import React from 'react';
 import { Table } from 'antd';
 
 function TableView(props) {
-  console.warn(props);
+  const { data, onPageChange, pageOption } = props;
+  const pagination = {
+    defaultCurrent: 1,
+    total: pageOption.total,
+    pageSize: pageOption.pageSize,
+    hideOnSinglePage: true,
+    onChange: onPageChange,
+  };
+
   const columns = [
     {
       title: '关键字',
@@ -26,7 +34,9 @@ function TableView(props) {
     },
   ];
 
-  return <Table style={{ marginTop: 10 }} columns={columns} dataSource={props.data} />;
+  return (
+    <Table style={{ marginTop: 10 }} columns={columns} dataSource={data} pagination={pagination} />
+  );
 }
 
 export default TableView;

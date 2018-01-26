@@ -10,6 +10,10 @@ class EntKeyword extends React.Component {
     this.state = {
       provinces: [],
       tableData: [],
+      pageOption: {
+        total: 0,
+        pageSize: 10,
+      },
     };
     this.provinces = [];
     this.service = new Service();
@@ -42,8 +46,13 @@ class EntKeyword extends React.Component {
   search(pageNum = 1) {
     this.service.getKeywordInfo({ pageNum }).then((data) => {
       if (data.code === '2000') {
+        const pageOption = {
+          total: data.size,
+          pageSize: this.state.pageOption.pageSize,
+        };
         this.setState({
           tableData: data.data,
+          pageOption,
         });
       }
     });
@@ -53,11 +62,19 @@ class EntKeyword extends React.Component {
     this.getKeywordTemplate();
   }
 
+  handlePageChange(currentPage) {
+    this.search({ pageNum: currentPage });
+  }
+
   render() {
     return (
       <section>
         <Search provinces={this.state.provinces} onDownload={this.handleDownload} />
-        <TableView data={this.state.tableData} />
+        <TableView
+          pageOption={this.state.pageOption}
+          onPageChange={this.handlePageChange}
+          data={this.state.tableData}
+        />
       </section>
     );
   }
