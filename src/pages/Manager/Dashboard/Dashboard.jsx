@@ -44,10 +44,6 @@ class Dashboard extends React.Component {
   getDashboardData() {
     this.dashboardService.getDatas().then(data => {
       if ('2000' === data.code) {
-        // countLastApiAccess: data.data.countLastApiAccess, // ? JSON.parse(this.state.countLastApiAccess) : [],
-        // countCurApiAccess: data.data.countCurApiAccess, // ? JSON.parse(this.state.countCurApiAccess) : [],
-        // countLastLogin: data.data.countLastLogin, // ? JSON.parse(this.state.countLastLogin) : [],
-        // countCurLogin: data.data.countCurLogin, // ? JSON.parse(this.state.countCurLogin) : [],
         this.setState({
           apiTotalNum: data.data.apiTotalNum,
           apiIncrementTotalNum: data.data.apiIncrementTotalNum,
@@ -113,8 +109,8 @@ class Dashboard extends React.Component {
             tempCategory.push(item.username);
           });
           this.setState({
-            loginTopCategory: tempCategory || [],
-            loginTopDatas: tempDatas || [],
+            loginTopCategory: tempCategory,
+            loginTopDatas: tempDatas,
           });
         }
 
@@ -128,8 +124,8 @@ class Dashboard extends React.Component {
             tempCategory.push(item.apiName);
           });
           this.setState({
-            accessApiTopCategory: tempCategory || [],
-            accessApiTopDatas: tempDatas || [],
+            accessApiTopCategory: tempCategory,
+            accessApiTopDatas: tempDatas,
           });
         }
 
@@ -153,9 +149,6 @@ class Dashboard extends React.Component {
 
   render() {
     const apiVisitOption = {
-      title: {
-        text: '上月，本月接口访问量对比',
-      },
       tooltip: {
         trigger: 'axis',
       },
@@ -193,9 +186,6 @@ class Dashboard extends React.Component {
     };
 
     const accountVisitOption = {
-      title: {
-        text: '上月，本月接口访问量对比',
-      },
       tooltip: {
         trigger: 'axis',
       },
@@ -382,9 +372,10 @@ class Dashboard extends React.Component {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col className="gutter-row" md={24}>
             <div className="gutter-box">
-              <Card title="接口访问趋势">
+              <Card title="上月，本月接口访问量对比">
                 <ReactEcharts
                   option={apiVisitOption}
+                  showLoading={this.state.countCurApiAccessDatas == []}
                   style={{ height: '300px', width: '1200px' }}
                   className="react_for_echarts"
                 />
@@ -395,9 +386,11 @@ class Dashboard extends React.Component {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col className="gutter-row" md={24}>
             <div className="gutter-box">
-              <Card title="用户登录趋势">
+              <Card title="上月，本月用户登录次数对比">
                 <ReactEcharts
                   option={accountVisitOption}
+                  loadingOption={noDataLoadingOption}
+                  showLoading={this.state.countCurLoginDatas === []}
                   style={{ height: '300px', width: '1200px' }}
                   className="react_for_echarts"
                 />
@@ -411,6 +404,7 @@ class Dashboard extends React.Component {
               <Card title="访问接口次数top5">
                 <ReactEcharts
                   option={apiVisitTop}
+                  showLoading={this.state.accessApiTopDatas === []}
                   style={{ height: '300px', width: '600px' }}
                   className="react_for_echarts"
                 />
@@ -422,6 +416,7 @@ class Dashboard extends React.Component {
               <Card title="登录次数用户top5">
                 <ReactEcharts
                   option={accountVisitTop}
+                  showLoading={this.state.loginTopDatas === []}
                   style={{ height: '300px', width: '600px' }}
                   className="react_for_echarts"
                 />
@@ -435,6 +430,7 @@ class Dashboard extends React.Component {
               <Card title="白名单拦截记录统计">
                 <ReactEcharts
                   option={whiteListOption}
+                  showLoading={this.state.countWhiteListDeniedDatas === []}
                   style={{ height: '300px', width: '1200px' }}
                   className="react_for_echarts"
                 />
