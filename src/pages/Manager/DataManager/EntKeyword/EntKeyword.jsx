@@ -15,14 +15,18 @@ class EntKeyword extends React.Component {
         pageSize: 10,
       },
     };
+    this.searchParam = {
+      pageNum: 1,
+    };
     this.provinces = [];
     this.service = new Service();
     this.handleDownload = this.handleDownload.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
     this.getProvince();
-    this.search();
+    this.search(this.searchParam);
   }
 
   getProvince() {
@@ -35,17 +39,10 @@ class EntKeyword extends React.Component {
     });
   }
 
-  getKeywordTemplate() {
-    this.service.getKeywordTemplate().then((data) => {
+  search(param) {
+    this.service.getKeywordInfo(param).then((data) => {
       if (data.code === '2000') {
-        message.success('Downloading ... ');
-      }
-    });
-  }
-
-  search(pageNum = 1) {
-    this.service.getKeywordInfo({ pageNum }).then((data) => {
-      if (data.code === '2000') {
+        message.success('Search success');
         const pageOption = {
           total: data.size,
           pageSize: this.state.pageOption.pageSize,
@@ -59,7 +56,12 @@ class EntKeyword extends React.Component {
   }
 
   handleDownload() {
-    this.getKeywordTemplate();
+    this.service.getKeywordTemplate();
+  }
+
+  handleSearch(param) {
+    console.warn(param);
+    this.search({ ...this.searchParam, ...param });
   }
 
   handlePageChange(currentPage) {
@@ -69,7 +71,11 @@ class EntKeyword extends React.Component {
   render() {
     return (
       <section>
-        <Search provinces={this.state.provinces} onDownload={this.handleDownload} />
+        <Search
+          provinces={this.state.provinces}
+          onSearch={this.handleSearch}
+          onDownload={this.handleDownload}
+        />
         <TableView
           pageOption={this.state.pageOption}
           onPageChange={this.handlePageChange}

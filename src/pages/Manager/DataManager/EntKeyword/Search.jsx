@@ -86,6 +86,7 @@ class Search extends React.Component {
     };
 
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,8 +96,8 @@ class Search extends React.Component {
   }
 
   handleSearch() {
-    // this.props.onSearch();
-    console.warn(this.state);
+    const { keyword: { value: keyword }, province: { value: province } } = this.state.fields;
+    this.props.onSearch({ keyword, province });
   }
 
   handleFormChange(changeFields) {

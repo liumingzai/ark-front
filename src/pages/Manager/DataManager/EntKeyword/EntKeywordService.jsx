@@ -25,7 +25,9 @@ class EntKeywordService {
    */
   getKeywordTemplate() {
     const method = 'dataManage/getKeywordTemplate';
-    return this.http.GET(method);
+    const url = `${this.http.baseURL}/${method}`;
+
+    window.open(url, '_blank');
   }
 
   /**
