@@ -28,17 +28,9 @@ class OverviewDetailService {
   updateApiInfo(apiId, p) {
     const method = 'admin/api/updateApiInfo';
     const {
-      accessUrl,
-      queryType,
-      returnType,
-      accessSample,
-      returnSample,
-      publish,
+      accessUrl, queryType, returnType, accessSample, returnSample, publish,
     } = p;
-    let {
-      errorCodeList,
-      paramList,
-    } = p;
+    let { errorCodeList, paramList } = p;
 
     errorCodeList = errorCodeList.map((e) => {
       const tmp = {

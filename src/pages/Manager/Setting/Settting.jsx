@@ -21,7 +21,9 @@ class Setting extends React.Component {
           uid: account.id,
           name: 'logo',
           status: 'done',
-          url: account.logo,
+          url: account.logo
+            ? account.logo
+            : 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         },
       ],
     };

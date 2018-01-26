@@ -137,7 +137,7 @@ class RoleAuth extends React.Component {
         title: '有效标识',
         dataIndex: 'active',
         key: 'state',
-        filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
+        // filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
         render: text => <span>{text ? '有效' : '无效'}</span>,
       },
       {
@@ -188,7 +188,7 @@ class RoleAuth extends React.Component {
         title: '有效标识',
         dataIndex: 'active',
         key: 'state',
-        filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
+        // filters: [{ text: '无效', value: 'N' }, { text: '有效', value: 'Y' }],
         render: text => <span>{text ? '有效' : '无效'}</span>,
       },
       {

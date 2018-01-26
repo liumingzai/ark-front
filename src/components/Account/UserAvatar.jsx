@@ -34,13 +34,15 @@ class UserAvatar extends React.Component {
   }
 
   render() {
+    const headPic = this.props.logo
+      ? this.props.logo
+      : 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png';
     return (
       <Menu style={avatar} mode="horizontal">
         <Menu.SubMenu
           title={
             <Figure>
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{' '}
-              <span>{this.props.username}</span>{' '}
+              <Avatar src={headPic} /> <span>{this.props.username}</span>{' '}
             </Figure>
           }
         >

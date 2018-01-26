@@ -39,7 +39,7 @@ class Account extends React.Component {
             </li>
           </ul>
         ) : (
-          <UserAvatar username={this.state.account.username} />
+          <UserAvatar username={this.state.account.username} logo={this.state.account.logo} />
         )}
       </nav>
     );
