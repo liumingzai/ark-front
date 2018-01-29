@@ -58,7 +58,14 @@ function ApiRecordTable(props) {
     }));
   }
 
-  return <Table columns={columns} dataSource={dataSource} pagination={pagination} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={dataSource}
+      pagination={pagination}
+      style={{ marginTop: 10 }}
+    />
+  );
 }
 
 export default ApiRecordTable;

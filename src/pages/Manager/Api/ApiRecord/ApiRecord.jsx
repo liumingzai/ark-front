@@ -73,7 +73,10 @@ class ApiRecord extends React.Component {
         };
 
         this.setState({
-          data: data.data,
+          data: data.data.map((e) => {
+            e.dailyDate = formatDate(e.dailyDate);
+            return e;
+          }),
           pageConf,
         });
       }
@@ -89,7 +92,10 @@ class ApiRecord extends React.Component {
         };
 
         this.setState({
-          data: data.data,
+          data: data.data.map((e) => {
+            e.dailyDate = formatDate(e.dailyDate);
+            return e;
+          }),
           pageConf,
         });
       }
