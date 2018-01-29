@@ -15,6 +15,17 @@ function BreadNav() {
   );
 }
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const Y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const M = m < 10 ? `0${m}` : m;
+  const d = date.getDate();
+  const D = d < 10 ? `0${d}` : d;
+
+  return `${Y}-${M}-${D}`;
+}
+
 /**
  * Search Header filters
  *
@@ -72,7 +83,6 @@ class Overview extends React.Component {
     this.adminGetApiOverview = this.adminGetApiOverview.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    console.warn('new');
   }
 
   componentWillMount() {
@@ -80,8 +90,12 @@ class Overview extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    const param = queryString.parse(nextProps.location.search);
-    this.adminGetApiOverview({ page: 1, ...param });
+    const preParam = queryString.parse(this.props.location.search);
+    const currParam = queryString.parse(nextProps.location.search);
+
+    if (preParam.cat !== currParam.cat) {
+      this.adminGetApiOverview({ page: 1, ...currParam });
+    }
   }
 
   onPageChange(page) {
@@ -106,6 +120,13 @@ class Overview extends React.Component {
   adminGetApiOverview(param) {
     this.service.adminGetApiOverview(param).then((data) => {
       if (data.code === '2000') {
+        if (data.data) {
+          data.data = data.data.map((e) => {
+            e.updateTime = formatDate(e.updateTime);
+            return e;
+          });
+        }
+
         this.setState({
           data: data.data || [],
           size: data.size,
