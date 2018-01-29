@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Button, Pagination, Breadcrumb, message, Modal } from 'antd';
+import queryString from 'query-string';
 import OverviewItem from './OverviewItem';
 import SearchList from '../../../../components/SearchList';
 import OverviewService from './OverviewService';
@@ -71,10 +72,16 @@ class Overview extends React.Component {
     this.adminGetApiOverview = this.adminGetApiOverview.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    console.warn('new');
   }
 
   componentWillMount() {
     this.adminGetApiOverview({ page: 1 });
+  }
+
+  componentWillUpdate(nextProps) {
+    const param = queryString.parse(nextProps.location.search);
+    this.adminGetApiOverview({ page: 1, ...param });
   }
 
   onPageChange(page) {
@@ -100,7 +107,7 @@ class Overview extends React.Component {
     this.service.adminGetApiOverview(param).then((data) => {
       if (data.code === '2000') {
         this.setState({
-          data: data.data,
+          data: data.data || [],
           size: data.size,
         });
       }
@@ -117,6 +124,7 @@ class Overview extends React.Component {
   }
 
   render() {
+    const hideOnSinglePage = true;
     return (
       <section>
         <BreadNav />
@@ -127,7 +135,12 @@ class Overview extends React.Component {
               <OverviewItem key={e.apiId} item={e} onDelete={this.handleDelete} />
             ))}
         </Row>
-        <Pagination defaultCurrent={1} total={this.state.size} onChange={this.onPageChange} />
+        <Pagination
+          defaultCurrent={1}
+          hideOnSinglePage={hideOnSinglePage}
+          total={this.state.size}
+          onChange={this.onPageChange}
+        />
       </section>
     );
   }
