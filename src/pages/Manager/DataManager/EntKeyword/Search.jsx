@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button, Form, Input, Select } from 'antd';
+import { Row, Col, Button, Form, Input, Select, Upload, Icon, message } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -108,24 +108,45 @@ class Search extends React.Component {
 
   render() {
     const { fields } = this.state;
+    const uploadProps = {
+      name: 'upload',
+      action: 'http://192.168.1.151/ark-portal/dataManage/uploadKeywordInfo',
+      headers: {
+        // authorization: 'authorization-text',
+        'Content-Type': false,
+      },
+      listType: 'text',
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.warn(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
 
     return (
       <section>
         <SearchForm {...fields} provinces={this.state.provinces} onChange={this.handleFormChange} />
         <Row>
           <Col span={12} style={{ float: 'right', marginTop: '8px', textAlign: 'right' }}>
+            <Button type="primary" onClick={this.handleSearch} style={{ marginRight: '10px' }}>
+              查询
+            </Button>
+            <Button type="primary" style={{ marginRight: '10px' }} onClick={this.props.onAddNew}>
+              新增
+            </Button>
             <Button style={{ marginRight: '10px' }} onClick={this.props.onDownload}>
               下载模板
             </Button>
-            <Button type="primary" style={{ marginRight: '10px' }}>
-              批量新增
-            </Button>
-            <Button type="primary" style={{ marginRight: '10px' }}>
-              新增
-            </Button>
-            <Button type="primary" onClick={this.handleSearch}>
-              查询
-            </Button>
+            <Upload {...uploadProps}>
+              <Button>
+                <Icon type="upload" /> 批量新增
+              </Button>
+            </Upload>
           </Col>
         </Row>
       </section>

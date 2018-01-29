@@ -59,7 +59,7 @@ class EntKeywordService {
    */
   addKeywordInfo(data) {
     const method = 'dataManage/addKeywordInfo';
-    return this.http.POST(method, data);
+    return this.http.POST(method, [data]);
   }
 
   /**
