@@ -389,7 +389,6 @@ class Dashboard extends React.Component {
               <Card title="上月，本月用户登录次数对比">
                 <ReactEcharts
                   option={accountVisitOption}
-                  loadingOption={noDataLoadingOption}
                   showLoading={this.state.countCurLoginDatas === []}
                   style={{ height: '300px', width: '1200px' }}
                   className="react_for_echarts"
