@@ -14,7 +14,7 @@ class Scene extends React.Component {
     };
 
     const account = JSON.parse(localStorage.getItem('account'));
-    this.accountId = account.id;
+    this.uid = account.uid;
     this.userType = account.userType;
     this.service = new SceneService();
     this.handleChange = this.handleChange.bind(this);
@@ -30,7 +30,7 @@ class Scene extends React.Component {
   }
 
   onSubmit(data) {
-    const formatData = { accountId: this.accountId };
+    const formatData = { uid: this.uid };
     Object.keys(data).forEach((key) => {
       formatData[key] = data[key].value;
     });
@@ -52,14 +52,14 @@ class Scene extends React.Component {
     }
   }
 
-  onDelete(appMd5, accountId) {
+  onDelete(appMd5, uid) {
     Modal.confirm({
       title: '您确定要删除吗？',
       content: '此操作将彻底删除，并且不能恢复！',
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
-        this.deleteAppWhiteList(appMd5, accountId);
+        this.deleteAppWhiteList(appMd5, uid);
       },
       onCancel: () => {
         message.success('Cancel success');
@@ -74,7 +74,7 @@ class Scene extends React.Component {
   }
 
   getAppWhiteList() {
-    this.service.getAppWhiteList(this.accountId).then((data) => {
+    this.service.getAppWhiteList(this.uid).then((data) => {
       if (data.code === '2000') {
         data.data.map(e => ({
           ...e,
@@ -125,8 +125,8 @@ class Scene extends React.Component {
     });
   }
 
-  deleteAppWhiteList(appMd5, accountId) {
-    this.service.deleteAppWhiteList(appMd5, accountId).then((data) => {
+  deleteAppWhiteList(appMd5, uid) {
+    this.service.deleteAppWhiteList(appMd5, uid).then((data) => {
       if (data.code === '2000') {
         message.success('Delete success!');
         this.getAppWhiteList();

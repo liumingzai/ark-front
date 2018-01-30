@@ -8,25 +8,25 @@ class SceneService {
   /**
    * Get Scene
    *
-   * @param {string} accountId
+   * @param {string} uid
    * @memberof SceneService
    */
-  getAppWhiteList(accountId) {
+  getAppWhiteList(uid) {
     const method = 'common/getAppWhiteList';
-    return this.http.GET(method, { accountId });
+    return this.http.GET(method, { uid });
   }
 
   /**
    * 删除场景
    *
    * @param {string} appMd5
-   * @param {string} accountId
+   * @param {string} uid
    * @returns
    * @memberof SceneService
    */
-  deleteAppWhiteList(appMd5, accountId) {
+  deleteAppWhiteList(appMd5, uid) {
     const method = 'common/deleteAppWhiteList';
-    return this.http.DELETE(method, { appMd5, accountId });
+    return this.http.DELETE(method, { appMd5, uid });
   }
 
   /**
@@ -38,14 +38,14 @@ class SceneService {
   adminUpdateAppWhiteList(p) {
     const method = 'admin/um/updateAppWhiteList';
     const {
-      description, wlContent, active, userToken, accountId, appMd5, applicationName,
+      description, wlContent, active, userToken, uid, appMd5, applicationName,
     } = p;
     return this.http.PUT(method, {
       description,
       wlContent,
       active,
       userToken,
-      accountId,
+      uid,
       appMd5,
       applicationName,
     });
@@ -60,13 +60,13 @@ class SceneService {
   updateAppWhiteList(p) {
     const method = 'common/updateAppWhiteList';
     const {
-      description, wlContent, active, accountId, appMd5, applicationName,
+      description, wlContent, active, uid, appMd5, applicationName,
     } = p;
     return this.http.PUT(method, {
       description,
       wlContent,
       active,
-      accountId,
+      uid,
       appMd5,
       applicationName,
     });
@@ -81,13 +81,13 @@ class SceneService {
   addAppWhiteList(p) {
     const method = 'common/addAppWhiteList';
     const {
-      description, wlContent, active, accountId, applicationName,
+      description, wlContent, active, uid, applicationName,
     } = p;
     return this.http.POST(method, {
       description,
       wlContent,
       active,
-      accountId,
+      uid,
       applicationName,
     });
   }
@@ -101,14 +101,14 @@ class SceneService {
   adminAddAppWhiteList(p) {
     const method = 'admin/um/addAppWhiteList';
     const {
-      description, wlContent, active, userToken, accountId, applicationName,
+      description, wlContent, active, userToken, uid, applicationName,
     } = p;
     return this.http.POST(method, {
       description,
       wlContent,
       active,
       userToken,
-      accountId,
+      uid,
       applicationName,
     });
   }
