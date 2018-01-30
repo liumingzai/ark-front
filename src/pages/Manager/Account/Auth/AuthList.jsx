@@ -129,16 +129,19 @@ class AuthList extends React.Component {
     const columns = [
       {
         title: '权限名称',
+        width: 200,
         dataIndex: 'permissionName',
         key: 'permissionName',
       },
       {
         title: '显示名称',
+        width: 200,
         dataIndex: 'displayName',
         key: 'displayName',
       },
       {
         title: '路径',
+        width: 200,
         dataIndex: 'path',
         key: 'path',
       },
