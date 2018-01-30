@@ -104,11 +104,6 @@ class UserList extends React.Component {
   render() {
     const columns = [
       {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
         title: '用户名',
         dataIndex: 'username',
         key: 'username',

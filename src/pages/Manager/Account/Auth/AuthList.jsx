@@ -128,11 +128,6 @@ class AuthList extends React.Component {
   render() {
     const columns = [
       {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
         title: '权限名称',
         dataIndex: 'permissionName',
         key: 'permissionName',

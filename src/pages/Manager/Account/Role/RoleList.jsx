@@ -107,11 +107,6 @@ class RoleList extends React.Component {
   render() {
     const columns = [
       {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
         title: '角色名',
         dataIndex: 'name',
         key: 'name',
