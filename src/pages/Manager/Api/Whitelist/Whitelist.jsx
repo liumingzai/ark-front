@@ -1,4 +1,5 @@
 import React from 'react';
+import { Breadcrumb } from 'antd';
 import WhitelistSearch from './WhitelistSearch';
 import WhitelistTable from './WhitelistTable';
 import WhitelistService from './WhitelistService';
@@ -12,6 +13,15 @@ function formatDate(timestamp) {
   const D = d < 10 ? `0${d}` : d;
 
   return `${Y}-${M}-${D}`;
+}
+
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>白名单请求记录</Breadcrumb.Item>
+    </Breadcrumb>
+  );
 }
 
 class Whitelist extends React.Component {
@@ -82,6 +92,7 @@ class Whitelist extends React.Component {
   render() {
     return (
       <section>
+        <BreadNav />
         <WhitelistSearch onSearch={this.onSearch} />
         <WhitelistTable
           data={this.state.data}

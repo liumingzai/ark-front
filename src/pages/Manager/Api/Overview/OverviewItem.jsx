@@ -18,7 +18,7 @@ class OverviewItem extends React.Component {
     const { item } = this.props;
     return (
       <Col span={6} style={{ paddingLeft: '6px', paddingRight: '6px', marginBottom: '10px' }}>
-        <Card cover={<img src={defaultLogo} alt="Logo" />}>
+        <Card cover={<img src={item.apiPic ? item.apiPic : defaultLogo} alt="Logo" />}>
           <div className="card-body">
             <h4 className="card-title">
               <Link to={`/manager/api/overview/detail/${item.apiId}`}>{item.apiName}</Link>

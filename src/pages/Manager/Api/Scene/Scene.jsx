@@ -1,9 +1,19 @@
 import React from 'react';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Breadcrumb } from 'antd';
 import SceneService from './SceneService';
 import SceneForm from './SceneForm';
+import Search from './Search';
 
 const ButtonGroup = Button.Group;
+
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>场景管理</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
 
 class Scene extends React.Component {
   constructor(props) {
@@ -168,6 +178,8 @@ class Scene extends React.Component {
   render() {
     return (
       <section>
+        <BreadNav />
+        <Search />
         <div className="flex flex-h-between">
           <ButtonGroup>
             {this.state.data.map((item, index) => (

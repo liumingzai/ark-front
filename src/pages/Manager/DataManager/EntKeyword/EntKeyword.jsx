@@ -1,9 +1,18 @@
 import React from 'react';
-import { message } from 'antd';
+import { message, Breadcrumb } from 'antd';
 import Service from './EntKeywordService';
 import Search from './Search';
 import TableView from './TableView';
 import AddNew from './AddNew';
+
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>数据管理</Breadcrumb.Item>
+      <Breadcrumb.Item>企业关键字</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
 
 class EntKeyword extends React.Component {
   constructor(props) {
@@ -104,6 +113,7 @@ class EntKeyword extends React.Component {
   render() {
     return (
       <section>
+        <BreadNav />
         {this.state.isAdding ? (
           <AddNew
             provinces={this.state.provinces}

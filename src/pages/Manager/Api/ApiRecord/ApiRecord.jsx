@@ -1,4 +1,5 @@
 import React from 'react';
+import { Breadcrumb } from 'antd';
 import ApiRecordSearch from './ApiRecordSearch';
 import ApiRecordTable from './ApiRecordTable';
 import ApiRecordService from './ApiRecordService';
@@ -12,6 +13,15 @@ function formatDate(timestamp) {
   const D = d < 10 ? `0${d}` : d;
 
   return `${Y}-${M}-${D}`;
+}
+
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>API调用记录</Breadcrumb.Item>
+    </Breadcrumb>
+  );
 }
 
 function getUserType() {
@@ -122,6 +132,7 @@ class ApiRecord extends React.Component {
   render() {
     return (
       <section>
+        <BreadNav />
         <ApiRecordSearch isAdmin={this.isAdmin} onSearch={this.onSearch} />
         <ApiRecordTable
           isAdmin={this.isAdmin}

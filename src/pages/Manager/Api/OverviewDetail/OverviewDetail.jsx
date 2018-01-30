@@ -1,11 +1,23 @@
 import React from 'react';
-import { Form, Input, Col, Button, Switch, message } from 'antd';
+import { Link } from 'react-router-dom';
+import { Form, Input, Col, Button, Switch, message, Breadcrumb } from 'antd';
 import CodeError from './CodeError';
 import RequestBody from './RequestBody';
 import OverviewDetailService from './OverviewDetailService';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <Link to="/manager/api/overview">接口管理</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>接口详情</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
 
 const DetailForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -368,6 +380,7 @@ class OverviewDetail extends React.Component {
 
     return (
       <div>
+        <BreadNav />
         <DetailForm {...fields} onChange={this.handleFormChange} />
 
         <Col span={24}>

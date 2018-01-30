@@ -9,8 +9,8 @@ import OverviewService from './OverviewService';
 function BreadNav() {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item>Home</Breadcrumb.Item>
-      <Breadcrumb.Item>API Overview</Breadcrumb.Item>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>接口管理</Breadcrumb.Item>
     </Breadcrumb>
   );
 }

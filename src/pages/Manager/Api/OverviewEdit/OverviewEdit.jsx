@@ -1,9 +1,21 @@
 import React from 'react';
-import { Form, Input, Button, Col, Select, Upload, message } from 'antd';
+import { Link } from 'react-router-dom';
+import { Form, Input, Button, Col, Select, Upload, message, Breadcrumb } from 'antd';
 import OverviewEditService from './OverviewEditService';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+function BreadNav() {
+  return (
+    <Breadcrumb>
+      <Breadcrumb.Item>API管理</Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <Link to="/manager/api/overview">接口管理</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>编辑接口</Breadcrumb.Item>
+    </Breadcrumb>
+  );
+}
 
 const SearchForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -41,6 +53,9 @@ const SearchForm = Form.create({
 
   return (
     <Form>
+      <Col span={24}>
+        <BreadNav />
+      </Col>
       <Col span={14}>
         <FormItem label="接口名称">
           {getFieldDecorator('apiName', {
@@ -69,7 +84,11 @@ const SearchForm = Form.create({
         <FormItem label="显示图片">
           {getFieldDecorator('apiPic', {
             rules: [],
-          })(<Upload {...uploadOption}>upload</Upload>)}
+          })(
+            <Upload {...uploadOption}>
+              <Button>upload</Button>
+            </Upload>,
+          )}
         </FormItem>
       </Col>
     </Form>
