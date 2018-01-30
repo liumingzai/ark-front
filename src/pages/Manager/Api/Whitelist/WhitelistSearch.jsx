@@ -12,9 +12,9 @@ const SearchForm = Form.create({
         ...props.uid,
         value: props.uid.value,
       }),
-      apiId: Form.createFormField({
-        ...props.apiId,
-        value: props.apiId.value,
+      apiName: Form.createFormField({
+        ...props.apiName,
+        value: props.apiName.value,
       }),
       dailyDate: Form.createFormField({
         ...props.dailyDate,
@@ -43,8 +43,8 @@ const SearchForm = Form.create({
         })(<Input />)}
       </FormItem>
 
-      <FormItem label="API ID">
-        {getFieldDecorator('apiId', {
+      <FormItem label="API Name">
+        {getFieldDecorator('apiName', {
           rules: [],
         })(<Input />)}
       </FormItem>
@@ -82,7 +82,7 @@ class WhitelistSearch extends React.Component {
         uid: {
           value: '',
         },
-        apiId: {
+        apiName: {
           value: '',
         },
         clientIp: {

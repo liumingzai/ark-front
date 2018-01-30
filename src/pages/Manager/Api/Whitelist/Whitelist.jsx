@@ -40,7 +40,7 @@ class Whitelist extends React.Component {
   onSearch(data) {
     const {
       uid: { value: uid },
-      apiId: { value: apiId },
+      apiName: { value: apiName },
       clientIp: { value: clientIp },
       url: { value: url },
     } = data;
@@ -53,7 +53,7 @@ class Whitelist extends React.Component {
 
     this.getSummaryWhiteListLog({
       uid,
-      apiId,
+      apiName,
       dailyDate,
       clientIp,
       url,
@@ -69,7 +69,10 @@ class Whitelist extends React.Component {
           pageSize: this.state.pageConf.pageSize,
         };
         this.setState({
-          data: data.data,
+          data: data.data.map((e) => {
+            e.dailyDate = formatDate(e.dailyDate);
+            return e;
+          }),
           pageConf,
         });
       }

@@ -8,14 +8,6 @@ const columns = [
     render: text => <a href="#a">{text}</a>,
   },
   {
-    title: '用户ID',
-    dataIndex: 'accountId',
-  },
-  {
-    title: 'API ID',
-    dataIndex: 'apiId',
-  },
-  {
     title: '资源名称',
     dataIndex: 'url',
   },
@@ -60,8 +52,6 @@ function WhitelistTable(props) {
     dataSource = data.map(e => ({
       key: e.id,
       uid: e.uid,
-      accountId: e.accountId,
-      apiId: e.apiId,
       url: e.url,
       clientIp: e.clientIp,
       passFlag: e.passFlag,

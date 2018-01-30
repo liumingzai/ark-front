@@ -15,13 +15,13 @@ class WhitelistService {
   getSummaryWhiteListLog(p) {
     const method = '/admin/api/getSummaryWhiteListLog';
     const {
-      page: pageNum, uid, apiId, clientIp, url, dailyDate,
+      page: pageNum, uid, apiName, clientIp, url, dailyDate,
     } = p;
 
     return this.http.GET(method, {
       pageNum,
       uid,
-      apiId,
+      apiName,
       clientIp,
       url,
       dailyDate,
