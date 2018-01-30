@@ -106,7 +106,9 @@ class UserList extends React.Component {
       {
         title: 'Id',
         dataIndex: 'id',
-        key: 'id',
+        render: (text, record, index) => {
+          return index + 1;
+        },
       },
       {
         title: '用户名',
