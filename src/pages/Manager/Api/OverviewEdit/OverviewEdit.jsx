@@ -17,6 +17,18 @@ function BreadNav() {
   );
 }
 
+function handleImg(imgURL) {
+  const pre = 'http://192.168.1.145/dc/';
+  return {
+    addPre() {
+      return `${pre}${imgURL}`;
+    },
+    trimPre() {
+      return imgURL.replace(pre, '');
+    },
+  };
+}
+
 const SearchForm = Form.create({
   onFieldsChange(props, changedFields) {
     props.onChange(changedFields);
@@ -50,6 +62,7 @@ const SearchForm = Form.create({
     onChange: props.onUploadImg,
     withCredentials: true,
     multiple: false,
+    fileList: props.fileList,
     onRemove: props.onRemoveImg,
   };
 
@@ -100,6 +113,14 @@ const SearchForm = Form.create({
 class OverviewEdit extends React.Component {
   constructor(props) {
     super(props);
+    const fileList = [
+      {
+        uid: -1,
+        name: 'default.png',
+        status: 'done',
+        url: '',
+      },
+    ];
     this.state = {
       fields: {
         apiName: {
@@ -116,12 +137,14 @@ class OverviewEdit extends React.Component {
         },
       },
       apiPic: null,
+      fileList,
     };
     this.service = new OverviewEditService();
     this.apiId = this.props.match.params.id;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   componentDidMount() {
@@ -139,8 +162,17 @@ class OverviewEdit extends React.Component {
             value: data.data[key],
           };
         });
+        const fileList = [
+          {
+            uid: -2,
+            name: 'Interface Logo',
+            status: 'done',
+            url: data.data.apiPic,
+          },
+        ];
         this.setState({
           fields,
+          fileList,
         });
       }
     });
@@ -175,7 +207,7 @@ class OverviewEdit extends React.Component {
     });
 
     // reset apiPic
-    data.apiPic = this.state.apiPic.replace('http://192.168.1.145/dc/', '');
+    data.apiPic = this.state.apiPic ? handleImg(this.state.apiPic).trimPre() : null;
     if (this.apiId) {
       data.apiId = this.apiId;
       this.updateApiOverview(data);
@@ -185,15 +217,24 @@ class OverviewEdit extends React.Component {
   }
 
   handleUpload(e) {
-    if (e && e.fileList && e.fileList[0].response) {
+    this.setState({
+      fileList: e.fileList,
+    });
+    if (e.fileList && e.fileList.length > 0 && e.fileList[0].response) {
       this.setState({
         apiPic: e.fileList[0].response.message,
       });
     }
   }
 
+  handleRemove() {
+    this.setState({
+      apiPic: null,
+    });
+  }
+
   render() {
-    const { fields } = this.state;
+    const { fields, fileList } = this.state;
     const selectOptions = [];
     const cats = ['企业', '专利', '工商', '其他'];
     for (let i = 0; i < cats.length; i++) {
@@ -209,9 +250,11 @@ class OverviewEdit extends React.Component {
       <div>
         <SearchForm
           {...fields}
+          fileList={fileList}
           selectOptions={selectOptions}
           onChange={this.handleFormChange}
           onUploadImg={this.handleUpload}
+          onRemoveImg={this.handleRemove}
         />
         <Col span={14} style={{ textAlign: 'center' }}>
           <Button type="primary" onClick={this.handleSave}>
