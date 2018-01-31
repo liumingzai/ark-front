@@ -240,6 +240,7 @@ class AuthList extends React.Component {
           <Table
             rowKey={record => record.id}
             columns={columns}
+            size="middle"
             dataSource={this.state.data}
             loading={this.state.loading}
             onChange={this.handleChange}
