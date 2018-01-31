@@ -18,13 +18,13 @@ function BreadNav() {
 class Scene extends React.Component {
   constructor(props) {
     super(props);
+    const account = JSON.parse(localStorage.getItem('account'));
     this.state = {
       data: [],
       sceneItem: null,
+      uid: account.uid,
     };
 
-    const account = JSON.parse(localStorage.getItem('account'));
-    this.uid = account.uid;
     this.userType = account.userType;
     this.service = new SceneService();
     this.handleChange = this.handleChange.bind(this);
@@ -33,6 +33,7 @@ class Scene extends React.Component {
     this.deleteAppWhiteList = this.deleteAppWhiteList.bind(this);
     this.onAddNewScene = this.onAddNewScene.bind(this);
     this.handleUserToken = this.handleUserToken.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +41,7 @@ class Scene extends React.Component {
   }
 
   onSubmit(data) {
-    const formatData = { uid: this.uid };
+    const formatData = { uid: this.state.uid };
     Object.keys(data).forEach((key) => {
       formatData[key] = data[key].value;
     });
@@ -83,8 +84,24 @@ class Scene extends React.Component {
     });
   }
 
-  getAppWhiteList() {
-    this.service.getAppWhiteList(this.uid).then((data) => {
+  getUid(uid) {
+    let uidValue;
+    if (uid.uid) {
+      uidValue = uid.uid;
+    } else {
+      uidValue = JSON.parse(localStorage.getItem('account')).uid;
+    }
+
+    this.setState({
+      uid: uidValue,
+    });
+
+    this.getAppWhiteList(uidValue);
+  }
+
+  getAppWhiteList(uid) {
+    uid = uid || this.state.uid;
+    this.service.getAppWhiteList(uid).then((data) => {
       if (data.code === '2000') {
         data.data.map(e => ({
           ...e,
@@ -151,6 +168,10 @@ class Scene extends React.Component {
     });
   }
 
+  handleSearch(values) {
+    this.getUid(values);
+  }
+
   handleUserToken(appMd5) {
     this.service.getUserToken().then((data) => {
       if (data.code === '2000') {
@@ -179,7 +200,7 @@ class Scene extends React.Component {
     return (
       <section>
         <BreadNav />
-        <Search />
+        {this.userType === 1 ? <Search onSearch={this.handleSearch} /> : null}
         <div className="flex flex-h-between">
           <ButtonGroup>
             {this.state.data.map((item, index) => (

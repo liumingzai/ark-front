@@ -11,6 +11,7 @@ class Http {
   constructor() {
     this.baseURL = 'http://192.168.1.151/ark-portal';
     // this.baseURL = '/proxy/api-portal';
+    this.imgPathPre = 'http://192.168.1.145/dc/';
 
     this.axios = axios.create({
       baseURL: this.baseURL,

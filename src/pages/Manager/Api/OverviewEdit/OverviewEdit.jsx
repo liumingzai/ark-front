@@ -47,8 +47,10 @@ const SearchForm = Form.create({
 })((props) => {
   const { getFieldDecorator } = props.form;
   const uploadOption = {
+    name: 'upload',
     action: 'http://192.168.1.151/ark-portal/common/uploadPicture?entity=interface',
     listType: 'picture',
+    onChange: props.onUploadImg,
   };
 
   return (
@@ -171,12 +173,18 @@ class OverviewEdit extends React.Component {
       data[key] = this.state.fields[key].value;
     });
 
+    // reset apiPic
+
     if (this.apiId) {
       data.apiId = this.apiId;
       this.updateApiOverview(data);
     } else {
       this.addApiOverview(data);
     }
+  }
+
+  handleUpload() {
+    console.warn(this);
   }
 
   render() {
@@ -194,7 +202,12 @@ class OverviewEdit extends React.Component {
 
     return (
       <div>
-        <SearchForm {...fields} selectOptions={selectOptions} onChange={this.handleFormChange} />
+        <SearchForm
+          {...fields}
+          selectOptions={selectOptions}
+          onChange={this.handleFormChange}
+          onUploadImg={this.handleUpload}
+        />
         <Col span={14} style={{ textAlign: 'center' }}>
           <Button type="primary" onClick={this.handleSave}>
             Save
