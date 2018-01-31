@@ -13,7 +13,7 @@ function SideNav(props) {
           {props.account.typeName === '管理员' ? (
             <Menu.Item key="sub01">
               <Link to={`${props.match.path}/dashboard`}>
-                <Icon type="dashboard" /> Dashboard
+                <Icon type="dashboard" /> 首页
               </Link>
             </Menu.Item>
           ) : null}
@@ -94,11 +94,20 @@ function SideNav(props) {
             </Menu.Item>
           </SubMent>
 
-          <Menu.Item key="sub10">
-            <Link to={`${props.match.path}/setting`}>
-              <Icon type="setting" /> Setting
-            </Link>
-          </Menu.Item>
+          <SubMent
+            key="p04"
+            title={
+              <span>
+                <Icon type="user" /> <span>用户中心</span>
+              </span>
+            }
+          >
+            <Menu.Item key="sub10">
+              <Link to={`${props.match.path}/setting`}>
+                <Icon type="setting" /> 个人中心
+              </Link>
+            </Menu.Item>
+          </SubMent>
         </Menu>
       </Sider>
       {props.children}

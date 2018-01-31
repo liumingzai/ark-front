@@ -48,22 +48,22 @@ class UserAvatar extends React.Component {
         >
           <Menu.Item key="setting:0">
             <Link to="/manager/dashboard">
-              <Icon type="dashboard" /> DashBoard{' '}
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="setting:1">
-            <Link to="/manager/api">
-              <Icon type="fork" /> API Manager{' '}
+              <Icon type="dashboard" /> 首页{' '}
             </Link>
           </Menu.Item>
           <Menu.Item key="setting:2">
             <Link to="/manager/user">
-              <Icon type="team" /> User Manager{' '}
+              <Icon type="team" /> 用户管理{' '}
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="setting:1">
+            <Link to="/manager/api">
+              <Icon type="fork" /> 接口管理{' '}
             </Link>
           </Menu.Item>
           <Menu.Item key="setting:3">
             <Link to="/manager/setting">
-              <Icon type="setting" /> Setting{' '}
+              <Icon type="setting" /> 个人中心{' '}
             </Link>
           </Menu.Item>
           <Menu.Item key="setting:4">

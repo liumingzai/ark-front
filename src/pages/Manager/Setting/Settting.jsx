@@ -146,7 +146,7 @@ class Setting extends React.Component {
 
     return (
       <div>
-        <h1>账号设置</h1>
+        <h1>个人信息</h1>
         <Form>
           <FormItem label="头像" {...formItemLayout}>
             {

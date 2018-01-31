@@ -17,6 +17,7 @@ class UserList extends React.Component {
       pagination: {
         total: 0,
         pageSize: 10,
+        current: 1,
       },
       loading: false,
       data: [],
@@ -28,7 +29,7 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch({ pageNum: 1 });
+    this.handleSearch({ pageNum: this.state.pagination.current });
   }
 
   changeState(value) {
@@ -45,6 +46,11 @@ class UserList extends React.Component {
 
   /*分页事件*/
   onChange(current) {
+    this.setState({
+      pagination: {
+        current: current,
+      },
+    });
     this.handleSearch({ pageNum: current });
   }
 
@@ -59,7 +65,7 @@ class UserList extends React.Component {
         _that.userService.deleteUserById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
-            _that.handleSearch({ pageNum: 1 });
+            _that.handleSearch({ pageNum: this.state.pagination.current });
           }
         });
       },
@@ -96,7 +102,11 @@ class UserList extends React.Component {
     let _that = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _that.handleSearch({ username: this.state.username, state: this.state.state, pageNum: 1 });
+        _that.handleSearch({
+          username: this.state.username,
+          state: this.state.state,
+          pageNum: this.state.pagination.current,
+        });
       }
     });
   }
@@ -144,10 +154,10 @@ class UserList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/user/edit/' + record.id}>Edit</Link>
+            <Link to={'/manager/account/user/edit/' + record.id}>编辑</Link>
             <Divider type="vertical" />
             <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
-              Delete
+              删除
             </a>
           </span>
         ),
@@ -166,10 +176,6 @@ class UserList extends React.Component {
     return (
       <div>
         <h1>用户管理</h1>
-        <br />
-        <Link to="/manager/account/user/edit" className="item">
-          创建用户
-        </Link>
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem label="用户名">
             <Input
@@ -189,6 +195,13 @@ class UserList extends React.Component {
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
+            </Button>
+          </FormItem>
+          <FormItem {...buttonItemLayout}>
+            <Button type="primary">
+              <Link to="/manager/account/user/edit" className="item">
+                创建用户
+              </Link>
             </Button>
           </FormItem>
         </Form>

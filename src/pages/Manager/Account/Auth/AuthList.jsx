@@ -176,10 +176,10 @@ class AuthList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/auth/edit/' + record.id}>Edit</Link>
+            <Link to={'/manager/account/auth/edit/' + record.id}>编辑</Link>
             <Divider type="vertical" />
             <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
-              Delete
+              删除
             </a>
           </span>
         ),
@@ -198,10 +198,6 @@ class AuthList extends React.Component {
     return (
       <div>
         <h1>权限管理</h1>
-        <br />
-        <Link to="/manager/account/auth/edit" className="item">
-          创建权限
-        </Link>
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem label="权限名称">
             <Input
@@ -229,6 +225,13 @@ class AuthList extends React.Component {
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
+            </Button>
+          </FormItem>
+          <FormItem {...buttonItemLayout}>
+            <Button type="primary">
+              <Link to="/manager/account/auth/edit" className="item">
+                创建权限
+              </Link>
             </Button>
           </FormItem>
         </Form>

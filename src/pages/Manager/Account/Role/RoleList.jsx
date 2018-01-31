@@ -137,12 +137,12 @@ class RoleList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/role/bind/' + record.id}>BindAuth</Link>
+            <Link to={'/manager/account/role/bind/' + record.id}>绑定</Link>
             <Divider type="vertical" />
-            <Link to={'/manager/account/role/edit/' + record.id}>Edit</Link>
+            <Link to={'/manager/account/role/edit/' + record.id}>编辑</Link>
             <Divider type="vertical" />
             <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
-              Delete
+              删除
             </a>
           </span>
         ),
@@ -161,10 +161,6 @@ class RoleList extends React.Component {
     return (
       <div>
         <h1>角色管理</h1>
-        <br />
-        <Link to="/manager/account/role/edit" className="item">
-          创建角色
-        </Link>
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem label="角色名">
             <Input
@@ -184,6 +180,13 @@ class RoleList extends React.Component {
           <FormItem {...buttonItemLayout}>
             <Button type="primary" htmlType="submit">
               查询
+            </Button>
+          </FormItem>
+          <FormItem {...buttonItemLayout}>
+            <Button type="primary">
+              <Link to="/manager/account/role/edit" className="item">
+                创建角色
+              </Link>
             </Button>
           </FormItem>
         </Form>
