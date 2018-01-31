@@ -17,7 +17,6 @@ class UserForm extends Component {
     this.state = {
       user: {
         username: '',
-        uid: '',
         email: '',
         phone: '',
         state: '',
@@ -144,21 +143,6 @@ class UserForm extends Component {
               ],
             }
           )(<Input placeholder="请输入用户名" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="用户UID">
-          {getFieldDecorator(
-            'uid',
-            {
-              initialValue: this.state.user.uid ? this.state.user.uid : '',
-            },
-            {
-              rules: [
-                {
-                  required: false,
-                },
-              ],
-            }
-          )(<Input placeholder="请输入用户UID" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="邮箱">
           {getFieldDecorator(
