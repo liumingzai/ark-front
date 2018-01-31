@@ -180,11 +180,7 @@ class UserList extends React.Component {
             />
           </FormItem>
           <FormItem label="状态">
-            <Select
-              style={{ width: 200 }}
-              placeholder="选择有效状态"
-              onChange={this.changeState.bind(this)}
-            >
+            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState.bind(this)}>
               <Option value="">全部</Option>
               <Option value="1">有效</Option>
               <Option value="0">无效</Option>
