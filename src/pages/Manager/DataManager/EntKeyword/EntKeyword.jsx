@@ -14,6 +14,17 @@ function BreadNav() {
   );
 }
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const Y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const M = m < 10 ? `0${m}` : m;
+  const d = date.getDate();
+  const D = d < 10 ? `0${d}` : d;
+
+  return `${Y}-${M}-${D}`;
+}
+
 class EntKeyword extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +73,10 @@ class EntKeyword extends React.Component {
           pageSize: this.state.pageOption.pageSize,
         };
         this.setState({
-          tableData: data.data,
+          tableData: data.data.map((e) => {
+            e.createTime = formatDate(e.createTime);
+            return e;
+          }),
           pageOption,
         });
       }
