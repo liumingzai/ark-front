@@ -158,6 +158,7 @@ class Overview extends React.Component {
         </Row>
         <Pagination
           defaultCurrent={1}
+          pageSizeOptions={12}
           hideOnSinglePage={hideOnSinglePage}
           total={this.state.size}
           onChange={this.onPageChange}
