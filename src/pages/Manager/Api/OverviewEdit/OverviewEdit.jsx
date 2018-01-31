@@ -41,9 +41,6 @@ const SearchForm = Form.create({
       }),
     };
   },
-  onValuesChange(_, value) {
-    console.warn(value);
-  },
 })((props) => {
   const { getFieldDecorator } = props.form;
   const uploadOption = {
@@ -51,6 +48,9 @@ const SearchForm = Form.create({
     action: 'http://192.168.1.151/ark-portal/common/uploadPicture?entity=interface',
     listType: 'picture',
     onChange: props.onUploadImg,
+    withCredentials: true,
+    multiple: false,
+    onRemove: props.onRemoveImg,
   };
 
   return (
@@ -115,11 +115,13 @@ class OverviewEdit extends React.Component {
           value: '',
         },
       },
+      apiPic: null,
     };
     this.service = new OverviewEditService();
     this.apiId = this.props.match.params.id;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   componentDidMount() {
@@ -167,14 +169,13 @@ class OverviewEdit extends React.Component {
   }
 
   handleSave() {
-    console.warn(this.state.fields);
     const data = {};
     Object.keys(this.state.fields).forEach((key) => {
       data[key] = this.state.fields[key].value;
     });
 
     // reset apiPic
-
+    data.apiPic = this.state.apiPic.replace('http://192.168.1.145/dc/', '');
     if (this.apiId) {
       data.apiId = this.apiId;
       this.updateApiOverview(data);
@@ -183,8 +184,12 @@ class OverviewEdit extends React.Component {
     }
   }
 
-  handleUpload() {
-    console.warn(this);
+  handleUpload(e) {
+    if (e && e.fileList && e.fileList[0].response) {
+      this.setState({
+        apiPic: e.fileList[0].response.message,
+      });
+    }
   }
 
   render() {
