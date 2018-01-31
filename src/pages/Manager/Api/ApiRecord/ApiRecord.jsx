@@ -44,6 +44,7 @@ class ApiRecord extends React.Component {
 
     this.service = new ApiRecordService();
     this.onSearch = this.onSearch.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
