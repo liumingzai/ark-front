@@ -47,6 +47,7 @@ class EntKeyword extends React.Component {
     this.handleAddNew = this.handleAddNew.bind(this);
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleCancelAdd = this.handleCancelAdd.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +89,6 @@ class EntKeyword extends React.Component {
   }
 
   handleSearch(param) {
-    console.warn(param);
     this.search({ ...this.searchParam, ...param });
   }
 
