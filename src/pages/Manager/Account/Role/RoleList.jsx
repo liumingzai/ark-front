@@ -18,6 +18,7 @@ class RoleList extends React.Component {
       pagination: {
         total: 0,
         pageSize: 10,
+        current: 1,
       },
       loading: false,
       data: [],
@@ -31,7 +32,11 @@ class RoleList extends React.Component {
   componentDidMount() {
     // 表单校验未成功，提交按钮不可点击
     this.props.form.validateFields();
-    this.handleSearch({ pageNum: 1 });
+    this.handleSearch({
+      name: this.state.name,
+      pageNum: this.state.pagination.current,
+      active: this.state.active,
+    });
   }
 
   changeState(value) {
@@ -48,7 +53,16 @@ class RoleList extends React.Component {
 
   /*分页事件*/
   onChange(current) {
-    this.handleSearch({ pageNum: current });
+    this.setState({
+      pagination: {
+        current: current,
+      },
+    });
+    this.handleSearch({
+      name: this.state.name,
+      pageNum: current,
+      active: this.state.active,
+    });
   }
 
   handleDeleteUser(e) {
@@ -62,7 +76,11 @@ class RoleList extends React.Component {
         _that.roleService.deleteRoleById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
-            _that.handleSearch();
+            _that.handleSearch({
+              name: this.state.name,
+              pageNum: this.state.pagination.current,
+              active: this.state.active,
+            });
           }
         });
       },
@@ -72,8 +90,8 @@ class RoleList extends React.Component {
   // 排序变化
   handleChange(pagination, filters, sorter) {
     this.handleSearch({
-      username: this.state.username,
-      pageNum: pagination.current,
+      name: this.state.name,
+      pageNum: this.state.pagination.current,
       active: this.state.active,
       entryDatatime: sorter.order == 'ascend' ? 1 : 0,
     });
@@ -99,7 +117,11 @@ class RoleList extends React.Component {
     let _that = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _that.handleSearch({ name: this.state.name, active: this.state.active, pageNum: 1 });
+        _that.handleSearch({
+          name: this.state.name,
+          pageNum: this.state.pagination.current,
+          active: this.state.active,
+        });
       }
     });
   }
@@ -196,7 +218,7 @@ class RoleList extends React.Component {
             columns={columns}
             dataSource={this.state.data}
             loading={this.state.loading}
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,

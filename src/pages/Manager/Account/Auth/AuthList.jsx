@@ -20,6 +20,7 @@ class AuthList extends React.Component {
       pagination: {
         total: 0,
         pageSize: 10,
+        current: 1,
       },
       loading: false,
       data: [],
@@ -31,7 +32,12 @@ class AuthList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch({ pageNum: 1 });
+    this.handleSearch({
+      permissionName: this.state.queryParam.permissionName,
+      path: this.state.queryParam.path,
+      active: this.state.queryParam.active,
+      pageNum: this.state.pagination.current,
+    });
   }
 
   changePermissionName(e) {
@@ -40,6 +46,7 @@ class AuthList extends React.Component {
         permissionName: e.target.value,
         path: this.state.queryParam.path,
         active: this.state.active,
+        pageNum: this.state.pagination.current,
       },
     });
   }
@@ -50,6 +57,7 @@ class AuthList extends React.Component {
         permissionName: this.state.queryParam.permissionName,
         path: e.target.value,
         active: this.state.active,
+        pageNum: this.state.pagination.current,
       },
     });
   }
@@ -60,13 +68,24 @@ class AuthList extends React.Component {
         permissionName: this.state.queryParam.permissionName,
         path: this.state.path,
         active: value,
+        pageNum: this.state.pagination.current,
       },
     });
   }
 
   /*分页事件*/
   onChange(current) {
-    this.handleSearch({ pageNum: current });
+    this.setState({
+      pagination: {
+        current: current,
+      },
+    });
+    this.handleSearch({
+      permissionName: this.state.queryParam.permissionName,
+      path: this.state.queryParam.path,
+      active: this.state.queryParam.active,
+      pageNum: current,
+    });
   }
 
   handleDeleteUser(e) {
@@ -80,7 +99,12 @@ class AuthList extends React.Component {
         _that.authService.deleteAuthById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete auth success！！！');
-            _that.handleSearch({ pageNum: 1 });
+            _that.handleSearch({
+              permissionName: this.state.queryParam.permissionName,
+              path: this.state.queryParam.path,
+              active: this.state.queryParam.active,
+              pageNum: this.state.pagination.current,
+            });
           }
         });
       },
@@ -93,7 +117,7 @@ class AuthList extends React.Component {
       permissionName: this.state.queryParam.permissionName,
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
-      pageNum: pagination.current,
+      pageNum: this.state.pagination.current,
       entryDatatime: sorter.order == 'ascend' ? 1 : 0,
     });
   }
@@ -119,7 +143,6 @@ class AuthList extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let params = Object.assign({}, this.state.queryParam);
-        params.pageNum = 1;
         _that.handleSearch(params);
       }
     });
@@ -242,7 +265,7 @@ class AuthList extends React.Component {
             size="middle"
             dataSource={this.state.data}
             loading={this.state.loading}
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,

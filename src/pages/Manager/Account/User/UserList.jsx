@@ -29,7 +29,11 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
-    this.handleSearch({ pageNum: this.state.pagination.current });
+    this.handleSearch({
+      username: this.state.username,
+      pageNum: this.state.pagination.current,
+      state: this.state.state,
+    });
   }
 
   changeState(value) {
@@ -51,7 +55,11 @@ class UserList extends React.Component {
         current: current,
       },
     });
-    this.handleSearch({ pageNum: current });
+    this.handleSearch({
+      username: this.state.username,
+      pageNum: current,
+      state: this.state.state,
+    });
   }
 
   handleDeleteUser(e) {
@@ -65,7 +73,11 @@ class UserList extends React.Component {
         _that.userService.deleteUserById(e).then(data => {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
-            _that.handleSearch({ pageNum: this.state.pagination.current });
+            _that.handleSearch({
+              username: this.state.username,
+              pageNum: this.state.pagination.current,
+              state: this.state.state,
+            });
           }
         });
       },
@@ -211,7 +223,7 @@ class UserList extends React.Component {
             columns={columns}
             dataSource={this.state.data}
             loading={this.state.loading}
-            onChange={this.handleChange}
+            // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
               total: this.state.pagination.total,
