@@ -74,9 +74,9 @@ class UserList extends React.Component {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
             _that.handleSearch({
-              username: this.state.username,
-              pageNum: this.state.pagination.current,
-              state: this.state.state,
+              username: _that.state.username,
+              pageNum: _that.state.pagination.current,
+              state: _that.state.state,
             });
           }
         });

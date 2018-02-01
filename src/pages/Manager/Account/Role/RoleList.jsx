@@ -77,9 +77,9 @@ class RoleList extends React.Component {
           if ('2000' === data.code) {
             message.success('delete user success！！！');
             _that.handleSearch({
-              name: this.state.name,
-              pageNum: this.state.pagination.current,
-              active: this.state.active,
+              name: _that.state.name,
+              pageNum: _that.state.pagination.current,
+              active: _that.state.active,
             });
           }
         });
@@ -98,6 +98,7 @@ class RoleList extends React.Component {
   }
 
   handleSearch(e) {
+    console.warn(111111111111111111111111111111111);
     this.setState({ loading: true });
     this.roleService.getRoleList(e).then(data => {
       if ('2000' === data.code) {

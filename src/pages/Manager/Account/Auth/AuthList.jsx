@@ -101,9 +101,9 @@ class AuthList extends React.Component {
             message.success('delete auth success！！！');
             _that.handleSearch({
               permissionName: this.state.queryParam.permissionName,
-              path: this.state.queryParam.path,
-              active: this.state.queryParam.active,
-              pageNum: this.state.pagination.current,
+              path: _that.state.queryParam.path,
+              active: _that.state.queryParam.active,
+              pageNum: _that.state.pagination.current,
             });
           }
         });
