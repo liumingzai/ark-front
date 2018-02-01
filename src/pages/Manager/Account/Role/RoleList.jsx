@@ -98,7 +98,6 @@ class RoleList extends React.Component {
   }
 
   handleSearch(e) {
-    console.warn(111111111111111111111111111111111);
     this.setState({ loading: true });
     this.roleService.getRoleList(e).then(data => {
       if ('2000' === data.code) {

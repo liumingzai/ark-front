@@ -10,6 +10,8 @@ import _ from 'lodash';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const { TextArea } = Input;
+
 const history = createHistory();
 
 class AuthForm extends Component {
@@ -22,6 +24,7 @@ class AuthForm extends Component {
         permissionName: '',
         displayName: '',
         path: '',
+        description: '',
         filters: '',
         permissionScope: '',
       },
@@ -156,7 +159,7 @@ class AuthForm extends Component {
                 },
               ],
             }
-          )(<Input placeholder="请输入显示名称" />)}
+          )(<Input placeholder="请输入显示名称" type="TextArea" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="路径">
           {getFieldDecorator(
@@ -173,6 +176,21 @@ class AuthForm extends Component {
               ],
             }
           )(<Input placeholder="请输入路径" />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="描述">
+          {getFieldDecorator(
+            'description',
+            {
+              initialValue: this.state.auth.description || '',
+            },
+            {
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            }
+          )(<TextArea placeholder="请输入描述" rows={4} />)}
         </FormItem>
         <FormItem {...formItemLayout} label="过滤器">
           {getFieldDecorator(

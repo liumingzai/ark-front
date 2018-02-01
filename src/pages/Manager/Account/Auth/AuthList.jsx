@@ -33,17 +33,17 @@ class AuthList extends React.Component {
 
   componentDidMount() {
     this.handleSearch({
-      permissionName: this.state.queryParam.permissionName,
+      displayName: this.state.queryParam.displayName,
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
       pageNum: this.state.pagination.current,
     });
   }
 
-  changePermissionName(e) {
+  changeDisplayName(e) {
     this.setState({
       queryParam: {
-        permissionName: e.target.value,
+        displayName: e.target.value,
         path: this.state.queryParam.path,
         active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
@@ -54,7 +54,7 @@ class AuthList extends React.Component {
   changePathName(e) {
     this.setState({
       queryParam: {
-        permissionName: this.state.queryParam.permissionName,
+        displayName: this.state.queryParam.displayName,
         path: e.target.value,
         active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
@@ -65,7 +65,7 @@ class AuthList extends React.Component {
   changeState(value) {
     this.setState({
       queryParam: {
-        permissionName: this.state.queryParam.permissionName,
+        displayName: this.state.queryParam.displayName,
         path: this.state.queryParam.path,
         active: value,
         pageNum: this.state.pagination.current,
@@ -81,7 +81,7 @@ class AuthList extends React.Component {
       },
     });
     this.handleSearch({
-      permissionName: this.state.queryParam.permissionName,
+      displaName: this.state.queryParam.displaName,
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
       pageNum: current,
@@ -100,7 +100,7 @@ class AuthList extends React.Component {
           if ('2000' === data.code) {
             message.success('delete auth success！！！');
             _that.handleSearch({
-              permissionName: this.state.queryParam.permissionName,
+              displaName: this.state.queryParam.displaName,
               path: _that.state.queryParam.path,
               active: _that.state.queryParam.active,
               pageNum: _that.state.pagination.current,
@@ -114,7 +114,7 @@ class AuthList extends React.Component {
   // 排序变化
   handleChange(pagination, filters, sorter) {
     this.handleSearch({
-      permissionName: this.state.queryParam.permissionName,
+      displaName: this.state.queryParam.displaName,
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
       pageNum: this.state.pagination.current,
@@ -222,12 +222,12 @@ class AuthList extends React.Component {
       <div>
         <h1>权限管理</h1>
         <Form layout="inline" onSubmit={this.handleSubmit}>
-          <FormItem label="权限名称">
+          <FormItem label="显示名称">
             <Input
               type="text"
-              value={this.state.queryParam.permissionName}
-              placeholder="请输入权限名称"
-              onChange={this.changePermissionName.bind(this)}
+              value={this.state.queryParam.displayName}
+              placeholder="请输入显示名称"
+              onChange={this.changeDisplayName.bind(this)}
             />
           </FormItem>
           <FormItem label="路径名称">
