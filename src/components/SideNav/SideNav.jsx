@@ -108,21 +108,6 @@ function SideNav(props) {
               </Link>
             </Menu.Item>
           </SubMent>
-
-          <SubMent
-            key="p04"
-            title={
-              <span>
-                <Icon type="user" /> <span>用户中心</span>
-              </span>
-            }
-          >
-            <Menu.Item key="sub10">
-              <Link to={`${props.match.path}/setting`}>
-                <Icon type="setting" /> 个人中心
-              </Link>
-            </Menu.Item>
-          </SubMent>
         </Menu>
       </Sider>
       {props.children}

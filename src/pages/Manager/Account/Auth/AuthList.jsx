@@ -45,7 +45,7 @@ class AuthList extends React.Component {
       queryParam: {
         permissionName: e.target.value,
         path: this.state.queryParam.path,
-        active: this.state.active,
+        active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
       },
     });
@@ -56,7 +56,7 @@ class AuthList extends React.Component {
       queryParam: {
         permissionName: this.state.queryParam.permissionName,
         path: e.target.value,
-        active: this.state.active,
+        active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
       },
     });
@@ -66,7 +66,7 @@ class AuthList extends React.Component {
     this.setState({
       queryParam: {
         permissionName: this.state.queryParam.permissionName,
-        path: this.state.path,
+        path: this.state.queryParam.path,
         active: value,
         pageNum: this.state.pagination.current,
       },

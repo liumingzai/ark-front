@@ -72,11 +72,7 @@ class UserForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         let queryParam = Object.assign({}, values);
-        let roles = [
-          { id: 1, name: 'admin' },
-          { id: 4, name: 'customize_user' },
-          { id: 5, name: 'register_user' },
-        ];
+        let roles = this.state.roles;
         queryParam.roles = [];
         values.roles.map(function(item) {
           let index = _.findIndex(roles, function(o) {
