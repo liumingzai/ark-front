@@ -43,6 +43,11 @@ function SideNav(props) {
                   <Icon type="info-circle" /> 权限管理
                 </Link>
               </Menu.Item>
+              <Menu.Item key="p01sub04">
+                <Link to={`${props.match.path}/setting`}>
+                  <Icon type="setting" /> 个人中心
+                </Link>
+              </Menu.Item>
             </SubMent>
           ) : null}
 
@@ -90,21 +95,6 @@ function SideNav(props) {
             <Menu.Item key="p03sub01">
               <Link to={`${props.match.path}/data/keyword/ent`}>
                 <Icon type="info-circle" /> 企业关键字
-              </Link>
-            </Menu.Item>
-          </SubMent>
-
-          <SubMent
-            key="p04"
-            title={
-              <span>
-                <Icon type="user" /> <span>用户中心</span>
-              </span>
-            }
-          >
-            <Menu.Item key="sub10">
-              <Link to={`${props.match.path}/setting`}>
-                <Icon type="setting" /> 个人中心
               </Link>
             </Menu.Item>
           </SubMent>
