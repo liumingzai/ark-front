@@ -42,7 +42,9 @@ class LoginForm extends React.Component {
             };
 
             localStorage.setItem('account', JSON.stringify(loginData));
-            window.location.href = '/';
+            // Admin redirect to dashboard, others redirect to userinfo page
+            window.location.href =
+              loginData.userType === 1 ? '/manager/dashboard' : '/manager/setting';
           }
         });
       }
