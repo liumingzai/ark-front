@@ -1,11 +1,19 @@
 import React from 'react';
-import { Button, Modal, message, Breadcrumb } from 'antd';
+import { Modal, message, Breadcrumb } from 'antd';
 import SceneService from './SceneService';
-import SceneForm from './SceneForm';
+
+// Components
 import Search from './Search';
+import Nav from './Nav';
+import SceneForm from './Form';
+import Token from './Token';
+import Operation from './Operation';
 
-const ButtonGroup = Button.Group;
-
+/**
+ * 面包屑导航
+ *
+ * @returns
+ */
 function BreadNav() {
   return (
     <Breadcrumb>
@@ -20,208 +28,239 @@ class Scene extends React.Component {
     super(props);
     const account = JSON.parse(localStorage.getItem('account'));
     this.state = {
-      data: [],
+      data: null,
       sceneItem: null,
-      uid: account.uid,
+      userToken: null,
     };
 
+    this.uid = account.uid;
     this.userType = account.userType;
     this.service = new SceneService();
-    this.handleChange = this.handleChange.bind(this);
+
+    // 绑定作用域
     this.onSubmit = this.onSubmit.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onCancel = this.onCancel.bind(this);
     this.deleteAppWhiteList = this.deleteAppWhiteList.bind(this);
-    this.onAddNewScene = this.onAddNewScene.bind(this);
     this.handleUserToken = this.handleUserToken.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleNavChange = this.handleNavChange.bind(this);
+    this.handleAddNewScene = this.handleAddNewScene.bind(this);
+    this.handleSyncData = this.handleSyncData.bind(this);
   }
 
   componentDidMount() {
     this.getAppWhiteList();
   }
 
-  onSubmit(data) {
-    const formatData = { uid: this.state.uid };
-    Object.keys(data).forEach((key) => {
-      formatData[key] = data[key].value;
+  onSubmit() {
+    this.putAppWhiteList({
+      ...this.state.sceneItem,
+      uid: this.uid,
+      active: this.state.sceneItem.active ? 'Y' : 'N',
+      userToken: this.state.userToken,
     });
-    formatData.active = formatData.active === true ? 'Y' : 'N';
-    console.warn(formatData.appMd5);
-    if (formatData.appMd5) {
-      // update
-      if (this.userType === 1) {
-        this.adminupdateAppWhiteList(formatData);
-      } else {
-        this.updateAppWhiteList(formatData);
-      }
-    } else if (this.userType === 1) {
-      // admin new add
-      this.adminAddAppWhiteList(formatData);
-    } else {
-      // common user add
-      this.addAppWhiteList(formatData);
-    }
   }
 
-  onDelete(appMd5, uid) {
+  onDelete() {
     Modal.confirm({
       title: '您确定要删除吗？',
       content: '此操作将彻底删除，并且不能恢复！',
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
-        this.deleteAppWhiteList(appMd5, uid);
+        this.deleteAppWhiteList(this.state.sceneItem.appMd5, this.uid);
       },
       onCancel: () => {
-        message.success('Cancel success');
+        message.success('已取消删除');
       },
     });
   }
 
-  onAddNewScene() {
+  onCancel() {
+    const { data } = this.state;
     this.setState({
-      sceneItem: {},
+      sceneItem: data[0],
+      userToken: data[0].userToken,
     });
   }
 
-  getUid(uid) {
-    let uidValue;
-    if (uid.uid) {
-      uidValue = uid.uid;
-    } else {
-      uidValue = JSON.parse(localStorage.getItem('account')).uid;
-    }
-
-    this.setState({
-      uid: uidValue,
-    });
-
-    this.getAppWhiteList(uidValue);
-  }
-
+  /**
+   * 根据 UID 获取场景
+   *
+   * @param {string} uid
+   * @memberof Scene
+   */
   getAppWhiteList(uid) {
-    uid = uid || this.state.uid;
+    uid = uid || this.uid;
     this.service.getAppWhiteList(uid).then((data) => {
       if (data.code === '2000') {
-        data.data.map(e => ({
+        data.data = data.data.map(e => ({
           ...e,
           active: e.active === 'Y',
         }));
         this.setState({
           data: data.data,
-        });
-
-        this.setState({
           sceneItem: data.data[0],
+          userToken: data.data[0].userToken,
         });
       }
     });
   }
 
-  updateAppWhiteList(p) {
-    this.service.updateAppWhiteList(p).then((data) => {
-      if (data.code === '2000') {
-        message.success('Update success');
+  /**
+   * 新增或更新场景
+   *
+   * @param {any} data
+   * @memberof Scene
+   */
+  putAppWhiteList(data) {
+    let tmp;
+
+    if (data.appMd5) {
+      // 更新场景
+      if (this.userType === 1) {
+        tmp = this.service.adminUpdateAppWhiteList(data);
+      } else {
+        tmp = this.service.updateAppWhiteList(data);
+      }
+
+      tmp.then((res) => {
+        if (res.code === '2000') {
+          message.success('更新成功');
+          // 更新场景list
+          const dataTmp = this.state.data.map((e) => {
+            if (e.id === this.state.sceneItem.id) {
+              return this.state.sceneItem;
+            }
+            return e;
+          });
+
+          this.setState({
+            data: dataTmp,
+          });
+        }
+      });
+      return;
+    } else if (this.userType === 1) {
+      // 管理员添加场景
+      tmp = this.service.adminAddAppWhiteList(data);
+    } else {
+      // 注册用户添加场景
+      tmp = this.service.addAppWhiteList(data);
+    }
+
+    tmp.then((res) => {
+      if (res.code === '2000') {
+        message.success('添加成功');
+        this.getAppWhiteList(); // 新增后，更新所有场景
       }
     });
   }
 
-  adminupdateAppWhiteList(p) {
-    this.service.adminUpdateAppWhiteList(p).then((data) => {
-      if (data.code === '2000') {
-        message.success('Update success');
-      }
-    });
-  }
-
-  addAppWhiteList(p) {
-    this.service.addAppWhiteList(p).then((data) => {
-      if (data.code === '2000') {
-        message.success('Add success');
-        this.getAppWhiteList();
-      }
-    });
-  }
-
-  adminAddAppWhiteList(p) {
-    this.service.adminAddAppWhiteList(p).then((data) => {
-      if (data.code === '2000') {
-        message.success('Add success');
-        this.getAppWhiteList();
-      }
-    });
-  }
-
+  /**
+   * 删除场景
+   *
+   * @param {string} appMd5
+   * @param {string} uid
+   * @memberof Scene
+   */
   deleteAppWhiteList(appMd5, uid) {
     this.service.deleteAppWhiteList(appMd5, uid).then((data) => {
       if (data.code === '2000') {
-        message.success('Delete success!');
+        message.success('删除成功!');
         this.getAppWhiteList();
       }
     });
   }
 
-  handleChange(e) {
-    const index = e.target.getAttribute('name');
+  handleNavChange(e) {
+    const index = e.target.value;
+    // 更新 userToken & sceneItem
     this.setState({
       sceneItem: this.state.data[index],
+      userToken: this.state.data[index].userToken,
+    });
+  }
+
+  handleAddNewScene() {
+    this.setState({
+      sceneItem: {
+        applicationName: null,
+        description: null,
+        wlContent: null,
+        active: true,
+      },
+      userToken: null,
     });
   }
 
   handleSearch(values) {
-    this.getUid(values);
+    let uid;
+    if (values.uid) {
+      ({ uid } = values);
+    } else {
+      ({ uid } = JSON.parse(localStorage.getItem('account')));
+    }
+
+    // 设置uid
+    this.uid = uid;
+
+    // 根据UID进行场景搜索
+    this.getAppWhiteList(uid);
   }
 
-  handleUserToken(appMd5) {
+  handleUserToken() {
     this.service.getUserToken().then((data) => {
       if (data.code === '2000') {
         const userToken = data.data;
-        const dataArray = this.state.data.map((e) => {
-          if (e.appMd5 === appMd5) {
-            return {
-              ...e,
-              userToken,
-            };
-          }
-          return e;
-        });
-
-        const sceneItem = dataArray.filter(item => item.appMd5 === appMd5)[0];
 
         this.setState({
-          data: dataArray,
-          sceneItem: { ...sceneItem },
+          userToken,
         });
       }
+    });
+  }
+
+  handleSyncData(data) {
+    this.setState({
+      sceneItem: { ...this.state.sceneItem, ...data },
     });
   }
 
   render() {
     return (
       <section>
+        {/* 面包屑导航 */}
         <BreadNav />
-        {this.userType === 1 ? <Search onSearch={this.handleSearch} /> : null}
-        <div className="flex flex-h-between">
-          <ButtonGroup>
-            {this.state.data.map((item, index) => (
-              <Button key={item.id} name={index} onClick={this.handleChange}>
-                {item.applicationName}
-              </Button>
-            ))}
-          </ButtonGroup>
-          <Button type="primary" onClick={this.onAddNewScene}>
-            Add new
-          </Button>
-        </div>
 
-        {this.state.sceneItem && (
-          <SceneForm
-            onSubmit={this.onSubmit}
-            onDelete={this.onDelete}
-            data={this.state.sceneItem}
-            generateUserToken={this.handleUserToken}
+        {/* Search */}
+        {this.userType === 1 ? <Search onSearch={this.handleSearch} /> : null}
+
+        {/* Nav */}
+        {this.state.data && (
+          <Nav
+            data={this.state.data}
+            onNavChange={this.handleNavChange}
+            onAddNewScene={this.handleAddNewScene}
           />
         )}
+
+        {/* Form */}
+        {this.state.sceneItem && (
+          <SceneForm data={this.state.sceneItem} syncData={this.handleSyncData} />
+        )}
+
+        {/* Token */}
+        <Token token={this.state.userToken} onClick={this.handleUserToken} />
+
+        {/* Operation */}
+        <Operation
+          type={this.state.sceneItem}
+          onSubmit={this.onSubmit}
+          onDelete={this.onDelete}
+          onCancel={this.onCancel}
+        />
       </section>
     );
   }

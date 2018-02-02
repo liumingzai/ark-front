@@ -15,9 +15,6 @@ const CustomForm = Form.create({
       }),
     };
   },
-  onValuesChange(_, values) {
-    console.warn(values);
-  },
 })((props) => {
   const { getFieldDecorator } = props.form;
 
@@ -35,11 +32,11 @@ const CustomForm = Form.create({
       <FormItem>
         {getFieldDecorator('uid', {
           rules: [],
-        })(<Input placeholder="Please input UID" />)}
+        })(<Input placeholder="请输入用户ID" />)}
       </FormItem>
       <FormItem>
         <Button type="primary" htmlType="submit">
-          Search
+          搜索
         </Button>
       </FormItem>
     </Form>

@@ -111,10 +111,7 @@ class Search extends React.Component {
     const uploadProps = {
       name: 'upload',
       action: 'http://192.168.1.151/ark-portal/dataManage/uploadKeywordInfo',
-      headers: {
-        // authorization: 'authorization-text',
-        'Content-Type': false,
-      },
+      withCredentials: true,
       listType: 'text',
       onChange(info) {
         if (info.file.status !== 'uploading') {

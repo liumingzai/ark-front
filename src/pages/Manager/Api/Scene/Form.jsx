@@ -1,8 +1,41 @@
 import React from 'react';
-import { Form, Input, Col, Row, Switch, Button } from 'antd';
+import { Form, Input, Col, Row, Switch } from 'antd';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
+
+/**
+ * 初始化stateData
+ *
+ * @param {any} props
+ * @returns
+ */
+function initStateData(props) {
+  const { data } = props;
+  return {
+    applicationName: {
+      value: data.applicationName,
+    },
+    updateTime: {
+      value: data.updateTime,
+    },
+    appMd5: {
+      value: data.appMd5,
+    },
+    wlMaxCount: {
+      value: data.wlMaxCount,
+    },
+    description: {
+      value: data.description,
+    },
+    wlContent: {
+      value: data.wlContent,
+    },
+    active: {
+      value: data.active,
+    },
+  };
+}
 
 const CustomForm = Form.create({
   onFieldsChange(props, changedDields) {
@@ -38,14 +71,10 @@ const CustomForm = Form.create({
         ...props.active,
         value: props.active.value,
       }),
-      userToken: Form.createFormField({
-        ...props.userToken,
-        value: props.userToken.value,
-      }),
     };
   },
-  onValuesChange(_, value) {
-    console.warn(value);
+  onValuesChange(props, value) {
+    props.syncData(value);
   },
 })((props) => {
   const { getFieldDecorator } = props.form;
@@ -53,7 +82,7 @@ const CustomForm = Form.create({
     <Form>
       <Row>
         <Col span={8} style={{ marginRight: '10px' }}>
-          <FormItem label="Scene name">
+          <FormItem label="场景名称">
             {getFieldDecorator('applicationName', {
               rules: [{ required: true, message: 'Application name is required!' }],
             })(<Input />)}
@@ -117,15 +146,6 @@ const CustomForm = Form.create({
             )}
           </FormItem>
         </Col>
-
-        <Col span={8}>
-          <FormItem label="User token">
-            <Button onClick={props.generateUserToken}>Generate Token</Button>
-            {getFieldDecorator('userToken', {
-              rules: [{ required: true, message: 'UserToken is required!' }],
-            })(<Input disabled readOnly />)}
-          </FormItem>
-        </Col>
       </Row>
     </Form>
   );
@@ -134,82 +154,17 @@ const CustomForm = Form.create({
 class SceneForm extends React.Component {
   constructor(props) {
     super(props);
-    const { data } = props;
     this.state = {
-      data,
-      fields: {
-        applicationName: {
-          value: data.applicationName,
-        },
-        updateTime: {
-          value: data.updateTime,
-        },
-        appMd5: {
-          value: data.appMd5,
-        },
-        wlMaxCount: {
-          value: data.wlMaxCount,
-        },
-        description: {
-          value: data.description,
-        },
-        wlContent: {
-          value: data.wlContent,
-        },
-        active: {
-          value: data.active === 'Y',
-        },
-        userToken: {
-          value: data.userToken,
-        },
-      },
+      fields: initStateData(props),
     };
 
     this.handleFormChange = this.handleFormChange.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUserToken = this.handleUserToken.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      data: nextProps.data,
-      fields: {
-        applicationName: {
-          value: nextProps.data.applicationName,
-        },
-        updateTime: {
-          value: nextProps.data.updateTime,
-        },
-        appMd5: {
-          value: nextProps.data.appMd5,
-        },
-        wlMaxCount: {
-          value: nextProps.data.wlMaxCount,
-        },
-        description: {
-          value: nextProps.data.description,
-        },
-        wlContent: {
-          value: nextProps.data.wlContent,
-        },
-        active: {
-          value: nextProps.data.active === 'Y',
-        },
-        userToken: {
-          value: nextProps.data.userToken,
-        },
-      },
+      fields: initStateData(nextProps),
     });
-  }
-
-  handleSubmit() {
-    this.props.onSubmit(this.state.fields);
-  }
-
-  handleDelete() {
-    const { appMd5, accountId } = this.state.data;
-    this.props.onDelete(appMd5, accountId);
   }
 
   handleFormChange(changeFields) {
@@ -218,29 +173,11 @@ class SceneForm extends React.Component {
     });
   }
 
-  handleUserToken() {
-    this.props.generateUserToken(this.state.fields.appMd5.value);
-  }
-
   render() {
     const { fields } = this.state;
     return (
-      <div style={{ padding: '10px', backgroundColor: '#fff', marginTop: '10px' }}>
-        <CustomForm
-          {...fields}
-          generateUserToken={this.handleUserToken}
-          onChange={this.handleFormChange}
-        />
-        <Row>
-          <Col span={16} style={{ textAlign: 'center' }}>
-            <Button style={{ marginRight: '10px' }} onClick={this.handleSubmit} type="primary">
-              Save
-            </Button>
-            <Button style={{ marginLeft: '10px' }} onClick={this.handleDelete} type="danger">
-              Delete
-            </Button>
-          </Col>
-        </Row>
+      <div style={{ padding: '10px', marginTop: '10px' }}>
+        <CustomForm {...fields} onChange={this.handleFormChange} syncData={this.props.syncData} />
       </div>
     );
   }
