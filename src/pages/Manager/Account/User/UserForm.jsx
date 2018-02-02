@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
-import { Form, Input, Radio, Checkbox, Button, message, Row, Col } from 'antd';
+import { Tabs, Form, Input, Radio, Checkbox, Button, message, Row, Col } from 'antd';
 import UserService from './UserService';
 
 import _ from 'lodash';
 
+const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const history = createHistory();
@@ -123,101 +124,108 @@ class UserForm extends Component {
       wrapperCol: { span: 14, offset: 7 },
     };
     return (
-      <Form layout="horizontal" onSubmit={this.handleSubmit}>
-        <FormItem {...formItemLayout} label="用户名">
-          {getFieldDecorator(
-            'username',
-            {
-              initialValue: this.state.user.username ? this.state.user.username : '',
-            },
-            {
-              rules: [
+      <Tabs defaultActiveKey="1" onChange={this.handleChange}>
+        <TabPane tab="新增用户" key="1">
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
+            <FormItem {...formItemLayout} label="用户名">
+              {getFieldDecorator(
+                'username',
                 {
-                  required: true,
-                  message: '用户名不能为空',
-                },
-              ],
-            }
-          )(<Input placeholder="请输入用户名" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="邮箱">
-          {getFieldDecorator(
-            'email',
-            {
-              initialValue: this.state.user.email ? this.state.user.email : '',
-            },
-            {
-              rules: [
-                {
-                  required: true,
-                  message: '邮箱不能为空',
+                  initialValue: this.state.user.username ? this.state.user.username : '',
                 },
                 {
-                  type: 'email',
-                  message: '邮箱格式不对',
-                },
-              ],
-            }
-          )(<Input placeholder="请输入邮箱" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="手机">
-          {getFieldDecorator(
-            'phone',
-            {
-              initialValue: this.state.user.phone ? this.state.user.phone : '',
-            },
-            {
-              rules: [
+                  rules: [
+                    {
+                      required: true,
+                      message: '用户名不能为空',
+                    },
+                  ],
+                }
+              )(<Input placeholder="请输入用户名" />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="邮箱">
+              {getFieldDecorator(
+                'email',
                 {
-                  required: true,
-                  message: '手机不能为空',
+                  initialValue: this.state.user.email ? this.state.user.email : '',
                 },
-              ],
-            }
-          )(<Input placeholder="请输入手机" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="用户状态">
-          {getFieldDecorator(
-            'state',
-            {
-              initialValue: this.state.user.state ? '1' : '0',
-            },
-            {
-              rules: [
                 {
-                  required: true,
-                  message: '请选择用户状态',
+                  rules: [
+                    {
+                      required: true,
+                      message: '邮箱不能为空',
+                    },
+                    {
+                      type: 'email',
+                      message: '邮箱格式不对',
+                    },
+                  ],
+                }
+              )(<Input placeholder="请输入邮箱" />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="手机">
+              {getFieldDecorator(
+                'phone',
+                {
+                  initialValue: this.state.user.phone ? this.state.user.phone : '',
                 },
-              ],
-            }
-          )(
-            <RadioGroup>
-              <Radio value="1">有效</Radio>
-              <Radio value="0">无效</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="绑定角色">
-          {getFieldDecorator('roles', {
-            initialValue: this.state.user.roles ? this.state.user.roles : [],
-          })(
-            <Checkbox.Group style={{ width: '100%' }} onChange={this.handleChange}>
-              <Row>
-                {this.state.roles.map(e => (
-                  <Col key={e.id} span={8}>
-                    <Checkbox value={e.name}>{e.name}</Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
-          )}
-        </FormItem>
-        <FormItem {...buttonItemLayout}>
-          <Button type="primary" htmlType="submit">
-            保存
-          </Button>
-        </FormItem>
-      </Form>
+                {
+                  rules: [
+                    {
+                      required: true,
+                      message: '手机不能为空',
+                    },
+                  ],
+                }
+              )(<Input placeholder="请输入手机" />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="用户状态">
+              {getFieldDecorator(
+                'state',
+                {
+                  initialValue: this.state.user.state ? '1' : '0',
+                },
+                {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择用户状态',
+                    },
+                  ],
+                }
+              )(
+                <RadioGroup>
+                  <Radio value="1">有效</Radio>
+                  <Radio value="0">无效</Radio>
+                </RadioGroup>
+              )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="绑定角色">
+              {getFieldDecorator('roles', {
+                initialValue: this.state.user.roles ? this.state.user.roles : [],
+              })(
+                <Checkbox.Group style={{ width: '100%' }} onChange={this.handleChange}>
+                  <Row>
+                    {this.state.roles.map(e => (
+                      <Col key={e.id} span={8}>
+                        <Checkbox value={e.name}>{e.name}</Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              )}
+            </FormItem>
+            <FormItem {...buttonItemLayout}>
+              <Button type="primary" htmlType="submit">
+                保存
+              </Button>
+            </FormItem>
+          </Form>
+        </TabPane>
+        <TabPane tab="场景管理" key="2">
+          <p>力鹏正在抽离复用组件中......</p>
+        </TabPane>
+      </Tabs>
     );
   }
 }
