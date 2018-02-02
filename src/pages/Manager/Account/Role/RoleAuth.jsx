@@ -104,11 +104,6 @@ class RoleAuth extends React.Component {
   render() {
     const bindColumns = [
       {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
         title: '显示名',
         dataIndex: 'displayName',
         key: 'displayName',
@@ -154,11 +149,6 @@ class RoleAuth extends React.Component {
     ];
 
     const unBindColumns = [
-      {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
       {
         title: '显示名',
         dataIndex: 'displayName',
