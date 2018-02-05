@@ -3,7 +3,7 @@ import { Modal, message, Breadcrumb } from 'antd';
 import SceneService from './SceneService';
 
 // Components
-import Search from './Search';
+// import Search from './Search';
 import Nav from './Nav';
 import SceneForm from './Form';
 import Token from './Token';
@@ -235,7 +235,7 @@ class Scene extends React.Component {
         <BreadNav />
 
         {/* Search */}
-        {this.userType === 1 ? <Search onSearch={this.handleSearch} /> : null}
+        {/* {this.userType === 1 ? <Search onSearch={this.handleSearch} /> : null} */}
 
         {/* Nav */}
         {this.state.data && (
