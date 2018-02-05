@@ -18,7 +18,11 @@ class OverviewItem extends React.Component {
     const { item } = this.props;
     return (
       <Col span={6} style={{ paddingLeft: '6px', paddingRight: '6px', marginBottom: '10px' }}>
-        <Card cover={<img src={item.apiPic ? item.apiPic : defaultLogo} alt="Logo" />}>
+        <Card
+          cover={
+            <img src={item.apiPic ? item.apiPic : defaultLogo} style={{ height: 180 }} alt="Logo" />
+          }
+        >
           <div className="card-body">
             <h4 className="card-title">
               <Link to={`/manager/api/overview/detail/${item.apiId}`}>{item.apiName}</Link>
@@ -32,12 +36,14 @@ class OverviewItem extends React.Component {
             <h5>
               更新时间：<span>{item.updateTime}</span>
             </h5>
-            <Button type="primary">
+            <Button type="primary" size="small" style={{ marginRight: 4 }}>
               <Link to={`/manager/api/overview/update/${item.apiId}`}>编辑</Link>
             </Button>
-            <Button type="danger" onClick={this.handleDelete}>
-              删除
-            </Button>
+            {this.props.userType === 1 ? (
+              <Button type="danger" size="small" onClick={this.handleDelete}>
+                删除
+              </Button>
+            ) : null}
           </div>
         </Card>
       </Col>
