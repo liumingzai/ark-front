@@ -9,8 +9,7 @@ import OverviewService from './OverviewService';
 function BreadNav() {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item>API管理</Breadcrumb.Item>
-      <Breadcrumb.Item>接口管理</Breadcrumb.Item>
+      <Breadcrumb.Item>数据接口</Breadcrumb.Item>
     </Breadcrumb>
   );
 }
@@ -39,6 +38,10 @@ function Header(props) {
       key: 'cat',
       list: [
         {
+          name: '全部',
+          value: '',
+        },
+        {
           name: '企业',
           value: '企业',
         },
@@ -65,7 +68,7 @@ function Header(props) {
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button type="primary">
-          <Link to="/manager/api/overview/new">Add new</Link>
+          <Link to="/manager/api/overview/new">新增</Link>
         </Button>
       </div>
     </header>
