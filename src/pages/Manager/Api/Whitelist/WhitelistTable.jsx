@@ -44,7 +44,7 @@ const columns = [
 function WhitelistTable(props) {
   const { data, pageConf, onChange } = props;
   const pagination = {
-    defaultCurrent: 1,
+    current: pageConf.current,
     total: pageConf.total,
     pageSize: pageConf.pageSize,
     hideOnSinglePage: true,

@@ -30,9 +30,6 @@ const SearchForm = Form.create({
       }),
     };
   },
-  onValuesChange(_, values) {
-    console.warn(values);
-  },
 })((props) => {
   const { getFieldDecorator } = props.form;
   return (
@@ -80,19 +77,19 @@ class WhitelistSearch extends React.Component {
     this.state = {
       fields: {
         uid: {
-          value: '',
+          value: props.queryParam.uid || '',
         },
         apiName: {
-          value: '',
+          value: props.queryParam.apiName || '',
         },
         clientIp: {
-          value: '',
+          value: props.queryParam.clientIp || '',
         },
         url: {
-          value: '',
+          value: props.queryParam.url || '',
         },
         dailyDate: {
-          value: null,
+          value: props.queryParam.dailyDate || null,
         },
       },
     };

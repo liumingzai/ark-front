@@ -1,5 +1,7 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
+import queryString from 'query-string';
+
 import WhitelistSearch from './WhitelistSearch';
 import WhitelistTable from './WhitelistTable';
 import WhitelistService from './WhitelistService';
@@ -24,29 +26,104 @@ function BreadNav() {
   );
 }
 
+/**
+ * pushHistory 动态设置URL参数
+ *
+ * @param {history} history
+ * @param {string} key
+ * @param {string|number} value
+ */
+function pushHistory(history, key, value) {
+  const { location } = history;
+  let param = location.search;
+
+  if (!param) {
+    param = `?${key}=${value}`;
+  } else if (!new RegExp(`${key}=`, 'g').test(param)) {
+    param += `&${key}=${value}`;
+  } else {
+    param = param.replace(new RegExp(`(${key}=)([^&])*(&)?`, 'g'), `$1${value}$3`);
+  }
+
+  const path = `${location.pathname}${param}`;
+  history.push(path);
+}
+
+/**
+ * 格式化URI查询参数
+ *
+ * @param {string|object} search
+ * @returns
+ */
+function formatParam(search) {
+  let searchObj;
+  if (typeof search === 'string') {
+    searchObj = queryString.parse(search);
+  } else {
+    searchObj = search;
+  }
+
+  const result = {};
+  Object.keys(searchObj).forEach((key) => {
+    if (searchObj[key]) {
+      result[key] = searchObj[key];
+    }
+  });
+  return result;
+}
+
+/**
+ * Admin用户白名单访问记录
+ *
+ * @class Whitelist
+ * @extends {React.Component}
+ */
 class Whitelist extends React.Component {
   constructor(props) {
     super(props);
+
+    // 初始化查询参数
+    this.queryParam = formatParam(this.props.location.search);
+    this.queryParam.page = (this.queryParam.page && +this.queryParam.page) || 1;
+
     this.state = {
       data: null,
       pageConf: {
         total: 0,
         pageSize: 10,
+        current: this.queryParam.page,
       },
     };
+
+    // 注册URL监听器
+    this.props.history.listen((location, action) => {
+      if (action === 'PUSH') {
+        this.queryParam = queryString.parse(location.search);
+        this.queryParam.page =
+          (this.queryParam && this.queryParam.page && +this.queryParam.page) || 1; // 更新page
+        this.getSummaryWhiteListLog(this.queryParam);
+      }
+    });
+
     this.service = new WhitelistService();
     this.onPageChange = this.onPageChange.bind(this);
     this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
-    this.getSummaryWhiteListLog({ page: 1 });
+    this.getSummaryWhiteListLog(this.queryParam);
   }
 
-  onPageChange(currentPage) {
-    this.getSummaryWhiteListLog({ page: currentPage });
+  onPageChange(page) {
+    pushHistory(this.props.history, 'page', page);
   }
 
+  /**
+   * 输入查询参数之后，手动搜索
+   *
+   * @param {any} data
+   * @memberof Whitelist
+   */
   onSearch(data) {
     const {
       uid: { value: uid },
@@ -61,7 +138,7 @@ class Whitelist extends React.Component {
       dailyDate = formatDate(dailyDate);
     }
 
-    this.getSummaryWhiteListLog({
+    const path = formatParam({
       uid,
       apiName,
       dailyDate,
@@ -69,14 +146,23 @@ class Whitelist extends React.Component {
       url,
       page: 1,
     });
+    const pathString = queryString.stringify(path);
+    this.props.history.push(`${this.props.location.pathname}?${pathString}`);
   }
 
+  /**
+   * 获取白名单访问统计记录
+   *
+   * @param {any} param
+   * @memberof Whitelist
+   */
   getSummaryWhiteListLog(param) {
     this.service.getSummaryWhiteListLog(param).then((data) => {
       if (data.code === '2000') {
         const pageConf = {
           total: data.size,
           pageSize: this.state.pageConf.pageSize,
+          current: param.page,
         };
         this.setState({
           data: data.data.map((e) => {
@@ -93,7 +179,7 @@ class Whitelist extends React.Component {
     return (
       <section>
         <BreadNav />
-        <WhitelistSearch onSearch={this.onSearch} />
+        <WhitelistSearch queryParam={this.queryParam} onSearch={this.onSearch} />
         <WhitelistTable
           data={this.state.data}
           pageConf={this.state.pageConf}
