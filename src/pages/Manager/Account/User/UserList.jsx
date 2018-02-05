@@ -39,12 +39,18 @@ class UserList extends React.Component {
   changeState(value) {
     this.setState({
       state: value,
+      pagination: {
+        current: 1,
+      },
     });
   }
 
   changeName(e) {
     this.setState({
       username: e.target.value,
+      pagination: {
+        current: 1,
+      },
     });
   }
 
@@ -226,6 +232,7 @@ class UserList extends React.Component {
             // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
+              current: this.state.pagination.current,
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,

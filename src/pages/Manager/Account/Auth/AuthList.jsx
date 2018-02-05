@@ -48,6 +48,9 @@ class AuthList extends React.Component {
         active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
       },
+      pagination: {
+        current: 1,
+      },
     });
   }
 
@@ -59,6 +62,9 @@ class AuthList extends React.Component {
         active: this.state.queryParam.active,
         pageNum: this.state.pagination.current,
       },
+      pagination: {
+        current: 1,
+      },
     });
   }
 
@@ -69,6 +75,9 @@ class AuthList extends React.Component {
         path: this.state.queryParam.path,
         active: value,
         pageNum: this.state.pagination.current,
+      },
+      pagination: {
+        current: 1,
       },
     });
   }
@@ -268,6 +277,7 @@ class AuthList extends React.Component {
             // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
+              current: this.state.pagination.current,
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,
