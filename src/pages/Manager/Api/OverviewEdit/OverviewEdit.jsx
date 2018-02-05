@@ -182,6 +182,7 @@ class OverviewEdit extends React.Component {
     this.service.addApiOverview(body).then((data) => {
       if (data.code === '2000') {
         message.success('Add success');
+        this.props.history.push('/manager/api/overview');
       }
     });
   }
@@ -190,6 +191,7 @@ class OverviewEdit extends React.Component {
     this.service.updateApiOverview(body).then((data) => {
       if (data.code === '2000') {
         message.success('Update success');
+        this.props.history.push('/manager/api/overview');
       }
     });
   }

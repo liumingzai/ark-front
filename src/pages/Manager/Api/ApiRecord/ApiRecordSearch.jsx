@@ -37,40 +37,40 @@ const SearchForm = Form.create({
   const { getFieldDecorator } = props.form;
   return (
     <Form layout="inline">
+      <FormItem label="接口名称">
+        {getFieldDecorator('apiName', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
+
+      <FormItem label="接口地址">
+        {getFieldDecorator('url', {
+          rules: [],
+        })(<Input />)}
+      </FormItem>
+
       {props.isAdmin ? (
-        <FormItem label="UID">
+        <FormItem label="用户ID">
           {getFieldDecorator('uid', {
             rules: [],
           })(<Input />)}{' '}
         </FormItem>
       ) : null}
 
-      <FormItem label="Api Name">
-        {getFieldDecorator('apiName', {
-          rules: [],
-        })(<Input />)}
-      </FormItem>
-
-      <FormItem label="URL">
-        {getFieldDecorator('url', {
-          rules: [],
-        })(<Input />)}
-      </FormItem>
-
-      <FormItem label="Start date">
+      <FormItem label="起始日期">
         {getFieldDecorator('startDate', {
           rules: [],
         })(<DatePicker />)}
       </FormItem>
 
-      <FormItem label="End date">
+      <FormItem label="结束日期">
         {getFieldDecorator('endDate', {
           rules: [],
         })(<DatePicker />)}
       </FormItem>
 
-      <FormItem label="Search">
-        <Button onClick={props.onSearch}>Search</Button>
+      <FormItem>
+        <Button onClick={props.onSearch}>搜索</Button>
       </FormItem>
     </Form>
   );

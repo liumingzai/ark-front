@@ -7,25 +7,26 @@ const commonColumns = [
     dataIndex: 'apiName',
   },
   {
-    title: '接入URL',
+    title: '接口地址',
     dataIndex: 'accessUrl',
   },
   {
-    title: '日期',
+    title: '调用日期',
     dataIndex: 'dailyDate',
   },
   {
-    title: '访问数量',
+    title: '调用数量',
     dataIndex: 'accessTotal',
   },
 ];
 
 const adminColumns = [
-  {
-    title: 'UID',
-    dataIndex: 'uid',
-    render: text => <a href="#a">{text}</a>,
-  },
+  // TODO: 暂时去掉UID，因为搜索UID，得到的结果都是一样的UID
+  // {
+  //   title: 'UID',
+  //   dataIndex: 'uid',
+  //   render: text => <a href="#a">{text}</a>,
+  // },
   ...commonColumns,
 ];
 

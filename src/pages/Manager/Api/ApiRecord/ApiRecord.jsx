@@ -18,8 +18,8 @@ function formatDate(timestamp) {
 function BreadNav() {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item>API管理</Breadcrumb.Item>
-      <Breadcrumb.Item>API调用记录</Breadcrumb.Item>
+      <Breadcrumb.Item>接口统计</Breadcrumb.Item>
+      <Breadcrumb.Item>接口调用记录</Breadcrumb.Item>
     </Breadcrumb>
   );
 }

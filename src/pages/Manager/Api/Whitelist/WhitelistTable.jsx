@@ -3,12 +3,16 @@ import { Table } from 'antd';
 
 const columns = [
   {
-    title: 'UID',
+    title: '用户ID',
     dataIndex: 'uid',
-    render: text => <a href="#a">{text}</a>,
+    // render: text => <a href="#a">{text}</a>,
   },
   {
-    title: '资源名称',
+    title: '接口名称',
+    dataIndex: 'apiName',
+  },
+  {
+    title: '访问地址',
     dataIndex: 'url',
   },
   {
@@ -53,6 +57,7 @@ function WhitelistTable(props) {
       key: e.id,
       uid: e.uid,
       url: e.url,
+      apiName: e.apiName,
       clientIp: e.clientIp,
       passFlag: e.passFlag,
       rtnMessage: e.rtnMessage,
@@ -62,7 +67,14 @@ function WhitelistTable(props) {
     }));
   }
 
-  return <Table columns={columns} dataSource={dataSource} pagination={pagination} />;
+  return (
+    <Table
+      style={{ marginTop: 10 }}
+      columns={columns}
+      dataSource={dataSource}
+      pagination={pagination}
+    />
+  );
 }
 
 export default WhitelistTable;
