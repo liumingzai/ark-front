@@ -37,12 +37,8 @@ const SearchForm = Form.create({
       }),
     };
   },
-  onValuesChange(_, value) {
-    console.warn(value);
-  },
 })((props) => {
   const { getFieldDecorator } = props.form;
-  console.warn(props);
 
   return (
     <Form layout="inline">

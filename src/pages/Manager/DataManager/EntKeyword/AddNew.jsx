@@ -60,6 +60,11 @@ class AddNew extends React.Component {
           )}
         </FormItem>
 
+        {/* TODO：优先级 */}
+        {/* <FormItem>
+
+        </FormItem> */}
+
         <FormItem>
           <Button
             type="primary"

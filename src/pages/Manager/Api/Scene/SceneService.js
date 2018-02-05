@@ -120,7 +120,7 @@ class SceneService {
    * @memberof SceneService
    */
   getUserToken() {
-    const method = 'admin/um/getUserToken';
+    const method = 'common/getUserToken';
     return this.http.GET(method);
   }
 }

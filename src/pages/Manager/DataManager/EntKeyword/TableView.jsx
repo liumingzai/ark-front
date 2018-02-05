@@ -32,6 +32,11 @@ function TableView(props) {
       title: '创建时间',
       dataIndex: 'createTime',
     },
+    {
+      title: '优先级',
+      dataIndex: 'priority',
+      render: text => (text === 1 ? '高' : '低'),
+    },
   ];
 
   return (

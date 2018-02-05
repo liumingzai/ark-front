@@ -68,7 +68,6 @@ class EntKeyword extends React.Component {
   search(param) {
     this.service.getKeywordInfo(param).then((data) => {
       if (data.code === '2000') {
-        message.success('Search success');
         const pageOption = {
           total: data.size,
           pageSize: this.state.pageOption.pageSize,
@@ -107,7 +106,6 @@ class EntKeyword extends React.Component {
   }
 
   handleCancelAdd() {
-    console.warn('cancel');
     this.setState({
       isAdding: false,
     });
