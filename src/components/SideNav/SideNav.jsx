@@ -65,40 +65,46 @@ function SideNav(props) {
             key="p02"
             title={
               <span>
-                <Icon type="api" /> <span>API管理</span>
+                <Icon type="api" /> <span>接口统计</span>
               </span>
             }
           >
+            {/* <Menu.Item key="p02sub02">
+              <Link to={`${props.match.path}/api/scene`}>
+                <Icon type="info-circle" /> 场景管理
+              </Link>
+            </Menu.Item> */}
+
             <Menu.Item key="p02sub01">
-              <Link to={`${props.match.path}/api/overview`}>
-                <Icon type="info-circle" /> 接口管理
+              <Link to={`${props.match.path}/api/apirecord`}>
+                <Icon type="info-circle" /> 接口调用记录
               </Link>
             </Menu.Item>
 
             <Menu.Item key="p02sub02">
-              <Link to={`${props.match.path}/api/scene`}>
-                <Icon type="info-circle" /> 场景管理
-              </Link>
-            </Menu.Item>
-
-            <Menu.Item key="p02sub03">
               <Link to={`${props.match.path}/api/whitelist`}>
-                <Icon type="info-circle" /> 白名单请求记录
+                <Icon type="info-circle" /> 白名单访问记录
               </Link>
             </Menu.Item>
 
-            <Menu.Item key="p02sub04">
-              <Link to={`${props.match.path}/api/apirecord`}>
-                <Icon type="info-circle" /> API调用记录
+            {/* <Menu.Item key="p02sub03">
+              <Link to={`${props.match.path}/api/notfound`}>
+                <Icon type="info-circle" /> 白名单拦截记录
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </SubMent>
+
+          <Menu.Item key="p05">
+            <Link to={`${props.match.path}/api/overview`}>
+              <Icon type="database" /> 数据接口
+            </Link>
+          </Menu.Item>
 
           <SubMent
             key="p03"
             title={
               <span>
-                <Icon type="database" /> <span>数据管理</span>
+                <Icon type="appstore" /> <span>数据管理</span>
               </span>
             }
           >
