@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Tabs, Form, Input, Radio, Checkbox, Button, message, Row, Col } from 'antd';
 import UserService from './UserService';
+import Scene from '../../Api/Scene';
 
 import _ from 'lodash';
 
@@ -223,7 +224,7 @@ class UserForm extends Component {
           </Form>
         </TabPane>
         <TabPane tab="场景管理" key="2">
-          <p>力鹏正在抽离复用组件中......</p>
+          <Scene />
         </TabPane>
       </Tabs>
     );

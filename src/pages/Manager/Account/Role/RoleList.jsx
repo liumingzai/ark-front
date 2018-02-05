@@ -42,12 +42,18 @@ class RoleList extends React.Component {
   changeState(value) {
     this.setState({
       active: value,
+      pagination: {
+        current: 1,
+      },
     });
   }
 
   changeName(e) {
     this.setState({
       name: e.target.value,
+      pagination: {
+        current: 1,
+      },
     });
   }
 
@@ -221,6 +227,7 @@ class RoleList extends React.Component {
             // onChange={this.handleChange}
             pagination={{
               defaultCurrent: 1,
+              current: this.state.pagination.current,
               total: this.state.pagination.total,
               pageSize: this.state.pagination.pageSize,
               hideOnSinglePage: true,
