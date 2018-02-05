@@ -357,11 +357,11 @@ class Dashboard extends React.Component {
             <div className="gutter-box">
               <Card>
                 <p>
-                  <span>上月用户总登录数数</span>
+                  <span>上月用户总登录数</span>
                   <span>{this.state.lastLoginTotalNum}</span>
                 </p>
                 <p>
-                  <span>本月用户总登录数数</span>
+                  <span>本月用户总登录数</span>
                   <span>{this.state.curLoginTotalNum}</span>
                 </p>
               </Card>
