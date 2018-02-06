@@ -42,42 +42,42 @@ class AuthList extends React.Component {
 
   changeDisplayName(e) {
     this.setState({
+      pagination: {
+        current: 1,
+      },
       queryParam: {
         displayName: e.target.value,
         path: this.state.queryParam.path,
         active: this.state.queryParam.active,
-        pageNum: this.state.pagination.current,
-      },
-      pagination: {
-        current: 1,
+        pageNum: 1,
       },
     });
   }
 
   changePathName(e) {
     this.setState({
+      pagination: {
+        current: 1,
+      },
       queryParam: {
         displayName: this.state.queryParam.displayName,
         path: e.target.value,
         active: this.state.queryParam.active,
-        pageNum: this.state.pagination.current,
-      },
-      pagination: {
-        current: 1,
+        pageNum: 1,
       },
     });
   }
 
   changeState(value) {
     this.setState({
+      pagination: {
+        current: 1,
+      },
       queryParam: {
         displayName: this.state.queryParam.displayName,
         path: this.state.queryParam.path,
         active: value,
-        pageNum: this.state.pagination.current,
-      },
-      pagination: {
-        current: 1,
+        pageNum: 1,
       },
     });
   }
