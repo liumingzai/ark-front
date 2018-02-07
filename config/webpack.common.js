@@ -41,7 +41,7 @@ exports.common = {
       manifest: dllVendor
     }),
 
-    new BannerPlugin('©2017 honeymorning.com taylorpzreal@gmail.com')
+    new BannerPlugin('©2017 www.proudark.com')
   ],
   node: {
     dgram: 'empty',

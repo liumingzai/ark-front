@@ -14,7 +14,6 @@ class Http {
     this.imgPathPre = 'http://192.168.1.145/dc/';
 
     this.axios = axios.create({
-      baseURL: this.baseURL,
       withCredentials: true,
       timeout: 5000,
       headers: {
