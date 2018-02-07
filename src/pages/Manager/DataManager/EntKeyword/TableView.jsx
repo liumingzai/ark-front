@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 
 function TableView(props) {
   const { data, onPageChange, pageOption } = props;
@@ -23,6 +23,24 @@ function TableView(props) {
     {
       title: '爬取状态',
       dataIndex: 'status',
+      render: (text) => {
+        let result;
+        switch (text) {
+          case 0:
+            result = <Tag color="magenta">未找到</Tag>;
+            break;
+          case 1:
+            result = <Tag color="orange">查找未找到</Tag>;
+            break;
+          case 2:
+            result = <Tag color="blue">正在查找</Tag>;
+            break;
+          case 3:
+          default:
+            result = <Tag color="green">查找找到</Tag>;
+        }
+        return result;
+      },
     },
     {
       title: '爬取次数',
