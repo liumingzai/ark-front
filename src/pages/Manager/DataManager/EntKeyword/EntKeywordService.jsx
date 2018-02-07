@@ -53,13 +53,13 @@ class EntKeywordService {
   /**
    *  添加关键字
    *
-   * @param {any} data
+   * @param {[{keyword, province, priority}]} data
    * @returns
    * @memberof EntKeywordService
    */
   addKeywordInfo(data) {
     const method = 'dataManage/addKeywordInfo';
-    return this.http.POST(method, [data]);
+    return this.http.POST(method, data);
   }
 
   /**

@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Breadcrumb } from 'antd';
+import { Breadcrumb, Modal } from 'antd';
 import Service from './EntKeywordService';
 import Search from './Search';
 import TableView from './TableView';
@@ -36,6 +36,7 @@ class EntKeyword extends React.Component {
         pageSize: 10,
       },
       isAdding: false, // is add or search status.
+      submitNewAdd: false,
     };
     this.searchParam = {
       pageNum: 1,
@@ -45,8 +46,9 @@ class EntKeyword extends React.Component {
     this.handleDownload = this.handleDownload.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddNew = this.handleAddNew.bind(this);
-    this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
+    this.handleOkAdd = this.handleOkAdd.bind(this);
     this.handleCancelAdd = this.handleCancelAdd.bind(this);
+    this.handleCompletedAdd = this.handleCompletedAdd.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
@@ -74,6 +76,7 @@ class EntKeyword extends React.Component {
         };
         this.setState({
           tableData: data.data.map((e) => {
+            e.key = e.id;
             e.createTime = formatDate(e.createTime);
             return e;
           }),
@@ -101,24 +104,22 @@ class EntKeyword extends React.Component {
     });
   }
 
-  handleSubmitAdd(data) {
-    this.addKeywordInfo(data);
-  }
-
   handleCancelAdd() {
     this.setState({
       isAdding: false,
     });
   }
 
-  addKeywordInfo(param) {
-    this.service.addKeywordInfo(param).then((data) => {
-      if (data.code === '2000') {
-        message.success('Add success');
-        this.setState({
-          isAdding: false,
-        });
-      }
+  handleCompletedAdd() {
+    this.setState({
+      isAdding: false,
+    });
+    this.search(this.searchParam);
+  }
+
+  handleOkAdd() {
+    this.setState({
+      submitNewAdd: true,
     });
   }
 
@@ -126,27 +127,37 @@ class EntKeyword extends React.Component {
     return (
       <section>
         <BreadNav />
-        {this.state.isAdding ? (
+
+        {/* 新增 */}
+        <Modal
+          title="新增企业关键字"
+          visible={this.state.isAdding}
+          onOk={this.handleOkAdd}
+          onCancel={this.handleCancelAdd}
+          cancelText="取消"
+          okText="提交"
+          destroyOnClose="true"
+        >
           <AddNew
             provinces={this.state.provinces}
-            onSubmit={this.handleSubmitAdd}
-            onCancel={this.handleCancelAdd}
+            onSubmit={this.state.submitNewAdd}
+            onCompleted={this.handleCompletedAdd}
           />
-        ) : (
-          <section>
-            <Search
-              provinces={this.state.provinces}
-              onSearch={this.handleSearch}
-              onAddNew={this.handleAddNew}
-              onDownload={this.handleDownload}
-            />
-            <TableView
-              pageOption={this.state.pageOption}
-              onPageChange={this.handlePageChange}
-              data={this.state.tableData}
-            />
-          </section>
-        )}
+        </Modal>
+
+        <section>
+          <Search
+            provinces={this.state.provinces}
+            onSearch={this.handleSearch}
+            onAddNew={this.handleAddNew}
+            onDownload={this.handleDownload}
+          />
+          <TableView
+            pageOption={this.state.pageOption}
+            onPageChange={this.handlePageChange}
+            data={this.state.tableData}
+          />
+        </section>
       </section>
     );
   }
