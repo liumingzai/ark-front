@@ -39,6 +39,7 @@ const SearchForm = Form.create({
   },
 })((props) => {
   const { getFieldDecorator } = props.form;
+  const allowClear = true;
 
   return (
     <Form layout="inline">
@@ -51,7 +52,7 @@ const SearchForm = Form.create({
         {getFieldDecorator('province', {
           rules: [],
         })(
-          <Select style={{ width: 200 }} placeholder="Select a province">
+          <Select style={{ width: 200 }} allowClear={allowClear} placeholder="Select a province">
             {props.provinces
               ? props.provinces.map(e => (
                 <Option key={e} value={e}>
@@ -72,10 +73,10 @@ class Search extends React.Component {
     this.state = {
       fields: {
         keyword: {
-          value: null,
+          value: props.queryParam.keyword || null,
         },
         province: {
-          value: null,
+          value: props.queryParam.province || null,
         },
       },
       provinces: [],

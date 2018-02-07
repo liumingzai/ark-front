@@ -40,7 +40,7 @@ class EntKeywordService {
   getKeywordInfo(param) {
     const method = 'dataManage/getKeywordInfo';
     const {
-      pageNum, keyword, province, sort: createTimeSort,
+      page: pageNum, keyword, province, sort: createTimeSort,
     } = param;
     return this.http.GET(method, {
       pageNum,

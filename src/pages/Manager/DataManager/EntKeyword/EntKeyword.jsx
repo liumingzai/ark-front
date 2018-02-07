@@ -1,5 +1,6 @@
 import React from 'react';
 import { Breadcrumb, Modal } from 'antd';
+import queryString from 'query-string';
 import Service from './EntKeywordService';
 import Search from './Search';
 import TableView from './TableView';
@@ -25,22 +26,82 @@ function formatDate(timestamp) {
   return `${Y}-${M}-${D}`;
 }
 
+/**
+ * pushHistory 动态设置URL参数
+ *
+ * @param {history} history
+ * @param {string} key
+ * @param {string|number} value
+ */
+function pushHistory(history, key, value) {
+  const { location } = history;
+  let param = location.search;
+
+  if (!param) {
+    param = `?${key}=${value}`;
+  } else if (!new RegExp(`${key}=`, 'g').test(param)) {
+    param += `&${key}=${value}`;
+  } else {
+    param = param.replace(new RegExp(`(${key}=)([^&])*(&)?`, 'g'), `$1${value}$3`);
+  }
+
+  const path = `${location.pathname}${param}`;
+  history.push(path);
+}
+
+/**
+ * 格式化URI查询参数
+ *
+ * @param {string|object} search
+ * @returns
+ */
+function formatParam(search) {
+  let searchObj;
+  if (typeof search === 'string') {
+    searchObj = queryString.parse(search);
+  } else {
+    searchObj = search;
+  }
+
+  const result = {};
+  Object.keys(searchObj).forEach((key) => {
+    if (searchObj[key]) {
+      result[key] = searchObj[key];
+    }
+  });
+  return result;
+}
+
 class EntKeyword extends React.Component {
   constructor(props) {
     super(props);
+
+    // 初始化查询参数
+    this.queryParam = formatParam(this.props.location.search);
+    this.queryParam.page = (this.queryParam.page && +this.queryParam.page) || 1;
+
     this.state = {
       provinces: [],
       tableData: [],
       pageOption: {
         total: 0,
         pageSize: 10,
+        current: this.queryParam.page,
       },
-      isAdding: false, // is add or search status.
-      submitNewAdd: false,
+      isAdding: false, // true show Modal and false hide modal.
+      submitNewAdd: false, // true submit data to server
     };
-    this.searchParam = {
-      pageNum: 1,
-    };
+
+    // 注册URL监听器
+    this.props.history.listen((location, action) => {
+      if (action === 'PUSH') {
+        this.queryParam = queryString.parse(location.search);
+        this.queryParam.page =
+          (this.queryParam && this.queryParam.page && +this.queryParam.page) || 1; // 更新page
+        this.search(this.queryParam);
+      }
+    });
+
     this.provinces = [];
     this.service = new Service();
     this.handleDownload = this.handleDownload.bind(this);
@@ -54,7 +115,11 @@ class EntKeyword extends React.Component {
 
   componentDidMount() {
     this.getProvince();
-    this.search(this.searchParam);
+    this.search(this.queryParam);
+  }
+
+  onPageChange(page) {
+    pushHistory(this.props.history, 'page', page);
   }
 
   getProvince() {
@@ -73,6 +138,7 @@ class EntKeyword extends React.Component {
         const pageOption = {
           total: data.size,
           pageSize: this.state.pageOption.pageSize,
+          current: param.page,
         };
         this.setState({
           tableData: data.data.map((e) => {
@@ -91,11 +157,12 @@ class EntKeyword extends React.Component {
   }
 
   handleSearch(param) {
-    this.search({ ...this.searchParam, ...param });
+    const pathString = queryString.stringify({ ...param, page: 1 });
+    this.props.history.push(`${this.props.location.pathname}?${pathString}`);
   }
 
-  handlePageChange(currentPage) {
-    this.search({ pageNum: currentPage });
+  handlePageChange(page) {
+    pushHistory(this.props.history, 'page', page);
   }
 
   handleAddNew() {
@@ -114,7 +181,7 @@ class EntKeyword extends React.Component {
     this.setState({
       isAdding: false,
     });
-    this.search(this.searchParam);
+    this.search(this.queryParam);
   }
 
   handleOkAdd() {
@@ -148,6 +215,7 @@ class EntKeyword extends React.Component {
         <section>
           <Search
             provinces={this.state.provinces}
+            queryParam={this.queryParam}
             onSearch={this.handleSearch}
             onAddNew={this.handleAddNew}
             onDownload={this.handleDownload}

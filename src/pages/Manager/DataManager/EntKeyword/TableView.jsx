@@ -4,7 +4,7 @@ import { Table, Tag } from 'antd';
 function TableView(props) {
   const { data, onPageChange, pageOption } = props;
   const pagination = {
-    defaultCurrent: 1,
+    current: pageOption.current,
     total: pageOption.total,
     pageSize: pageOption.pageSize,
     hideOnSinglePage: true,
