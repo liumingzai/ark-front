@@ -108,6 +108,7 @@ class Search extends React.Component {
     const uploadProps = {
       name: 'upload',
       action: 'http://192.168.1.151/ark-portal/dataManage/uploadKeywordInfo',
+      showUploadList: false,
       withCredentials: true,
       listType: 'text',
       onChange(info) {
@@ -115,9 +116,13 @@ class Search extends React.Component {
           console.warn(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
+          if (info.file.response.code === '2000') {
+            message.success(`${info.file.name} 文件上传成功`);
+          } else {
+            message.warning(info.file.response.message);
+          }
         } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+          message.error(`${info.file.name} 文件上传失败`);
         }
       },
     };
