@@ -9,8 +9,8 @@ import queryString from 'query-string';
  */
 class Http {
   constructor() {
-    // this.baseURL = 'http://192.168.1.151/ark-portal'; // dev
-    this.baseURL = 'ark-portal'; // prod
+    this.baseURL = 'http://192.168.1.151/ark-portal'; // dev
+    // this.baseURL = 'ark-portal'; // prod
     this.imgPathPre = 'http://192.168.1.145/dc/';
 
     this.axios = axios.create({
