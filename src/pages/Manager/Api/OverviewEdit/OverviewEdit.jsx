@@ -8,9 +8,8 @@ const { Option } = Select;
 function BreadNav() {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item>API管理</Breadcrumb.Item>
       <Breadcrumb.Item>
-        <Link to="/manager/api/overview">接口管理</Link>
+        <Link to="/manager/api/overview">数据接口</Link>
       </Breadcrumb.Item>
       <Breadcrumb.Item>编辑接口</Breadcrumb.Item>
     </Breadcrumb>
@@ -101,7 +100,7 @@ const SearchForm = Form.create({
             rules: [],
           })(
             <Upload {...uploadOption}>
-              <Button>upload</Button>
+              <Button>上传Logo</Button>
             </Upload>,
           )}
         </FormItem>
@@ -113,14 +112,7 @@ const SearchForm = Form.create({
 class OverviewEdit extends React.Component {
   constructor(props) {
     super(props);
-    const fileList = [
-      {
-        uid: -1,
-        name: 'default.png',
-        status: 'done',
-        url: '',
-      },
-    ];
+    const fileList = null;
     this.state = {
       fields: {
         apiName: {
@@ -162,14 +154,16 @@ class OverviewEdit extends React.Component {
             value: data.data[key],
           };
         });
-        const fileList = [
-          {
-            uid: -2,
-            name: 'Interface Logo',
-            status: 'done',
-            url: data.data.apiPic,
-          },
-        ];
+        const fileList = data.data.apiPic
+          ? [
+            {
+              uid: 1,
+              name: '接口Logo',
+              status: 'done',
+              url: data.data.apiPic,
+            },
+          ]
+          : null;
         this.setState({
           fields,
           fileList,
@@ -181,7 +175,7 @@ class OverviewEdit extends React.Component {
   addApiOverview(body) {
     this.service.addApiOverview(body).then((data) => {
       if (data.code === '2000') {
-        message.success('Add success');
+        message.success('添加成功');
         this.props.history.push('/manager/api/overview');
       }
     });
@@ -190,7 +184,7 @@ class OverviewEdit extends React.Component {
   updateApiOverview(body) {
     this.service.updateApiOverview(body).then((data) => {
       if (data.code === '2000') {
-        message.success('Update success');
+        message.success('更新成功');
         this.props.history.push('/manager/api/overview');
       }
     });
@@ -209,7 +203,9 @@ class OverviewEdit extends React.Component {
     });
 
     // reset apiPic
-    data.apiPic = this.state.apiPic ? handleImg(this.state.apiPic).trimPre() : null;
+    data.apiPic = this.state.apiPic
+      ? handleImg(this.state.apiPic).trimPre()
+      : handleImg(this.state.fields.apiPic.value).trimPre();
     if (this.apiId) {
       data.apiId = this.apiId;
       this.updateApiOverview(data);
@@ -219,8 +215,15 @@ class OverviewEdit extends React.Component {
   }
 
   handleUpload(e) {
+    let fileItem;
+    if (e.fileList && e.fileList.length > 1) {
+      fileItem = [e.fileList.pop()]; // 大于1就赋值新的
+    } else {
+      fileItem = e.fileList;
+    }
+
     this.setState({
-      fileList: e.fileList,
+      fileList: fileItem,
     });
     if (e.fileList && e.fileList.length > 0 && e.fileList[0].response) {
       this.setState({
@@ -260,7 +263,7 @@ class OverviewEdit extends React.Component {
         />
         <Col span={14} style={{ textAlign: 'center' }}>
           <Button type="primary" onClick={this.handleSave}>
-            Save
+            保存
           </Button>
         </Col>
       </div>

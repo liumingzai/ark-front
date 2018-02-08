@@ -36,13 +36,15 @@ class OverviewItem extends React.Component {
             <h5>
               更新时间：<span>{item.updateTime}</span>
             </h5>
-            <Button type="primary" size="small" style={{ marginRight: 4 }}>
-              <Link to={`/manager/api/overview/update/${item.apiId}`}>编辑</Link>
-            </Button>
             {this.props.userType === 1 ? (
-              <Button type="danger" size="small" onClick={this.handleDelete}>
-                删除
-              </Button>
+              <section>
+                <Button type="primary" size="small" style={{ marginRight: 4 }}>
+                  <Link to={`/manager/api/overview/update/${item.apiId}`}>编辑</Link>
+                </Button>
+                <Button type="danger" size="small" onClick={this.handleDelete}>
+                  删除
+                </Button>
+              </section>
             ) : null}
           </div>
         </Card>

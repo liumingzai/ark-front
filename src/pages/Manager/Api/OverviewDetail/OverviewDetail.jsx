@@ -10,9 +10,8 @@ const FormItem = Form.Item;
 function BreadNav() {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item>API管理</Breadcrumb.Item>
       <Breadcrumb.Item>
-        <Link to="/manager/api/overview">接口管理</Link>
+        <Link to="/manager/api/overview">数据接口</Link>
       </Breadcrumb.Item>
       <Breadcrumb.Item>接口详情</Breadcrumb.Item>
     </Breadcrumb>

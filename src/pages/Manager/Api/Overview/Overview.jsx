@@ -191,7 +191,7 @@ class Overview extends React.Component {
         this.deleteApi(apiId);
       },
       onCancel: () => {
-        message.success('Cancel delete');
+        message.success('已取消删除');
       },
     });
   }
@@ -199,7 +199,7 @@ class Overview extends React.Component {
   deleteApi(apiId) {
     this.service.deleteApi(apiId).then((data) => {
       if (data.code === '2000') {
-        message.success('Delete success');
+        message.success('删除成功');
         this.getApiOverview({ page: 1 });
       }
     });
