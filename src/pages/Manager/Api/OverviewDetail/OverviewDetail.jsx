@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Input, Col, Button, Switch, message, Breadcrumb } from 'antd';
+import { Form, Col, Button, message, Breadcrumb } from 'antd';
 import CodeError from './CodeError';
 import RequestBody from './RequestBody';
 import OverviewDetailService from './OverviewDetailService';
+import CommonForm from './CommonForm';
+import Publish from './Publish';
 
-const { TextArea } = Input;
 const FormItem = Form.Item;
 function BreadNav() {
   return (
@@ -18,443 +19,180 @@ function BreadNav() {
   );
 }
 
-const DetailForm = Form.create({
-  onFieldsChange(props, changedFields) {
-    props.onChange(changedFields);
-  },
-  mapPropsToFields(props) {
-    return {
-      accessUrl: Form.createFormField({
-        ...props.accessUrl,
-        value: props.accessUrl.value,
-      }),
-      queryType: Form.createFormField({
-        ...props.queryType,
-        value: props.queryType.value,
-      }),
-      returnType: Form.createFormField({
-        ...props.returnType,
-        value: props.returnType.value,
-      }),
-      accessSample: Form.createFormField({
-        ...props.accessSample,
-        value: props.accessSample.value,
-      }),
-      returnSample: Form.createFormField({
-        ...props.returnSample,
-        value: props.returnSample.value,
-      }),
-    };
-  },
-  onValuesChange(_, value) {
-    console.warn(value);
-  },
-})((props) => {
-  const { getFieldDecorator } = props.form;
-
-  return (
-    <Form>
-      <Col span={24}>
-        <FormItem label="调用地址">
-          {getFieldDecorator('accessUrl', {
-            rules: [],
-          })(<Input />)}
-        </FormItem>
-      </Col>
-
-      <Col span={24}>
-        <FormItem label="请求类型">
-          {getFieldDecorator('queryType', {
-            rules: [],
-          })(<Input />)}
-        </FormItem>
-      </Col>
-
-      <Col span={24}>
-        <FormItem label="返回类型">
-          {getFieldDecorator('returnType', {
-            rules: [],
-          })(<Input />)}
-        </FormItem>
-      </Col>
-
-      <Col span={24}>
-        <FormItem label="调用示例">
-          {getFieldDecorator('accessSample', {
-            rules: [],
-          })(<TextArea />)}
-        </FormItem>
-      </Col>
-
-      <Col span={24}>
-        <FormItem label="返回示例">
-          {getFieldDecorator('returnSample', {
-            rules: [],
-          })(<TextArea />)}
-        </FormItem>
-      </Col>
-    </Form>
-  );
-});
-
+/**
+ * 接口详情
+ *
+ * 2种角色 管理员（有编辑权限） 注册用户（只有查看权限）
+ *
+ * @class OverviewDetail
+ * @extends {React.Component}
+ */
 class OverviewDetail extends React.Component {
   constructor(props) {
     super(props);
 
+    this.userType = JSON.parse(localStorage.getItem('account')).userType;
     this.apiId = this.props.match.params.id;
     this.state = {
+      publish: true,
+      paramList: [],
+      errorCodeList: [],
       fields: {
         apiName: {
           value: '',
         },
         accessUrl: {
-          value: '',
+          value: null,
         },
         queryType: {
-          value: '',
+          value: null,
         },
         returnType: {
-          value: '',
+          value: null,
         },
         accessSample: {
-          value: '',
+          value: null,
         },
         returnSample: {
-          value: '',
-        },
-        errorCodeList: {
-          value: [],
-        },
-        paramList: {
-          header: {
-            value: [],
-          },
-          bodys: {
-            value: [],
-          },
-          querys: {
-            value: [],
-          },
-        },
-        publish: {
-          value: true,
+          value: null,
         },
       },
+      doSubmit: false,
     };
+
+    this.dataStorage = {};
     this.service = new OverviewDetailService();
-    this.handleAdd = this.handleAdd.bind(this);
-    this.handleParamListAdd = this.handleParamListAdd.bind(this);
-    this.handleHeaderAdd = this.handleHeaderAdd.bind(this);
-    this.handleQueryAdd = this.handleQueryAdd.bind(this);
-    this.handleBodyAdd = this.handleBodyAdd.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleFormChange = this.handleFormChange.bind(this);
-    this.handlePublishChange = this.handlePublishChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSyncData = this.handleSyncData.bind(this);
   }
 
   componentDidMount() {
     this.getApiInfo(this.apiId);
   }
 
+  /**
+   * 根apiId 获取接口详情
+   *
+   * @param {any} apiId
+   * @memberof OverviewDetail
+   */
   getApiInfo(apiId) {
     this.service.getApiInfo(apiId).then((data) => {
       if (data.code === '2000') {
         const fields = {};
+
         if (data.data) {
+          this.dataStorage = data.data; // 存储数据
+
           Object.keys(data.data).forEach((key) => {
-            if (key !== 'paramList') {
-              // ignore paramList
+            if (key !== 'paramList' && key !== 'errorCodeList' && key !== 'publish') {
               fields[key] = {
                 value: data.data[key],
               };
-            } else {
-              const params = {
-                header: {
-                  value: [],
-                },
-                bodys: {
-                  value: [],
-                },
-                querys: {
-                  value: [],
-                },
-              };
-
-              data.data[key].forEach((e) => {
-                switch (e.argumentType) {
-                  case 'header':
-                    params.header.value.push(e);
-                    break;
-                  case 'querys':
-                    params.querys.value.push(e);
-                    break;
-                  case 'bodys':
-                  default:
-                    params.bodys.value.push(e);
-                }
-              });
-
-              fields[key] = params;
             }
           });
+
           this.setState({
             fields,
+            publish: data.data.publish === 1,
+            errorCodeList: data.data.errorCodeList,
+            paramList: data.data.paramList.map((e) => {
+              e.queryOption = e.queryOption === 'Y';
+              return e;
+            }),
           });
         }
       }
     });
   }
 
-  handleAdd() {
-    const newData = {
-      apiErrorCodeId: new Date().valueOf(),
-      errorCode: 'code',
-      errorDesc: 'desc',
-    };
-
-    const { fields } = this.state;
-    fields.errorCodeList.value.push(newData);
-    this.setState({
-      fields: { ...fields },
-    });
-  }
-
-  handleParamListAdd(type) {
-    const newData = {
-      apiQueryId: new Date().valueOf(),
-      argumentType: type,
-      queryColumnName: ' ',
-      queryColumnType: ' ',
-      queryOption: ' ',
-      queryColumnDesc: ' ',
-    };
-
-    const { fields } = this.state;
-    fields.paramList[type].value.push(newData);
-    this.setState({
-      fields: { ...fields },
-    });
-  }
-
-  handleHeaderAdd() {
-    this.handleParamListAdd('header');
-  }
-
-  handleBodyAdd() {
-    this.handleParamListAdd('bodys');
-  }
-
-  handleQueryAdd() {
-    this.handleParamListAdd('querys');
-  }
-
-  handleDelete(param) {
-    const { fields } = this.state;
-    let value = param.childType
-      ? [...this.state.fields[param.type][param.childType].value]
-      : [...this.state.fields[param.type].value];
-    value = value.filter(e => e[param.key] !== param.value);
-
-    if (param.childType) {
-      fields[param.type][param.childType].value = value;
-    } else {
-      fields[param.type].value = value;
-    }
-
-    this.setState({
-      fields: { ...fields },
-    });
-  }
-
   updateApiInfo(apiId, param) {
     this.service.updateApiInfo(apiId, param).then((data) => {
       if (data.code === '2000') {
-        message.success('Update success');
+        message.success('更新成功');
+        this.props.history.push('/manager/api/overview');
       }
+    });
+  }
+
+  handleSyncData(data) {
+    Object.keys(data).forEach((key) => {
+      this.dataStorage[key] = data[key];
     });
   }
 
   /**
-   * edit
+   * 提交表单
    *
-   * In order to support codeerror and paramlist.
-   * @param {key: string, value: string, type: string, childType: string } param
    * @memberof OverviewDetail
    */
-  handleEdit(param) {
-    const value = param.childType
-      ? [...this.state.fields[param.type][param.childType].value]
-      : [...this.state.fields[param.type].value];
-    const valueItem = value.filter(item => param.value === item[param.key])[0];
-    if (valueItem) {
-      valueItem.editable = true;
-      const { fields } = this.state;
-      if (param.childType) {
-        fields[param.type][param.childType].value = value;
-      } else {
-        fields[param.type].value = value;
-      }
-      this.setState({ fields });
-    }
-  }
-
-  handleCancel(param) {
-    const value = param.childType
-      ? [...this.state.fields[param.type][param.childType].value]
-      : [...this.state.fields[param.type].value];
-    const valueItem = value.filter(item => param.value === item[param.key])[0];
-    if (valueItem) {
-      valueItem.editable = false;
-      const { fields } = this.state;
-      if (param.childType) {
-        fields[param.type][param.childType].value = value;
-      } else {
-        fields[param.type].value = value;
-      }
-      this.setState({ fields });
-    }
-  }
-
-  handleSave(param) {
-    const { data } = param;
-    const value = (param.childType
-      ? [...this.state.fields[param.type][param.childType].value]
-      : [...this.state.fields[param.type].value]
-    ).map((e) => {
-      if (e.apiErrorCodeId === data.apiErrorCodeId) {
-        data.editable = false;
-        return data;
-      }
-      return e;
-    });
-
-    const { fields } = this.state;
-    if (param.childType) {
-      fields[param.type][param.childType].value = value;
-    } else {
-      fields[param.type].value = value;
-    }
-
-    this.setState({ fields });
-  }
-
-  handleFormChange(changeFields) {
-    this.setState({
-      fields: { ...this.state.fields, ...changeFields },
-    });
-  }
-
-  handlePublishChange(checked) {
-    const { fields } = this.state;
-
-    fields.publish.value = checked ? 1 : 0;
-
-    this.setState({
-      fields,
-    });
-  }
-
   handleSubmit() {
-    const fieldsObj = { ...this.state.fields };
-    Object.keys(fieldsObj).forEach((key) => {
-      if (key !== 'paramList') {
-        fieldsObj[key] = fieldsObj[key].value;
-      } else {
-        fieldsObj[key] = [].concat(
-          fieldsObj[key].header.value,
-          fieldsObj[key].bodys.value,
-          fieldsObj[key].querys.value,
-        );
-      }
+    this.setState({
+      doSubmit: true,
     });
-    this.updateApiInfo(this.apiId, fieldsObj);
+
+    setTimeout(() => {
+      const data = {};
+      Object.keys(this.dataStorage.fields).forEach((key) => {
+        data[key] = this.dataStorage.fields[key].value;
+      });
+
+      data.publish = this.dataStorage.publish;
+      data.paramList = this.dataStorage.paramList;
+      data.errorCodeList = this.dataStorage.errorCodeList;
+
+      this.updateApiInfo(this.apiId, data); // 更新接口
+    });
   }
 
   render() {
-    const { fields } = this.state;
-
     return (
       <div>
         <BreadNav />
-        <DetailForm {...fields} onChange={this.handleFormChange} />
+        <CommonForm
+          userType={this.userType}
+          fields={this.state.fields}
+          doSubmit={this.state.doSubmit}
+          syncData={this.handleSyncData}
+        />
 
         <Col span={24}>
-          <FormItem label="Header(header)">
-            <Button className="editable-add-btn" onClick={this.handleHeaderAdd}>
-              Add
-            </Button>
+          <FormItem label="请求头部">
             <RequestBody
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onSave={this.handleSave}
-              onCancel={this.handleCancel}
-              data={this.state.fields.paramList.header.value}
+              userType={this.userType}
+              data={this.state.paramList}
+              doSubmit={this.state.doSubmit}
+              syncData={this.handleSyncData}
             />
           </FormItem>
         </Col>
 
         <Col span={24}>
-          <FormItem label="Header(query)">
-            <Button className="editable-add-btn" onClick={this.handleQueryAdd}>
-              Add
-            </Button>
-            <RequestBody
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onSave={this.handleSave}
-              onCancel={this.handleCancel}
-              data={this.state.fields.paramList.querys.value}
-            />
-          </FormItem>
-        </Col>
-
-        <Col span={24}>
-          <FormItem label="Header(body)">
-            <Button className="editable-add-btn" onClick={this.handleBodyAdd}>
-              Add
-            </Button>
-            <RequestBody
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onSave={this.handleSave}
-              onCancel={this.handleCancel}
-              data={this.state.fields.paramList.bodys.value}
-            />
-          </FormItem>
-        </Col>
-
-        <Col span={24}>
-          <FormItem label="错误Code">
+          <FormItem label="错误码">
             <CodeError
-              handleAdd={this.handleAdd}
-              onDelete={this.handleDelete}
-              onEdit={this.handleEdit}
-              onSave={this.handleSave}
-              onCancel={this.handleCancel}
-              data={this.state.fields.errorCodeList.value}
+              userType={this.userType}
+              data={this.state.errorCodeList}
+              syncData={this.handleSyncData}
+              doSubmit={this.state.doSubmit}
             />
           </FormItem>
         </Col>
 
         <Col span={24}>
-          <span style={{ marginRight: '10px' }}>发布状态</span>
-          <Switch
-            checkedChildren="发布"
-            unCheckedChildren="保存"
-            onChange={this.handlePublishChange}
-            checked={this.state.fields.publish.value === 1}
+          <Publish
+            publish={this.state.publish}
+            doSubmit={this.state.doSubmit}
+            syncData={this.handleSyncData}
           />
         </Col>
 
-        <Col span={24} style={{ textAlign: 'center' }}>
-          <Button type="primary" onClick={this.handleSubmit}>
-            Save
-          </Button>
-        </Col>
+        {this.userType === 1 ? (
+          <Col span={24} style={{ textAlign: 'center' }}>
+            <Button type="primary" onClick={this.handleSubmit}>
+              保存
+            </Button>
+          </Col>
+        ) : null}
       </div>
     );
   }

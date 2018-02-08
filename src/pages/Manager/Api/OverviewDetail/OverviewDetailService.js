@@ -50,7 +50,7 @@ class OverviewDetailService {
         queryColumnDesc: e.queryColumnDesc,
         queryColumnName: e.queryColumnName,
         queryColumnType: e.queryColumnType,
-        queryOption: e.queryOption,
+        queryOption: e.queryOption ? 'Y' : 'N',
       };
 
       if (e.updateTime) {

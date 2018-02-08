@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Popconfirm, Input, Table } from 'antd';
+import { Button, Popconfirm, Input, Table, Select, Switch } from 'antd';
+
+const { Option } = Select;
 
 const EditableCell = ({ editable, value, onChange }) => (
   <div>
@@ -11,36 +13,46 @@ const EditableCell = ({ editable, value, onChange }) => (
   </div>
 );
 
+const EditableSelectCell = ({ editable, value, onChange }) => (
+  <div>
+    {editable ? (
+      <Select style={{ margin: '-5px 0' }} value={value} onChange={e => onChange(e)}>
+        <Option value="header">Header</Option>
+        <Option value="querys">Query</Option>
+        <Option value="bodys">Body</Option>
+      </Select>
+    ) : (
+      value
+    )}
+  </div>
+);
+
+const EditableSwitchCell = ({ editable, value, onChange }) => (
+  <div>
+    {editable ? (
+      <Switch
+        checkedChildren="Y"
+        unCheckedChildren="N"
+        checked={value}
+        onChange={e => onChange(e)}
+      />
+    ) : (
+      value
+    )}
+  </div>
+);
+
 class RequestBody extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dataSource: null,
-      columns: null,
-    };
-  }
 
-  componentWillReceiveProps(nextProps) {
-    const dataSource = [];
-    nextProps.data.forEach((e) => {
-      dataSource.push({
-        key: e.apiQueryId,
-        editable: e.editable || false,
-        apiQueryId: e.apiQueryId,
-        argumentType: e.argumentType,
-        queryColumnName: e.queryColumnName,
-        queryColumnType: e.queryColumnType,
-        queryOption: e.queryOption,
-        queryColumnDesc: e.queryColumnDesc,
-      });
-    });
-
+    const dataSource = null;
     const columns = [
       {
         title: '参数类型',
         dataIndex: 'argumentType',
         width: '20%',
-        render: (text, record) => this.renderColumns(text, record, 'argumentType'),
+        render: (text, record) => this.renderSelectColumns(text, record, 'argumentType'),
       },
       {
         title: '参数名称',
@@ -55,7 +67,7 @@ class RequestBody extends React.Component {
       {
         title: '是否必须',
         dataIndex: 'queryOption',
-        render: (text, record) => this.renderColumns(text, record, 'queryOption'),
+        render: (text, record) => this.renderSwitchColumns(text, record, 'queryOption'),
       },
       {
         title: '参数描述',
@@ -63,58 +75,116 @@ class RequestBody extends React.Component {
         render: (text, record) => this.renderColumns(text, record, 'queryColumnDesc'),
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
-        width: '20%',
-        render: (text, record) => {
-          const param = {
-            key: 'apiQueryId',
-            value: record.key,
-            type: 'paramList',
-            childType: record.argumentType,
-            data: record,
-          };
-          const tmp =
-            record.editable === true ? (
-              <span>
-                <Button onClick={() => this.props.onSave(param)}>Save</Button>
-                <Button onClick={() => this.props.onCancel(param)}>Cancel</Button>
-              </span>
-            ) : (
-              <Button onClick={() => this.props.onEdit(param)}>Edit</Button>
-            );
-
-          return dataSource.length > 0 ? (
-            <div>
-              {tmp}
-              <Popconfirm title="Sure to delete?" onConfirm={() => this.props.onDelete(param)}>
-                <Button>Delete</Button>
-              </Popconfirm>
-            </div>
-          ) : null;
-        },
+        width: '10%',
+        render: (text, record) => (
+          <div>
+            <Popconfirm
+              title="您确定要删除吗?"
+              okText="确定"
+              cancelText="取消"
+              onConfirm={() => this.handleDelete(record.key)}
+            >
+              <Button>删除</Button>
+            </Popconfirm>
+          </div>
+        ),
       },
     ];
 
-    this.setState({
+    this.state = {
       dataSource,
       columns,
-    });
+    };
+
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.doSubmit) {
+      const dataSource = [];
+      nextProps.data.forEach((e) => {
+        dataSource.push({
+          key: e.apiQueryId,
+          editable: e.editable || false,
+          apiQueryId: e.apiQueryId,
+          argumentType: e.argumentType,
+          queryColumnName: e.queryColumnName,
+          queryColumnType: e.queryColumnType,
+          queryOption: e.queryOption,
+          queryColumnDesc: e.queryColumnDesc,
+        });
+      });
+
+      this.setState({
+        dataSource,
+      });
+    } else {
+      this.props.syncData({ paramList: this.state.dataSource });
+    }
   }
 
   handleChange(value, key, column) {
-    const newData = [...this.state.dataSource];
-    const target = newData.filter(item => key === item.key)[0];
-    if (target) {
-      target[column] = value;
-      this.setState({ dataSource: newData });
-    }
+    const newData = this.state.dataSource.map((e) => {
+      if (key === e.key) {
+        e[column] = value;
+      }
+
+      return e;
+    });
+
+    this.setState({ dataSource: newData });
+  }
+
+  handleAdd() {
+    const { dataSource } = this.state;
+    dataSource.push({
+      key: new Date().valueOf(),
+      argumentType: 'header', // header, querys, bodys
+      queryColumnName: null,
+      queryColumnType: null,
+      queryOption: null,
+      queryColumnDesc: null,
+    });
+
+    this.setState({
+      dataSource,
+    });
+  }
+
+  handleDelete(key) {
+    const dataSource = this.state.dataSource.filter(e => key !== e.key);
+    this.setState({
+      dataSource,
+    });
   }
 
   renderColumns(text, record, column) {
     return (
       <EditableCell
-        editable={record.editable}
+        editable={this.props.userType === 1}
+        value={text}
+        onChange={value => this.handleChange(value, record.key, column)}
+      />
+    );
+  }
+
+  renderSelectColumns(text, record, column) {
+    return (
+      <EditableSelectCell
+        editable={this.props.userType === 1}
+        value={text}
+        onChange={value => this.handleChange(value, record.key, column)}
+      />
+    );
+  }
+
+  renderSwitchColumns(text, record, column) {
+    return (
+      <EditableSwitchCell
+        editable={this.props.userType === 1}
         value={text}
         onChange={value => this.handleChange(value, record.key, column)}
       />
@@ -124,8 +194,14 @@ class RequestBody extends React.Component {
   render() {
     return (
       <div>
+        {this.props.userType === 1 ? (
+          <Button className="editable-add-btn" onClick={this.handleAdd}>
+            新增
+          </Button>
+        ) : null}
         <Table
           bordered
+          locale={{ emptyText: '暂无数据' }}
           pagination={false}
           dataSource={this.state.dataSource}
           columns={this.state.columns}
