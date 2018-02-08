@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 
 const columns = [
   {
@@ -22,6 +22,7 @@ const columns = [
   {
     title: '通过标识',
     dataIndex: 'passFlag',
+    render: text => (text === 1 ? <Tag color="green">通过</Tag> : <Tag color="red">拒绝</Tag>),
   },
   {
     title: '返回信息',
