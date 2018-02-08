@@ -33,7 +33,7 @@ class Scene extends React.Component {
       userToken: null,
     };
 
-    this.uid = account.uid;
+    this.uid = this.props.uid || account.uid;
     this.userType = account.userType;
     this.service = new SceneService();
 

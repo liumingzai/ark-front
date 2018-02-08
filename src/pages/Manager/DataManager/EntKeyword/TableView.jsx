@@ -27,17 +27,20 @@ function TableView(props) {
         let result;
         switch (text) {
           case 0:
-            result = <Tag color="magenta">未找到</Tag>;
+            result = <Tag color="magenta">未抓取</Tag>;
             break;
           case 1:
-            result = <Tag color="orange">查找未找到</Tag>;
+            result = <Tag color="orange">抓取失败</Tag>;
             break;
           case 2:
-            result = <Tag color="blue">正在查找</Tag>;
+            result = <Tag color="blue">正在抓取</Tag>;
             break;
           case 3:
+            result = <Tag color="green">抓取成功</Tag>;
+            break;
+          case 4:
           default:
-            result = <Tag color="green">查找找到</Tag>;
+            result = <Tag color="red">不存在</Tag>;
         }
         return result;
       },

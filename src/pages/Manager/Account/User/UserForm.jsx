@@ -224,7 +224,7 @@ class UserForm extends Component {
           </Form>
         </TabPane>
         <TabPane tab="场景管理" key="2">
-          <Scene />
+          <Scene uid={this.state.user.uid} />
         </TabPane>
       </Tabs>
     );
