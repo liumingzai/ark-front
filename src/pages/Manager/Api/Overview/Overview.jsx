@@ -66,7 +66,7 @@ function Header(props) {
       <section>
         <span style={{ marginRight: 10 }}>分类</span>
         <RadioGroup value={props.activeCat} onChange={props.onChange}>
-          <RadioButton>全部</RadioButton>
+          <RadioButton value={null}>全部</RadioButton>
           <RadioButton value="企业">企业</RadioButton>
           <RadioButton value="工商">工商</RadioButton>
           <RadioButton value="专利">专利</RadioButton>
@@ -102,7 +102,7 @@ class Overview extends React.Component {
     this.state = {
       data: [],
       size: 0,
-      activeCat: cat,
+      activeCat: cat || null,
     };
 
     // 注册URL监听器
