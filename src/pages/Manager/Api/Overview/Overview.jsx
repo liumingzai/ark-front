@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Row, Button, Pagination, Breadcrumb, message, Modal } from 'antd';
+import { Row, Button, Pagination, Breadcrumb, message, Modal, Radio } from 'antd';
 import queryString from 'query-string';
 import OverviewItem from './OverviewItem';
-import SearchList from '../../../../components/SearchList';
 import OverviewService from './OverviewService';
+import style from './Overview.scss';
+
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 function BreadNav() {
   return (
@@ -29,6 +32,9 @@ function pushHistory(history, key, value) {
     param = `?${key}=${value}`;
   } else if (!new RegExp(`${key}=`, 'g').test(param)) {
     param += `&${key}=${value}`;
+  } else if (!value) {
+    // value不存在 删除对应的key
+    param = param.replace(new RegExp(`(${key}=)(.)*&?`, 'g'), '');
   } else {
     param = param.replace(new RegExp(`(${key}=)(.)*&?`, 'g'), `$1${value}`);
   }
@@ -54,52 +60,25 @@ function formatDate(timestamp) {
   return `${Y}-${M}-${D}`;
 }
 
-/**
- * Search Header filters
- *
- * @param {any} props
- * @returns
- */
 function Header(props) {
-  const searchList = [
-    {
-      label: '分类',
-      key: 'cat',
-      list: [
-        {
-          name: '全部',
-          value: '',
-        },
-        {
-          name: '企业',
-          value: '企业',
-        },
-        {
-          name: '专利',
-          value: '专利',
-        },
-        {
-          name: '工商',
-          value: '工商',
-        },
-        {
-          name: '其他',
-          value: '其他',
-        },
-      ],
-    },
-  ];
-
   return (
-    <header>
-      <div>
-        <SearchList match={props.match} data={searchList} />
-      </div>
-      <div style={{ textAlign: 'right' }}>
+    <header className={style.header}>
+      <section>
+        <span style={{ marginRight: 10 }}>分类</span>
+        <RadioGroup value={props.activeCat} onChange={props.onChange}>
+          <RadioButton>全部</RadioButton>
+          <RadioButton value="企业">企业</RadioButton>
+          <RadioButton value="工商">工商</RadioButton>
+          <RadioButton value="专利">专利</RadioButton>
+          <RadioButton value="其他">其他</RadioButton>
+        </RadioGroup>
+      </section>
+
+      <section>
         <Button type="primary">
           <Link to="/manager/api/overview/new">新增</Link>
         </Button>
-      </div>
+      </section>
     </header>
   );
 }
@@ -115,14 +94,16 @@ function Header(props) {
 class Overview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: [],
-      size: 0,
-    };
 
     // 初始化查询参数
     const { cat = '', page = 1 } = queryString.parse(this.props.location.search);
     this.queryParam = { cat, page: +page };
+
+    this.state = {
+      data: [],
+      size: 0,
+      activeCat: cat,
+    };
 
     // 注册URL监听器
     this.props.history.listen((location, action) => {
@@ -141,6 +122,7 @@ class Overview extends React.Component {
     this.getApiOverview = this.getApiOverview.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleCatChange = this.handleCatChange.bind(this);
   }
 
   componentDidMount() {
@@ -196,6 +178,13 @@ class Overview extends React.Component {
     });
   }
 
+  handleCatChange(e) {
+    pushHistory(this.props.history, 'cat', e.target.value);
+    this.setState({
+      activeCat: e.target.value,
+    });
+  }
+
   deleteApi(apiId) {
     this.service.deleteApi(apiId).then((data) => {
       if (data.code === '2000') {
@@ -210,8 +199,8 @@ class Overview extends React.Component {
     return (
       <section>
         <BreadNav />
-        <Header match={this.props.match} />
-        <Row style={{ display: 'flex', flexFlow: 'wrap', marginTop: '10px' }}>
+        <Header activeCat={this.state.activeCat} onChange={this.handleCatChange} />
+        <Row style={{ display: 'flex', flexFlow: 'wrap', margin: '10px -6px 0' }}>
           {this.state.data.length > 0 &&
             this.state.data.map(e => (
               <OverviewItem
