@@ -109,7 +109,7 @@ class AuthList extends React.Component {
           if ('2000' === data.code) {
             message.success('delete auth success！！！');
             _that.handleSearch({
-              displaName: this.state.queryParam.displaName,
+              displaName: _that.state.queryParam.displaName,
               path: _that.state.queryParam.path,
               active: _that.state.queryParam.active,
               pageNum: _that.state.pagination.current,
