@@ -1,11 +1,7 @@
-/*eslint-disable*/
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
-import { Form, Input, Radio, Button, message, Row, Col } from 'antd';
+import { Form, Input, Radio, Button, message } from 'antd';
 import RoleService from './RoleService';
-
-import _ from 'lodash';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -37,7 +33,7 @@ class RoleForm extends Component {
   }
 
   getRoleById() {
-    this.roleService.getRoleById(this.props.match.params.id).then(data => {
+    this.roleService.getRoleById(this.props.match.params.id).then((data) => {
       if (data.code === '2000') {
         this.setState({
           role: data.data,
@@ -52,15 +48,15 @@ class RoleForm extends Component {
       if (!err) {
         if (this.props.match.params.id) {
           values.id = this.props.match.params.id;
-          this.roleService.updateRole(values).then(data => {
-            if ('2000' === data.code) {
+          this.roleService.updateRole(values).then((data) => {
+            if (data.code === '2000') {
               message.success('update role success！！！');
               history.goBack();
             }
           });
         } else {
-          this.roleService.addRole(values).then(data => {
-            if ('2000' === data.code) {
+          this.roleService.addRole(values).then((data) => {
+            if (data.code === '2000') {
               message.success('create role success！！！');
               this.props.form.resetFields();
               history.goBack();
@@ -72,14 +68,7 @@ class RoleForm extends Component {
   }
 
   render() {
-    {
-      /* 解构复制 */
-    }
     const { getFieldDecorator } = this.props.form;
-
-    {
-      /*定义表格元素样式*/
-    }
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
@@ -102,7 +91,7 @@ class RoleForm extends Component {
                   message: '角色名不能为空',
                 },
               ],
-            }
+            },
           )(<Input placeholder="请输入角色名" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="描述">
@@ -117,7 +106,7 @@ class RoleForm extends Component {
                   required: false,
                 },
               ],
-            }
+            },
           )(<Input placeholder="请输入描述信息" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="有效状态">
@@ -133,12 +122,12 @@ class RoleForm extends Component {
                   message: '请选择有效状态',
                 },
               ],
-            }
+            },
           )(
             <RadioGroup>
               <Radio value="Y">有效</Radio>
               <Radio value="N">无效</Radio>
-            </RadioGroup>
+            </RadioGroup>,
           )}
         </FormItem>
         <FormItem {...buttonItemLayout}>

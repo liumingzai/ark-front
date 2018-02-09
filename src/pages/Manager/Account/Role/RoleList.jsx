@@ -1,13 +1,11 @@
-/*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Form, Input, Button, Select, Modal, message, Divider, Spin } from 'antd';
-import RoleService from './RoleService';
 import moment from 'moment';
-import Search from 'antd/lib/input/Search';
+import RoleService from './RoleService';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 class RoleList extends React.Component {
   constructor(props) {
@@ -27,6 +25,10 @@ class RoleList extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.deleteRole = this.deleteRole.bind(this);
+    this.handleDeleteRole = this.handleDeleteRole.bind(this);
+    this.changeName = this.changeName.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,20 @@ class RoleList extends React.Component {
     this.handleSearch({
       name: this.state.name,
       pageNum: this.state.pagination.current,
+      active: this.state.active,
+    });
+  }
+
+  /* 分页事件 */
+  onChange(current) {
+    this.setState({
+      pagination: {
+        current,
+      },
+    });
+    this.handleSearch({
+      name: this.state.name,
+      pageNum: current,
       active: this.state.active,
     });
   }
@@ -57,39 +73,31 @@ class RoleList extends React.Component {
     });
   }
 
-  /*分页事件*/
-  onChange(current) {
-    this.setState({
-      pagination: {
-        current: current,
+  handleDeleteRole(roleId) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteRole(roleId);
       },
-    });
-    this.handleSearch({
-      name: this.state.name,
-      pageNum: current,
-      active: this.state.active,
+      onCancel: () => {
+        message.success('已取消删除');
+      },
     });
   }
 
-  handleDeleteUser(e) {
-    let _that = this;
-    Modal.confirm({
-      title: '您确定要删除该记录吗？',
-      content: '删除操作是不可恢复的',
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        _that.roleService.deleteRoleById(e).then(data => {
-          if ('2000' === data.code) {
-            message.success('delete user success！！！');
-            _that.handleSearch({
-              name: _that.state.name,
-              pageNum: _that.state.pagination.current,
-              active: _that.state.active,
-            });
-          }
+  deleteRole(roleId) {
+    this.roleService.deleteRoleById(roleId).then((data) => {
+      if (data.code === '2000') {
+        message.success('delete user success！！！');
+        this.handleSearch({
+          name: this.state.name,
+          pageNum: this.state.pagination.current,
+          active: this.state.active,
         });
-      },
+      }
     });
   }
 
@@ -99,19 +107,19 @@ class RoleList extends React.Component {
       name: this.state.name,
       pageNum: this.state.pagination.current,
       active: this.state.active,
-      entryDatatime: sorter.order == 'ascend' ? 1 : 0,
+      entryDatatime: sorter.order === 'ascend' ? 1 : 0,
     });
   }
 
   handleSearch(e) {
     this.setState({ loading: true });
-    this.roleService.getRoleList(e).then(data => {
-      if ('2000' === data.code) {
+    this.roleService.getRoleList(e).then((data) => {
+      if (data.code === '2000') {
         const pagination = { ...this.state.pagination };
         pagination.total = data.size;
         this.setState({
           loading: false,
-          pagination: pagination,
+          pagination,
           data: data.data,
         });
       }
@@ -120,10 +128,9 @@ class RoleList extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let _that = this;
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err) => {
       if (!err) {
-        _that.handleSearch({
+        this.handleSearch({
           name: this.state.name,
           pageNum: this.state.pagination.current,
           active: this.state.active,
@@ -148,9 +155,7 @@ class RoleList extends React.Component {
         title: '创建时间',
         dataIndex: 'entryDatetime',
         key: 'entryDatetime',
-        render: val => {
-          return moment(val).format('YYYY-MM-DD HH:mm:ss');
-        },
+        render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.entryDatetime - b.entryDatetime,
       },
@@ -158,29 +163,29 @@ class RoleList extends React.Component {
         title: '有效标识',
         dataIndex: 'active',
         key: 'state',
-        render: text => <span>{text == 'Y' ? '有效' : '无效'}</span>,
+        render: text => <span>{text === 'Y' ? '有效' : '无效'}</span>,
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/role/bind/' + record.id}>绑定</Link>
+            <Link to={`/manager/account/role/bind/${record.id}`}>绑定</Link>
             <Divider type="vertical" />
-            <Link to={'/manager/account/role/edit/' + record.id}>编辑</Link>
+            <Link to={`/manager/account/role/edit/${record.id}`}>编辑</Link>
             <Divider type="vertical" />
-            <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
+            <button
+              className="delete-data"
+              onClick={() => {
+                this.handleDeleteRole(record.id);
+              }}
+            >
               删除
-            </a>
+            </button>
           </span>
         ),
       },
     ];
-
-    const FormItemLayout = {
-      lableCol: { span: 4 },
-      wrapperCol: { span: 8 },
-    };
 
     const buttonItemLayout = {
       wrapperCol: { span: 8, offset: 4 },
@@ -195,11 +200,11 @@ class RoleList extends React.Component {
               type="text"
               value={this.state.name}
               placeholder="请输入角色名"
-              onChange={this.changeName.bind(this)}
+              onChange={this.changeName}
             />
           </FormItem>
           <FormItem label="状态">
-            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState.bind(this)}>
+            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState}>
               <Option value="">全部</Option>
               <Option value="Y">有效</Option>
               <Option value="N">无效</Option>

@@ -1,12 +1,11 @@
-/*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Form, Input, Select, Button, Modal, message, Divider, Spin } from 'antd';
-import AuthService from './AuthService';
 import moment from 'moment';
+import AuthService from './AuthService';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 class AuthList extends React.Component {
   constructor(props) {
@@ -29,6 +28,11 @@ class AuthList extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDeleteAuth = this.handleDeleteAuth.bind(this);
+    this.deleteAuth = this.deleteAuth.bind(this);
+    this.changeDisplayName = this.changeDisplayName.bind(this);
+    this.changePathName = this.changePathName.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +41,21 @@ class AuthList extends React.Component {
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
       pageNum: this.state.pagination.current,
+    });
+  }
+
+  /* 分页事件 */
+  onChange(current) {
+    this.setState({
+      pagination: {
+        current,
+      },
+    });
+    this.handleSearch({
+      displaName: this.state.queryParam.displaName,
+      path: this.state.queryParam.path,
+      active: this.state.queryParam.active,
+      pageNum: current,
     });
   }
 
@@ -82,41 +101,32 @@ class AuthList extends React.Component {
     });
   }
 
-  /*分页事件*/
-  onChange(current) {
-    this.setState({
-      pagination: {
-        current: current,
+  handleDeleteAuth(authId) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteAuth(authId);
       },
-    });
-    this.handleSearch({
-      displaName: this.state.queryParam.displaName,
-      path: this.state.queryParam.path,
-      active: this.state.queryParam.active,
-      pageNum: current,
+      onCancel: () => {
+        message.success('已取消删除');
+      },
     });
   }
 
-  handleDeleteUser(e) {
-    let _that = this;
-    Modal.confirm({
-      title: '您确定要删除该记录吗？',
-      content: '删除操作是不可恢复的',
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        _that.authService.deleteAuthById(e).then(data => {
-          if ('2000' === data.code) {
-            message.success('delete auth success！！！');
-            _that.handleSearch({
-              displaName: _that.state.queryParam.displaName,
-              path: _that.state.queryParam.path,
-              active: _that.state.queryParam.active,
-              pageNum: _that.state.pagination.current,
-            });
-          }
+  deleteAuth(authId) {
+    this.authService.deleteAuthById(authId).then((data) => {
+      if (data.code === '2000') {
+        message.success('delete auth success！！！');
+        this.handleSearch({
+          displaName: this.state.queryParam.displaName,
+          path: this.state.queryParam.path,
+          active: this.state.queryParam.active,
+          pageNum: this.state.pagination.current,
         });
-      },
+      }
     });
   }
 
@@ -127,19 +137,19 @@ class AuthList extends React.Component {
       path: this.state.queryParam.path,
       active: this.state.queryParam.active,
       pageNum: this.state.pagination.current,
-      entryDatatime: sorter.order == 'ascend' ? 1 : 0,
+      entryDatatime: sorter.order === 'ascend' ? 1 : 0,
     });
   }
 
   handleSearch(e) {
     this.setState({ loading: true });
-    this.authService.getAuthList(e).then(data => {
-      if ('2000' === data.code) {
+    this.authService.getAuthList(e).then((data) => {
+      if (data.code === '2000') {
         const pagination = { ...this.state.pagination };
         pagination.total = data.size;
         this.setState({
           loading: false,
-          pagination: pagination,
+          pagination,
           data: data.data,
         });
       }
@@ -148,11 +158,10 @@ class AuthList extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let _that = this;
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err) => {
       if (!err) {
-        let params = Object.assign({}, this.state.queryParam);
-        _that.handleSearch(params);
+        const params = Object.assign({}, this.state.queryParam);
+        this.handleSearch(params);
       }
     });
   }
@@ -191,9 +200,7 @@ class AuthList extends React.Component {
         title: '创建时间',
         dataIndex: 'entryDatetime',
         key: 'entryDatetime',
-        render: val => {
-          return moment(val).format('YYYY-MM-DD HH:mm:ss');
-        },
+        render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.entryDatetime - b.entryDatetime,
       },
@@ -208,20 +215,20 @@ class AuthList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/auth/edit/' + record.id}>编辑</Link>
+            <Link to={`/manager/account/auth/edit/${record.id}`}>编辑</Link>
             <Divider type="vertical" />
-            <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
+            <button
+              className="delete-data"
+              onClick={() => {
+                this.handleDeleteAuth(record.id);
+              }}
+            >
               删除
-            </a>
+            </button>
           </span>
         ),
       },
     ];
-
-    const FormItemLayout = {
-      lableCol: { span: 4 },
-      wrapperCol: { span: 8 },
-    };
 
     const buttonItemLayout = {
       wrapperCol: { span: 8, offset: 4 },
@@ -236,7 +243,7 @@ class AuthList extends React.Component {
               type="text"
               value={this.state.queryParam.displayName}
               placeholder="请输入显示名称"
-              onChange={this.changeDisplayName.bind(this)}
+              onChange={this.changeDisplayName}
             />
           </FormItem>
           <FormItem label="路径名称">
@@ -244,11 +251,11 @@ class AuthList extends React.Component {
               type="text"
               value={this.state.queryParam.path}
               placeholder="请输入路径名称"
-              onChange={this.changePathName.bind(this)}
+              onChange={this.changePathName}
             />
           </FormItem>
           <FormItem label="状态">
-            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState.bind(this)}>
+            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState}>
               <Option value="">全部</Option>
               <Option value="Y">有效</Option>
               <Option value="N">无效</Option>

@@ -1,12 +1,11 @@
-/*eslint-disable*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Form, Input, Select, Button, Modal, message, Divider, Spin } from 'antd';
-import UserService from './UserService';
 import moment from 'moment';
+import UserService from './UserService';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 class UserList extends React.Component {
   constructor(props) {
@@ -26,12 +25,30 @@ class UserList extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
+    this.changeState = this.changeState.bind(this);
+    this.changeName = this.changeName.bind(this);
   }
 
   componentDidMount() {
     this.handleSearch({
       username: this.state.username,
       pageNum: this.state.pagination.current,
+      state: this.state.state,
+    });
+  }
+
+  /* 分页事件 */
+  onChange(current) {
+    this.setState({
+      pagination: {
+        current,
+      },
+    });
+    this.handleSearch({
+      username: this.state.username,
+      pageNum: current,
       state: this.state.state,
     });
   }
@@ -54,39 +71,31 @@ class UserList extends React.Component {
     });
   }
 
-  /*分页事件*/
-  onChange(current) {
-    this.setState({
-      pagination: {
-        current: current,
+  handleDeleteUser(userId) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteUser(userId);
       },
-    });
-    this.handleSearch({
-      username: this.state.username,
-      pageNum: current,
-      state: this.state.state,
+      onCancel: () => {
+        message.success('已取消删除');
+      },
     });
   }
 
-  handleDeleteUser(e) {
-    let _that = this;
-    Modal.confirm({
-      title: '您确定要删除该记录吗？',
-      content: '删除操作是不可恢复的',
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        _that.userService.deleteUserById(e).then(data => {
-          if ('2000' === data.code) {
-            message.success('delete user success！！！');
-            _that.handleSearch({
-              username: _that.state.username,
-              pageNum: _that.state.pagination.current,
-              state: _that.state.state,
-            });
-          }
+  deleteUser(userId) {
+    this.userService.deleteUserById(userId).then((data) => {
+      if (data.code === '2000') {
+        message.success('delete user success！！！');
+        this.handleSearch({
+          username: this.state.username,
+          pageNum: this.state.pagination.current,
+          state: this.state.state,
         });
-      },
+      }
     });
   }
 
@@ -96,19 +105,19 @@ class UserList extends React.Component {
       username: this.state.username,
       pageNum: pagination.current,
       state: this.state.state,
-      createTimeSort: sorter.order == 'ascend' ? 1 : 0,
+      createTimeSort: sorter.order === 'ascend' ? 1 : 0,
     });
   }
 
   handleSearch(e) {
     this.setState({ loading: true });
-    this.userService.getUserList(e).then(data => {
-      if ('2000' === data.code) {
+    this.userService.getUserList(e).then((data) => {
+      if (data.code === '2000') {
         const pagination = { ...this.state.pagination };
         pagination.total = data.size;
         this.setState({
           loading: false,
-          pagination: pagination,
+          pagination,
           data: data.data,
         });
       }
@@ -117,10 +126,9 @@ class UserList extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let _that = this;
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err) => {
       if (!err) {
-        _that.handleSearch({
+        this.handleSearch({
           username: this.state.username,
           state: this.state.state,
           pageNum: this.state.pagination.current,
@@ -155,9 +163,7 @@ class UserList extends React.Component {
         title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
-        render: val => {
-          return moment(val).format('YYYY-MM-DD HH:mm:ss');
-        },
+        render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.createTime - b.createTime,
       },
@@ -172,20 +178,20 @@ class UserList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={'/manager/account/user/edit/' + record.id}>编辑</Link>
+            <Link to={`/manager/account/user/edit/${record.id}`}>编辑</Link>
             <Divider type="vertical" />
-            <a className="delete-data" onClick={this.handleDeleteUser.bind(this, record.id)}>
+            <button
+              className="delete-data"
+              onClick={() => {
+                this.handleDeleteUser(record.id);
+              }}
+            >
               删除
-            </a>
+            </button>
           </span>
         ),
       },
     ];
-
-    const FormItemLayout = {
-      lableCol: { span: 4 },
-      wrapperCol: { span: 8 },
-    };
 
     const buttonItemLayout = {
       wrapperCol: { span: 8, offset: 4 },
@@ -200,11 +206,11 @@ class UserList extends React.Component {
               type="text"
               value={this.state.username}
               placeholder="请输入用户名"
-              onChange={this.changeName.bind(this)}
+              onChange={this.changeName}
             />
           </FormItem>
           <FormItem label="状态">
-            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState.bind(this)}>
+            <Select style={{ width: 200 }} defaultValue="" onChange={this.changeState}>
               <Option value="">全部</Option>
               <Option value="1">有效</Option>
               <Option value="0">无效</Option>

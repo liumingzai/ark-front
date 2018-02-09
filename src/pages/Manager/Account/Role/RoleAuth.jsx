@@ -93,10 +93,8 @@ class RoleAuth extends React.Component {
 
   handleChange(activeKey) {
     if (activeKey == 1) {
-      console.warn('tab1');
       this.getBinds({ pageNum: 1 });
     } else {
-      console.warn('tab2');
       this.getUnBinds({ pageNum: 1 });
     }
   }
