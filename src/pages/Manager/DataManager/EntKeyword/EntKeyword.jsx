@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, Modal } from 'antd';
+import { Breadcrumb, message, Modal } from 'antd';
 import queryString from 'query-string';
 import Service from './EntKeywordService';
 import Search from './Search';
@@ -83,6 +83,7 @@ class EntKeyword extends React.Component {
     this.state = {
       provinces: [],
       tableData: [],
+      editData: {},
       pageOption: {
         total: 0,
         pageSize: 10,
@@ -108,6 +109,8 @@ class EntKeyword extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddNew = this.handleAddNew.bind(this);
     this.handleOkAdd = this.handleOkAdd.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
     this.handleCancelAdd = this.handleCancelAdd.bind(this);
     this.handleCompletedAdd = this.handleCompletedAdd.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -165,6 +168,30 @@ class EntKeyword extends React.Component {
     pushHistory(this.props.history, 'page', page);
   }
 
+  handleDelete(keyword) {
+    Modal.confirm({
+      title: '您确定要删除吗？',
+      content: '此操作将彻底删除，并且不能恢复！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        this.deleteUser(keyword);
+      },
+      onCancel: () => {
+        message.success('已取消删除');
+      },
+    });
+  }
+
+  deleteUser(keyword) {
+    this.service.deleteKeywordInfo(keyword).then((data) => {
+      if (data.code === '2000') {
+        message.success('delete keyword success！！！');
+        this.search(this.queryParam);
+      }
+    });
+  }
+
   handleAddNew() {
     this.setState({
       isAdding: true,
@@ -174,6 +201,14 @@ class EntKeyword extends React.Component {
   handleCancelAdd() {
     this.setState({
       isAdding: false,
+    });
+  }
+
+  handleUpdate(data) {
+    console.warn(data);
+    this.setState({
+      isAdding: true,
+      editData: data,
     });
   }
 
@@ -206,6 +241,7 @@ class EntKeyword extends React.Component {
           destroyOnClose="true"
         >
           <AddNew
+            data={this.state.editData}
             provinces={this.state.provinces}
             onSubmit={this.state.submitNewAdd}
             onCompleted={this.handleCompletedAdd}
@@ -223,6 +259,8 @@ class EntKeyword extends React.Component {
           <TableView
             pageOption={this.state.pageOption}
             onPageChange={this.handlePageChange}
+            handleUpdate={this.handleUpdate}
+            handleDelete={this.handleDelete}
             data={this.state.tableData}
           />
         </section>

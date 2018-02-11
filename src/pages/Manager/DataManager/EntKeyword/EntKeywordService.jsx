@@ -63,6 +63,30 @@ class EntKeywordService {
   }
 
   /**
+   * 编辑关键字
+   *
+   * @param {any} data
+   * @returns
+   * @memberof EntKeywordService
+   */
+  updateKeywordInfo(data) {
+    const method = 'dataManage/updateKeywordInfo';
+    return this.http.PUT(method, data);
+  }
+
+  /**
+   * 删除关键字
+   *
+   * @param {any} name
+   * @returns
+   * @memberof EntKeywordService
+   */
+  deleteKeywordInfo(keyword) {
+    const method = 'dataManage/deleteKeywordInfo';
+    return this.http.DELETE(method, { keyword });
+  }
+
+  /**
    * Get province
    *
    * @returns

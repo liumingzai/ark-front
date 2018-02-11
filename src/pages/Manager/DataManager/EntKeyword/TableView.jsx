@@ -2,7 +2,9 @@ import React from 'react';
 import { Table, Tag } from 'antd';
 
 function TableView(props) {
-  const { data, onPageChange, pageOption } = props;
+  const {
+    data, onPageChange, handleDelete, handleUpdate, pageOption,
+  } = props;
   const pagination = {
     current: pageOption.current,
     total: pageOption.total,
@@ -46,10 +48,6 @@ function TableView(props) {
       },
     },
     {
-      title: '爬取次数',
-      dataIndex: 'crawlerCount',
-    },
-    {
       title: '创建时间',
       dataIndex: 'createTime',
     },
@@ -57,6 +55,30 @@ function TableView(props) {
       title: '优先级',
       dataIndex: 'priority',
       render: text => (text === 1 ? '高' : '低'),
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+          <button
+            className="delete-data"
+            onClick={() => {
+              handleUpdate(record);
+            }}
+          >
+            编辑
+          </button>
+          <button
+            className="delete-data"
+            onClick={() => {
+              handleDelete(record.keyword);
+            }}
+          >
+            删除
+          </button>
+        </span>
+      ),
     },
   ];
 

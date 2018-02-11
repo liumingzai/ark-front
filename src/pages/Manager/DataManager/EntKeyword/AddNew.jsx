@@ -35,10 +35,10 @@ class AddNew extends React.Component {
     this.state = {
       data: [
         {
-          key: 1,
-          keyword: '',
-          province: '北京',
-          priority: true,
+          key: this.props.data.key,
+          keyword: this.props.data.keyword,
+          province: this.props.data.province,
+          priority: this.props.data.priority === 1,
         },
       ],
     };
