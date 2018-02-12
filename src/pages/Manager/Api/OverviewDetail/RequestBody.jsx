@@ -46,7 +46,7 @@ class RequestBody extends React.Component {
   constructor(props) {
     super(props);
 
-    const dataSource = null;
+    const dataSource = [];
     const columns = [
       {
         title: '参数类型',
