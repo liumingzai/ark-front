@@ -5,6 +5,7 @@ import Service from './EntKeywordService';
 import Search from './Search';
 import TableView from './TableView';
 import AddNew from './AddNew';
+import EditNew from './EditNew';
 
 function BreadNav() {
   return (
@@ -90,6 +91,7 @@ class EntKeyword extends React.Component {
         current: this.queryParam.page,
       },
       isAdding: false, // true show Modal and false hide modal.
+      isEditing: false,
       submitNewAdd: false, // true submit data to server
     };
 
@@ -108,10 +110,13 @@ class EntKeyword extends React.Component {
     this.handleDownload = this.handleDownload.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddNew = this.handleAddNew.bind(this);
+    this.handleOkEdit = this.handleOkEdit.bind(this);
     this.handleOkAdd = this.handleOkAdd.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleCancelAdd = this.handleCancelAdd.bind(this);
+    this.handleCompletedEdit = this.handleCompletedEdit.bind(this);
     this.handleCompletedAdd = this.handleCompletedAdd.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -204,14 +209,6 @@ class EntKeyword extends React.Component {
     });
   }
 
-  handleUpdate(data) {
-    console.warn(data);
-    this.setState({
-      isAdding: true,
-      editData: data,
-    });
-  }
-
   handleCompletedAdd() {
     this.setState({
       isAdding: false,
@@ -222,6 +219,32 @@ class EntKeyword extends React.Component {
   handleOkAdd() {
     this.setState({
       submitNewAdd: true,
+    });
+  }
+
+  handleCancelEdit() {
+    this.setState({
+      isEditing: false,
+    });
+  }
+
+  handleCompletedEdit() {
+    this.setState({
+      isEditing: false,
+    });
+    this.search(this.queryParam);
+  }
+
+  handleOkEdit() {
+    this.setState({
+      submitUpDateEdit: true,
+    });
+  }
+
+  handleUpdate(data) {
+    this.setState({
+      isEditing: true,
+      editData: data,
     });
   }
 
@@ -241,10 +264,27 @@ class EntKeyword extends React.Component {
           destroyOnClose="true"
         >
           <AddNew
-            data={this.state.editData}
             provinces={this.state.provinces}
             onSubmit={this.state.submitNewAdd}
             onCompleted={this.handleCompletedAdd}
+          />
+        </Modal>
+
+        {/* 编辑 */}
+        <Modal
+          title="编辑企业关键字"
+          visible={this.state.isEditing}
+          onOk={this.handleOkEdit}
+          onCancel={this.handleCancelEdit}
+          cancelText="取消"
+          okText="提交"
+          destroyOnClose="true"
+        >
+          <EditNew
+            data={this.state.editData}
+            provinces={this.state.provinces}
+            onSubmit={this.state.submitUpDateEdit}
+            onCompleted={this.handleCompletedEdit}
           />
         </Modal>
 

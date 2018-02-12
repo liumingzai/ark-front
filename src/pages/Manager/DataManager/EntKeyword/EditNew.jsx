@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Button, Popconfirm, Select, Switch, message } from 'antd';
+import { Table, Input, Select, Switch, message } from 'antd';
 import Service from './EntKeywordService';
 
 const { Option } = Select;
@@ -13,8 +13,8 @@ const EditableInputCell = ({ value, onChange }) => (
   />
 );
 
-const EditableSelectCell = ({ provinces, onChange }) => (
-  <Select onChange={e => onChange(e)} defaultValue="北京">
+const EditableSelectCell = ({ provinces, onChange, defaultValue }) => (
+  <Select onChange={e => onChange(e)} defaultValue={defaultValue || '北京'}>
     {provinces
       ? provinces.map(e => (
         <Option key={e} value={e}>
@@ -29,16 +29,16 @@ const EditableSwitchCell = ({ value, onChange }) => (
   <Switch checkedChildren="高" unCheckedChildren="低" checked={value} onChange={onChange} />
 );
 
-class AddNew extends React.Component {
+class EditNew extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
         {
-          key: 1,
-          keyword: '',
-          province: '北京',
-          priority: true,
+          key: this.props.data.key,
+          keyword: this.props.data.keyword,
+          province: this.props.data.province,
+          priority: this.props.data.priority === 1,
         },
       ],
     };
@@ -59,47 +59,25 @@ class AddNew extends React.Component {
         dataIndex: 'priority',
         render: (text, record) => this.renderPriorityColumns(text, record, 'priority'),
       },
-      {
-        title: '操作',
-        dataIndex: 'operation',
-        render: (text, record) =>
-          (this.state.data.length > 1 ? (
-            <Popconfirm
-              title="确定删除吗?"
-              okText="确定"
-              cancelText="取消"
-              onConfirm={() => this.onDelete(record.key)}
-            >
-              <Button>删除</Button>
-            </Popconfirm>
-          ) : null),
-      },
     ];
 
     this.service = new Service();
-    this.onDelete = this.onDelete.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
-    this.addKeywordInfo = this.addKeywordInfo.bind(this);
+    this.updateKeywordInfo = this.updateKeywordInfo.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.onSubmit) {
-      const data = this.state.data.map(e => ({
-        keyword: e.keyword,
-        province: e.province,
-        priority: e.priority ? 1 : 0,
-      }));
-      this.addKeywordInfo(data);
+      const data = {
+        keyword: this.state.data[0].keyword,
+        province: this.state.data[0].province,
+        priority: this.state.data[0].priority ? 1 : 0,
+      };
+      this.updateKeywordInfo(data);
     }
   }
 
-  onDelete(key) {
-    const dataSource = [...this.state.data];
-    this.setState({ data: dataSource.filter(item => item.key !== key) });
-  }
-
-  addKeywordInfo(param) {
-    this.service.addKeywordInfo(param).then((data) => {
+  updateKeywordInfo(param) {
+    this.service.updateKeywordInfo(param).then((data) => {
       if (data.code === '2000') {
         message.success('添加成功');
         this.props.onCompleted();
@@ -116,20 +94,6 @@ class AddNew extends React.Component {
     }
   }
 
-  handleAdd() {
-    const { data } = this.state;
-    const newData = {
-      key: data.length + 1,
-      keyword: '',
-      province: '北京',
-      priority: true,
-    };
-
-    this.setState({
-      data: [...data, newData],
-    });
-  }
-
   renderColumns(text, record, column) {
     return (
       <EditableInputCell
@@ -142,6 +106,7 @@ class AddNew extends React.Component {
   renderSelectColumns(text, record, column) {
     return (
       <EditableSelectCell
+        defaultValue={this.props.province}
         provinces={this.props.provinces}
         onChange={value => this.handleChange(value, record.key, column)}
       />
@@ -161,9 +126,6 @@ class AddNew extends React.Component {
     const pagination = false;
     return (
       <section>
-        <Button type="primary" style={{ marginBottom: 10 }} onClick={this.handleAdd}>
-          新增
-        </Button>
         <Table
           bordered
           pagination={pagination}
@@ -175,4 +137,4 @@ class AddNew extends React.Component {
   }
 }
 
-export default AddNew;
+export default EditNew;
