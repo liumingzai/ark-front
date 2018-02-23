@@ -1,8 +1,17 @@
-# Ark-front
+# Ark-front 2018 年伊始
+
+> Ark 数据产品重构，基于 React16+Antd 技术栈。
+
+* 原型 [http://192.168.1.151/mockup](http://192.168.1.151/mockup)
+* 内网地址 [http://192.168.1.151/](http://192.168.1.151/)
+* 线上地址 [http://ark.proudsmart.com/](http://ark.proudsmart.com/)
+* 接口地址 [http://192.168.1.151/ark-portal](http://192.168.1.151/ark-portal)
+* 图片服务器地址 [http://192.168.1.145/dc/](http://192.168.1.145/dc/)
 
 ## Installation And Usage
 
 ```bash
+# 有三个分支 master - 线上稳定版本，dev - 开发，test - 测试
 git clone git@192.168.1.180:ark-group/ark-front.git
 
 cd ark-front
