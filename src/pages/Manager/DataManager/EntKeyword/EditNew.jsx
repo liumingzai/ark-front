@@ -14,7 +14,7 @@ const EditableInputCell = ({ value, onChange }) => (
 );
 
 const EditableSelectCell = ({ provinces, onChange, defaultValue }) => (
-  <Select onChange={e => onChange(e)} defaultValue={defaultValue || '北京'}>
+  <Select onChange={e => onChange(e)} value={defaultValue || '北京'}>
     {provinces
       ? provinces.map(e => (
         <Option key={e} value={e}>
@@ -106,7 +106,7 @@ class EditNew extends React.Component {
   renderSelectColumns(text, record, column) {
     return (
       <EditableSelectCell
-        defaultValue={this.props.province}
+        defaultValue={text}
         provinces={this.props.provinces}
         onChange={value => this.handleChange(value, record.key, column)}
       />
