@@ -38,7 +38,7 @@ class OverviewDetailService {
         errorDesc: e.errorDesc,
       };
 
-      if (e.updateTime) {
+      if (e.apiErrorCodeId) {
         tmp.apiErrorCodeId = e.apiErrorCodeId;
       }
       return tmp;
@@ -53,7 +53,7 @@ class OverviewDetailService {
         queryOption: e.queryOption ? 'Y' : 'N',
       };
 
-      if (e.updateTime) {
+      if (e.apiQueryId) {
         tmp.apiQueryId = e.apiQueryId;
       }
       return tmp;
