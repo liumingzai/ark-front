@@ -106,6 +106,13 @@ class OverviewDetail extends React.Component {
     });
   }
 
+  /**
+   * 更新数据接口详情
+   *
+   * @param {any} apiId
+   * @param {any} param
+   * @memberof OverviewDetail
+   */
   updateApiInfo(apiId, param) {
     this.service.updateApiInfo(apiId, param).then((data) => {
       if (data.code === '2000') {
@@ -115,6 +122,14 @@ class OverviewDetail extends React.Component {
     });
   }
 
+  /**
+   * 处理保存时子-父数据同步
+   * 当点击保存之后，子组件调用syncData函数向此组件同步数据
+   * 统一存储到dataStorage里
+   *
+   * @param {any} data
+   * @memberof OverviewDetail
+   */
   handleSyncData(data) {
     Object.keys(data).forEach((key) => {
       this.dataStorage[key] = data[key];
@@ -127,10 +142,14 @@ class OverviewDetail extends React.Component {
    * @memberof OverviewDetail
    */
   handleSubmit() {
+    // 第一步：向下通知提交保存
     this.setState({
       doSubmit: true,
     });
 
+    // 第二步 子组件调用handleSyncData同步数据
+
+    // 第三步 执行保存
     setTimeout(() => {
       const data = {};
       Object.keys(this.dataStorage.fields).forEach((key) => {
