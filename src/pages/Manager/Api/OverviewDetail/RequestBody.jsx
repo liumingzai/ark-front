@@ -74,7 +74,11 @@ class RequestBody extends React.Component {
         dataIndex: 'queryColumnDesc',
         render: (text, record) => this.renderColumns(text, record, 'queryColumnDesc'),
       },
-      {
+    ];
+
+    // 管理员才可以有编辑（删除）操作
+    if (props.userType === 1) {
+      columns.push({
         title: '操作',
         dataIndex: 'operation',
         width: '10%',
@@ -90,8 +94,8 @@ class RequestBody extends React.Component {
             </Popconfirm>
           </div>
         ),
-      },
-    ];
+      });
+    }
 
     this.state = {
       dataSource,

@@ -28,9 +28,11 @@ class Publish extends React.Component {
    * @memberof Publish
    */
   handlePublishChange(checked) {
-    this.setState({
-      publish: checked,
-    });
+    if (this.props.userType === 1) {
+      this.setState({
+        publish: checked,
+      });
+    }
   }
 
   render() {

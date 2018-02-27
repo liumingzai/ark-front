@@ -31,7 +31,7 @@ class CodeError extends React.Component {
     ];
 
     // 管理员有删除操作
-    if (this.props.userType) {
+    if (this.props.userType === 1) {
       columns.push({
         title: '操作',
         dataIndex: 'operation',

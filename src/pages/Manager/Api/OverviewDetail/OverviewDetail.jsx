@@ -180,6 +180,7 @@ class OverviewDetail extends React.Component {
 
         <Col span={24}>
           <Publish
+            userType={this.userType}
             publish={this.state.publish}
             doSubmit={this.state.doSubmit}
             syncData={this.handleSyncData}

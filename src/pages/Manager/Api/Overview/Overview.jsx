@@ -74,11 +74,13 @@ function Header(props) {
         </RadioGroup>
       </section>
 
-      <section>
-        <Button type="primary">
-          <Link to="/manager/api/overview/new">新增</Link>
-        </Button>
-      </section>
+      {props.isAdmin ? (
+        <section>
+          <Button type="primary">
+            <Link to="/manager/api/overview/new">新增</Link>
+          </Button>
+        </section>
+      ) : null}
     </header>
   );
 }
@@ -199,7 +201,11 @@ class Overview extends React.Component {
     return (
       <section>
         <BreadNav />
-        <Header activeCat={this.state.activeCat} onChange={this.handleCatChange} />
+        <Header
+          activeCat={this.state.activeCat}
+          isAdmin={this.userType === 1}
+          onChange={this.handleCatChange}
+        />
         <Row style={{ display: 'flex', flexFlow: 'wrap', margin: '10px -6px 0' }}>
           {this.state.data.length > 0 &&
             this.state.data.map(e => (
