@@ -33,6 +33,11 @@ exports.common = {
         key: 'INJECT_DLL',
         value: root('dll/*.js'),
         type: 'PATH'
+      },
+      {
+        key: 'PUBLIC_URL',
+        value: '/src',
+        type: 'STRING'
       }
     ]),
 

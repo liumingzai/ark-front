@@ -60,13 +60,19 @@ function formatDate(timestamp) {
   return `${Y}-${M}-${D}`;
 }
 
+/**
+ * 顶部分类以及新增组件
+ *
+ * @param {any} props
+ * @returns
+ */
 function Header(props) {
   return (
     <header className={style.header}>
       <section>
         <span style={{ marginRight: 10 }}>分类</span>
         <RadioGroup value={props.activeCat} onChange={props.onChange}>
-          <RadioButton value={null}>全部</RadioButton>
+          <RadioButton value="all">全部</RadioButton>
           <RadioButton value="企业">企业</RadioButton>
           <RadioButton value="工商">工商</RadioButton>
           <RadioButton value="专利">专利</RadioButton>
@@ -104,7 +110,7 @@ class Overview extends React.Component {
     this.state = {
       data: [],
       size: 0,
-      activeCat: cat || null,
+      activeCat: cat || 'all',
     };
 
     // 注册URL监听器
@@ -142,6 +148,9 @@ class Overview extends React.Component {
    * @memberof Overview
    */
   getApiOverview(param) {
+    if (param.cat === 'all') {
+      param.cat = null;
+    }
     let service;
     if (this.userType === 1) {
       service = this.service.adminGetApiOverview(param);
