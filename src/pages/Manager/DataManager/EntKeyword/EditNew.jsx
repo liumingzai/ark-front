@@ -35,9 +35,10 @@ class EditNew extends React.Component {
     this.state = {
       data: [
         {
+          id: this.props.data.id,
           key: this.props.data.key,
           keyword: this.props.data.keyword,
-          province: this.props.data.province,
+          province: this.props.data.province || '北京',
           priority: this.props.data.priority === 1,
         },
       ],
@@ -68,6 +69,7 @@ class EditNew extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.onSubmit) {
       const data = {
+        id: this.state.data[0].id,
         keyword: this.state.data[0].keyword,
         province: this.state.data[0].province,
         priority: this.state.data[0].priority ? 1 : 0,
@@ -79,7 +81,7 @@ class EditNew extends React.Component {
   updateKeywordInfo(param) {
     this.service.updateKeywordInfo(param).then((data) => {
       if (data.code === '2000') {
-        message.success('添加成功');
+        message.success('编辑成功');
         this.props.onCompleted();
       }
     });

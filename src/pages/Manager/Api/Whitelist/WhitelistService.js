@@ -12,8 +12,9 @@ class WhitelistService {
    * @returns
    * @memberof WhitelistService
    */
-  getSummaryWhiteListLog(p) {
-    const method = '/admin/api/getSummaryWhiteListLog';
+  getSummaryWhiteListLog(p, isAdmin) {
+    const method = isAdmin ? '/admin/api/getSummaryWhiteListLog' : 'common/getSummaryWhiteListLog';
+
     const {
       page: pageNum, uid, apiName, clientIp, url, dailyDate,
     } = p;

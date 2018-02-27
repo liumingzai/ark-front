@@ -59,6 +59,11 @@ function SideNav(props) {
                 <Icon type="setting" /> 个人中心
               </Link>
             </Menu.Item>
+            <Menu.Item key="p04sub02">
+              <Link to={`${props.match.path}/api/scene`}>
+                <Icon type="info-circle" /> 场景管理
+              </Link>
+            </Menu.Item>
           </SubMent>
 
           <SubMent
@@ -69,12 +74,6 @@ function SideNav(props) {
               </span>
             }
           >
-            {/* <Menu.Item key="p02sub02">
-              <Link to={`${props.match.path}/api/scene`}>
-                <Icon type="info-circle" /> 场景管理
-              </Link>
-            </Menu.Item> */}
-
             <Menu.Item key="p02sub01">
               <Link to={`${props.match.path}/api/apirecord`}>
                 <Icon type="info-circle" /> 接口调用记录
@@ -83,15 +82,10 @@ function SideNav(props) {
 
             <Menu.Item key="p02sub02">
               <Link to={`${props.match.path}/api/whitelist`}>
-                <Icon type="info-circle" /> 白名单访问记录
+                <Icon type="info-circle" />{' '}
+                {props.account.userType === 1 ? '白名单访问记录' : '白名单拦截记录'}
               </Link>
             </Menu.Item>
-
-            {/* <Menu.Item key="p02sub03">
-              <Link to={`${props.match.path}/api/notfound`}>
-                <Icon type="info-circle" /> 白名单拦截记录
-              </Link>
-            </Menu.Item> */}
           </SubMent>
 
           <Menu.Item key="p05">
@@ -100,20 +94,22 @@ function SideNav(props) {
             </Link>
           </Menu.Item>
 
-          <SubMent
-            key="p03"
-            title={
-              <span>
-                <Icon type="appstore" /> <span>数据管理</span>
-              </span>
-            }
-          >
-            <Menu.Item key="p03sub01">
-              <Link to={`${props.match.path}/data/keyword/ent`}>
-                <Icon type="info-circle" /> 企业关键字
-              </Link>
-            </Menu.Item>
-          </SubMent>
+          {props.account.userType === 1 ? (
+            <SubMent
+              key="p03"
+              title={
+                <span>
+                  <Icon type="appstore" /> <span>数据管理</span>
+                </span>
+              }
+            >
+              <Menu.Item key="p03sub01">
+                <Link to={`${props.match.path}/data/keyword/ent`}>
+                  <Icon type="info-circle" /> 企业关键字
+                </Link>
+              </Menu.Item>
+            </SubMent>
+          ) : null}
         </Menu>
       </Sider>
       {props.children}

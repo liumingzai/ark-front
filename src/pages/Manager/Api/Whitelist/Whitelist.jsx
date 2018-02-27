@@ -6,6 +6,16 @@ import WhitelistSearch from './WhitelistSearch';
 import WhitelistTable from './WhitelistTable';
 import WhitelistService from './WhitelistService';
 
+// 有两种形式，
+// admin用户 - 白名单访问记录
+// api用户和临港第三方用户 - 白名单拦截记录
+
+/**
+ * 格式化时间
+ *
+ * @param {number} timestamp
+ * @returns YYYY-MM-DD
+ */
 function formatDate(timestamp) {
   const date = new Date(timestamp);
   const Y = date.getFullYear();
@@ -17,11 +27,11 @@ function formatDate(timestamp) {
   return `${Y}-${M}-${D}`;
 }
 
-function BreadNav() {
+function BreadNav({ isAdmin }) {
   return (
     <Breadcrumb>
       <Breadcrumb.Item>接口统计</Breadcrumb.Item>
-      <Breadcrumb.Item>白名单访问记录</Breadcrumb.Item>
+      <Breadcrumb.Item>{isAdmin ? '白名单访问记录' : '白名单拦截记录'}</Breadcrumb.Item>
     </Breadcrumb>
   );
 }
@@ -73,7 +83,7 @@ function formatParam(search) {
 }
 
 /**
- * Admin用户白名单访问记录
+ * 白名单访问记录
  *
  * @class Whitelist
  * @extends {React.Component}
@@ -85,6 +95,7 @@ class Whitelist extends React.Component {
     // 初始化查询参数
     this.queryParam = formatParam(this.props.location.search);
     this.queryParam.page = (this.queryParam.page && +this.queryParam.page) || 1;
+    this.isAdmin = JSON.parse(localStorage.getItem('account')).userType === 1;
 
     this.state = {
       data: null,
@@ -157,7 +168,11 @@ class Whitelist extends React.Component {
    * @memberof Whitelist
    */
   getSummaryWhiteListLog(param) {
-    this.service.getSummaryWhiteListLog(param).then((data) => {
+    // 不是管理员，需要制定是登录用户的uid
+    if (!this.isAdmin) {
+      param.uid = JSON.parse(localStorage.getItem('account')).uid;
+    }
+    this.service.getSummaryWhiteListLog(param, this.isAdmin).then((data) => {
       if (data.code === '2000') {
         const pageConf = {
           total: data.size,
@@ -178,9 +193,14 @@ class Whitelist extends React.Component {
   render() {
     return (
       <section>
-        <BreadNav />
-        <WhitelistSearch queryParam={this.queryParam} onSearch={this.onSearch} />
+        <BreadNav isAdmin={this.isAdmin} />
+        <WhitelistSearch
+          isAdmin={this.isAdmin}
+          queryParam={this.queryParam}
+          onSearch={this.onSearch}
+        />
         <WhitelistTable
+          isAdmin={this.isAdmin}
           data={this.state.data}
           pageConf={this.state.pageConf}
           onChange={this.onPageChange}

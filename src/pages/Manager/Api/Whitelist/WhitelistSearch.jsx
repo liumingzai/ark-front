@@ -34,11 +34,13 @@ const SearchForm = Form.create({
   const { getFieldDecorator } = props.form;
   return (
     <Form layout="inline">
-      <FormItem label="用户ID">
-        {getFieldDecorator('uid', {
-          rules: [],
-        })(<Input />)}
-      </FormItem>
+      {props.isAdmin ? (
+        <FormItem label="用户ID">
+          {getFieldDecorator('uid', {
+            rules: [],
+          })(<Input />)}
+        </FormItem>
+      ) : null}
 
       <FormItem label="接口名称">
         {getFieldDecorator('apiName', {
@@ -114,7 +116,12 @@ class WhitelistSearch extends React.Component {
 
     return (
       <div>
-        <SearchForm {...fields} onChange={this.handleFormChange} onSearch={this.handleSearch} />
+        <SearchForm
+          {...fields}
+          isAdmin={this.props.isAdmin}
+          onChange={this.handleFormChange}
+          onSearch={this.handleSearch}
+        />
       </div>
     );
   }
