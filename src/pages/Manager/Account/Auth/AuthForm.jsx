@@ -31,13 +31,10 @@ class AuthForm extends Component {
     this.getScopes();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.match.params.id) {
       this.getAuthById();
     }
-  }
-
-  componentDidMount() {
     // 表单校验未成功，提交按钮不可点击
     this.props.form.validateFields();
   }

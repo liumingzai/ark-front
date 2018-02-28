@@ -59,11 +59,13 @@ function SideNav(props) {
                 <Icon type="setting" /> 个人中心
               </Link>
             </Menu.Item>
-            <Menu.Item key="p04sub02">
-              <Link to={`${props.match.path}/api/scene`}>
-                <Icon type="info-circle" /> 场景管理
-              </Link>
-            </Menu.Item>
+            {props.account.typeName === '管理员' ? null : (
+              <Menu.Item key="p04sub02">
+                <Link to={`${props.match.path}/api/scene`}>
+                  <Icon type="info-circle" /> 场景管理
+                </Link>
+              </Menu.Item>
+            )}
           </SubMent>
 
           <SubMent

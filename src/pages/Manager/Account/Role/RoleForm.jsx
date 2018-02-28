@@ -21,13 +21,10 @@ class RoleForm extends Component {
     this.roleService = new RoleService();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.match.params.id) {
       this.getRoleById();
     }
-  }
-
-  componentDidMount() {
     // 表单校验未成功，提交按钮不可点击
     this.props.form.validateFields();
   }

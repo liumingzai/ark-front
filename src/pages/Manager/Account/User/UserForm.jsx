@@ -28,13 +28,10 @@ class UserForm extends Component {
     this.getRoles();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.match.params.id) {
       this.getUserById(this.props.match.params.id);
     }
-  }
-
-  componentDidMount() {
     // 表单校验未成功，提交按钮不可点击
     this.props.form.validateFields();
   }
