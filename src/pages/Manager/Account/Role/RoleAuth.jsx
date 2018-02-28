@@ -1,17 +1,16 @@
-/*eslint-disable*/
 import React from 'react';
-import { Tabs, Table, message } from 'antd';
+import { Tabs, Table, button, message } from 'antd';
 import moment from 'moment';
 import RoleService from './RoleService';
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 class RoleAuth extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       binds: [],
-      unbinds: [],
+      unBinds: [],
       bindPagination: {
         total: 0,
         pageSize: 10,
@@ -23,12 +22,22 @@ class RoleAuth extends React.Component {
     };
     this.roleService = new RoleService();
     this.handleChange = this.handleChange.bind(this);
+    this.handleUnBind = this.handleUnBind.bind(this);
+    this.handleBind = this.handleBind.bind(this);
     this.getBinds({ pageNum: 1 });
     this.getUnBinds({ pageNum: 1 });
   }
 
+  onBindChange(current) {
+    this.getBinds({ pageNum: current });
+  }
+
+  onUnBindChange(current) {
+    this.getUnBinds({ pageNum: current });
+  }
+
   getBinds(e) {
-    this.roleService.getBindsByRoleId(this.props.match.params.id, e.pageNum).then(data => {
+    this.roleService.getBindsByRoleId(this.props.match.params.id, e.pageNum).then((data) => {
       if (data.code === '2000') {
         const pagination = { ...this.state.bindPagination };
         pagination.total = data.size;
@@ -41,7 +50,7 @@ class RoleAuth extends React.Component {
   }
 
   getUnBinds(e) {
-    this.roleService.getUnBindsByRoleId(this.props.match.params.id, e.pageNum).then(data => {
+    this.roleService.getUnBindsByRoleId(this.props.match.params.id, e.pageNum).then((data) => {
       if (data.code === '2000') {
         const pagination = { ...this.state.unBindPagination };
         pagination.total = data.size;
@@ -53,21 +62,11 @@ class RoleAuth extends React.Component {
     });
   }
 
-  /*分页事件*/
-  onBindChange(current) {
-    this.getBinds({ pageNum: current });
-  }
-
-  /*分页事件*/
-  onUnBindChange(current) {
-    this.getUnBinds({ pageNum: current });
-  }
-
   handleBind(authId) {
     const permissions = [];
     permissions.push({ id: authId });
-    this.roleService.addBind(this.props.match.params.id, permissions).then(data => {
-      if ('2000' === data.code) {
+    this.roleService.addBind(this.props.match.params.id, permissions).then((data) => {
+      if (data.code === '2000') {
         message.success('bind auth success！！！');
         this.setState({
           binds: data.data,
@@ -80,8 +79,8 @@ class RoleAuth extends React.Component {
   handleUnBind(authId) {
     const permissions = [];
     permissions.push({ id: authId });
-    this.roleService.deleteBind(this.props.match.params.id, permissions).then(data => {
-      if ('2000' === data.code) {
+    this.roleService.deleteBind(this.props.match.params.id, permissions).then((data) => {
+      if (data.code === '2000') {
         message.success('unbind auth success！！！');
         this.setState({
           binds: data.data,
@@ -92,7 +91,7 @@ class RoleAuth extends React.Component {
   }
 
   handleChange(activeKey) {
-    if (activeKey == 1) {
+    if (activeKey === 1) {
       this.getBinds({ pageNum: 1 });
     } else {
       this.getUnBinds({ pageNum: 1 });
@@ -120,9 +119,7 @@ class RoleAuth extends React.Component {
         title: '创建时间',
         dataIndex: 'entryDatatime',
         key: 'entryDatatime',
-        render: val => {
-          return moment(val).format('YYYY-MM-DD HH:mm:ss');
-        },
+        render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.entryDatatime - b.entryDatatime,
       },
@@ -138,9 +135,14 @@ class RoleAuth extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a className="delete-data" onClick={this.handleUnBind.bind(this, record.id)}>
-              UnBind
-            </a>
+            <button
+              className="delete-data"
+              onClick={() => {
+                this.handleUnBind(record.id);
+              }}
+            >
+              解绑
+            </button>
           </span>
         ),
       },
@@ -166,9 +168,7 @@ class RoleAuth extends React.Component {
         title: '创建时间',
         dataIndex: 'entryDatatime',
         key: 'entryDatatime',
-        render: val => {
-          return moment(val).format('YYYY-MM-DD HH:mm:ss');
-        },
+        render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.entryDatatime - b.entryDatatime,
       },
@@ -184,9 +184,14 @@ class RoleAuth extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a className="delete-data" onClick={this.handleBind.bind(this, record.id)}>
-              Bind
-            </a>
+            <button
+              className="delete-data"
+              onClick={() => {
+                this.handleBind(record.id);
+              }}
+            >
+              绑定
+            </button>
           </span>
         ),
       },
