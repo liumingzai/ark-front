@@ -1,10 +1,7 @@
-/* eslint-disable */
 import React from 'react';
 import { Row, Col, Card } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import echarts from 'echarts';
 import DashboardService from './DashBoardService';
-import _ from 'lodash';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -42,8 +39,8 @@ class Dashboard extends React.Component {
   }
 
   getDashboardData() {
-    this.dashboardService.getDatas().then(data => {
-      if ('2000' === data.code) {
+    this.dashboardService.getDatas().then((data) => {
+      if (data.code === '2000') {
         this.setState({
           apiTotalNum: data.data.apiTotalNum,
           apiIncrementTotalNum: data.data.apiIncrementTotalNum,
@@ -59,88 +56,105 @@ class Dashboard extends React.Component {
 
         // 上月，本月接口访问量对比数据解析
         if (data.data.countCurApiAccess) {
-          let tempCurDatas = [];
-          let tempLastDatas = [];
-          let tempCategory = [];
+          const tdata = {
+            tempCurDatas: [],
+            tempLastDatas: [],
+            tempCategory: [],
+          };
           data.data.countCurApiAccess = JSON.parse(data.data.countCurApiAccess);
-          data.data.countCurApiAccess.map(function(item) {
-            tempCurDatas.push(item.sumNumber);
-            tempCategory.push(item.dailyDate);
+          data.data.countCurApiAccess.map((item) => {
+            tdata.tempCurDatas.push(item.sumNumber);
+            tdata.tempCategory.push(item.dailyDate);
+            return tdata;
           });
           data.data.countLastApiAccess = JSON.parse(data.data.countLastApiAccess);
-          data.data.countLastApiAccess.map(function(item) {
-            tempLastDatas.push(item.sumNumber);
+          data.data.countLastApiAccess.map((item) => {
+            tdata.tempLastDatas.push(item.sumNumber);
+            return tdata.tempLastDatas;
           });
           this.setState({
-            countLastApiAccessDatas: tempLastDatas,
-            countCurApiAccessCategory: tempCategory,
-            countCurApiAccessDatas: tempCurDatas,
+            countLastApiAccessDatas: tdata.tempLastDatas,
+            countCurApiAccessCategory: tdata.tempCategory,
+            countCurApiAccessDatas: tdata.tempCurDatas,
           });
         }
 
         // 上月，本月接口访问量对比数据解析
         if (data.data.countCurLogin) {
-          let tempCurDatas = [];
-          let tempLastDatas = [];
-          let tempCategory = [];
+          const tdata = {
+            tempCurDatas: [],
+            tempLastDatas: [],
+            tempCategory: [],
+          };
           data.data.countCurLogin = JSON.parse(data.data.countCurLogin);
-          data.data.countCurLogin.map(function(item) {
-            tempCurDatas.push(item.sumNumber);
-            tempCategory.push(item.dailyDate);
+          data.data.countCurLogin.map((item) => {
+            tdata.tempCurDatas.push(item.sumNumber);
+            tdata.tempCategory.push(item.dailyDate);
+            return tdata;
           });
           data.data.countLastLogin = JSON.parse(data.data.countLastLogin);
-          data.data.countLastLogin.map(function(item) {
-            tempLastDatas.push(item.sumNumber);
+          data.data.countLastLogin.map((item) => {
+            tdata.tempLastDatas.push(item.sumNumber);
+            return tdata;
           });
           this.setState({
-            countLastLoginDatas: tempLastDatas,
-            countCurLoginCategory: tempCategory,
-            countCurLoginDatas: tempCurDatas,
+            countLastLoginDatas: tdata.tempLastDatas,
+            countCurLoginCategory: tdata.tempCategory,
+            countCurLoginDatas: tdata.tempCurDatas,
           });
         }
 
         // 登录次数Top5数据解析
         if (data.data.loginTop) {
-          let tempDatas = [];
-          let tempCategory = [];
+          const tdata = {
+            tempDatas: [],
+            tempCategory: [],
+          };
           data.data.loginTop = JSON.parse(data.data.loginTop);
-          data.data.loginTop.map(function(item) {
-            tempDatas.push(item.sumLoginNum);
-            tempCategory.push(item.username);
+          data.data.loginTop.map((item) => {
+            tdata.tempDatas.push(item.sumLoginNum);
+            tdata.tempCategory.push(item.username);
+            return tdata;
           });
           this.setState({
-            loginTopCategory: tempCategory,
-            loginTopDatas: tempDatas,
+            loginTopCategory: tdata.tempCategory,
+            loginTopDatas: tdata.tempDatas,
           });
         }
 
         // 接口访问次数Top5数据解析
         if (data.data.accessApiTop) {
-          let tempDatas = [];
-          let tempCategory = [];
+          const tdata = {
+            tempDatas: [],
+            tempCategory: [],
+          };
           data.data.accessApiTop = JSON.parse(data.data.accessApiTop);
-          data.data.accessApiTop.map(function(item) {
-            tempDatas.push(item.sumAccessNum);
-            tempCategory.push(item.apiName);
+          data.data.accessApiTop.map((item) => {
+            tdata.tempDatas.push(item.sumAccessNum);
+            tdata.tempCategory.push(item.apiName);
+            return tdata;
           });
           this.setState({
-            accessApiTopCategory: tempCategory,
-            accessApiTopDatas: tempDatas,
+            accessApiTopCategory: tdata.tempCategory,
+            accessApiTopDatas: tdata.tempDatas,
           });
         }
 
         // 白名单拦截记录统计数据解析
         if (data.data.countWhitelistDenied) {
-          let tempDatas = [];
-          let tempCategory = [];
+          const tdata = {
+            tempDatas: [],
+            tempCategory: [],
+          };
           data.data.countWhitelistDenied = JSON.parse(data.data.countWhitelistDenied);
-          data.data.countWhitelistDenied.map(function(item) {
-            tempCategory.push(item.dailyDate);
-            tempDatas.push(item.sumNumber);
+          data.data.countWhitelistDenied.map((item) => {
+            tdata.tempCategory.push(item.dailyDate);
+            tdata.tempDatas.push(item.sumNumber);
+            return tdata;
           });
           this.setState({
-            countWhiteListDeniedCategory: tempCategory || [],
-            countWhiteListDeniedDatas: tempDatas || [],
+            countWhiteListDeniedCategory: tdata.tempCategory || [],
+            countWhiteListDeniedDatas: tdata.tempDatas || [],
           });
         }
       }
@@ -375,7 +389,7 @@ class Dashboard extends React.Component {
               <Card title="上月，本月接口访问量对比">
                 <ReactEcharts
                   option={apiVisitOption}
-                  showLoading={this.state.countCurApiAccessDatas == []}
+                  showLoading={this.state.countCurApiAccessDatas === []}
                   style={{ height: '300px', width: '1200px' }}
                   className="react_for_echarts"
                 />
