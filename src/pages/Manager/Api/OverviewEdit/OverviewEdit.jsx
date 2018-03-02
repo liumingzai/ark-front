@@ -73,7 +73,7 @@ const SearchForm = Form.create({
       <Col span={14}>
         <FormItem label="接口名称">
           {getFieldDecorator('apiName', {
-            rules: [{ required: true, message: 'API name is required' }],
+            rules: [{ required: true, message: '接口名称不能为空' }],
           })(<Input />)}
         </FormItem>
       </Col>
@@ -89,7 +89,7 @@ const SearchForm = Form.create({
       <Col span={14}>
         <FormItem label="调用单价(分/次)">
           {getFieldDecorator('unitPrice', {
-            rules: [{ required: true, message: 'Unit price is required' }],
+            rules: [{ required: true, message: '调用单价不能为空' }],
           })(<Input />)}
         </FormItem>
       </Col>

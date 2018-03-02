@@ -24,6 +24,9 @@ class RoleAuth extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleUnBind = this.handleUnBind.bind(this);
     this.handleBind = this.handleBind.bind(this);
+  }
+
+  componentDidMount() {
     this.getBinds({ pageNum: 1 });
     this.getUnBinds({ pageNum: 1 });
   }
@@ -91,7 +94,7 @@ class RoleAuth extends React.Component {
   }
 
   handleChange(activeKey) {
-    if (activeKey === 1) {
+    if (activeKey === '1') {
       this.getBinds({ pageNum: 1 });
     } else {
       this.getUnBinds({ pageNum: 1 });
