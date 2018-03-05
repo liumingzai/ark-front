@@ -120,11 +120,11 @@ class RoleAuth extends React.Component {
       },
       {
         title: '创建时间',
-        dataIndex: 'entryDatatime',
-        key: 'entryDatatime',
+        dataIndex: 'entryDatetime',
+        key: 'entryDatetime',
         render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.entryDatatime - b.entryDatatime,
+        sorter: (a, b) => a.entryDatetime - b.entryDatetime,
       },
       {
         title: '有效标识',
@@ -169,11 +169,11 @@ class RoleAuth extends React.Component {
       },
       {
         title: '创建时间',
-        dataIndex: 'entryDatatime',
-        key: 'entryDatatime',
+        dataIndex: 'entryDatetime',
+        key: 'entryDatetime',
         render: val => moment(val).format('YYYY-MM-DD HH:mm:ss'),
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.entryDatatime - b.entryDatatime,
+        sorter: (a, b) => a.entryDatetime - b.entryDatetime,
       },
       {
         title: '有效标识',
