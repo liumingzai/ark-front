@@ -5,13 +5,17 @@ import OverviewEditService from './OverviewEditService';
 
 const FormItem = Form.Item;
 const { Option } = Select;
-function BreadNav() {
+function BreadNav(props) {
   return (
     <Breadcrumb>
       <Breadcrumb.Item>
         <Link to="/manager/api/overview">数据接口</Link>
       </Breadcrumb.Item>
-      <Breadcrumb.Item>编辑接口</Breadcrumb.Item>
+      {props.apiId ? (
+        <Breadcrumb.Item>编辑接口</Breadcrumb.Item>
+      ) : (
+        <Breadcrumb.Item>新增接口</Breadcrumb.Item>
+      )}
     </Breadcrumb>
   );
 }
@@ -68,7 +72,7 @@ const SearchForm = Form.create({
   return (
     <Form>
       <Col span={24}>
-        <BreadNav />
+        <BreadNav apiId={props.apiId} />
       </Col>
       <Col span={14}>
         <FormItem label="接口名称">
@@ -113,6 +117,7 @@ class OverviewEdit extends React.Component {
   constructor(props) {
     super(props);
     const fileList = null;
+    this.apiId = this.props.match.params.id;
     this.state = {
       fields: {
         apiName: {
@@ -132,7 +137,6 @@ class OverviewEdit extends React.Component {
       fileList,
     };
     this.service = new OverviewEditService();
-    this.apiId = this.props.match.params.id;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -255,6 +259,7 @@ class OverviewEdit extends React.Component {
       <div>
         <SearchForm
           {...fields}
+          apiId={this.apiId}
           fileList={fileList}
           selectOptions={selectOptions}
           onChange={this.handleFormChange}
