@@ -1,178 +1,208 @@
-# Ark api front 2017-11-21
+# Ark-front 2018 年伊始
 
-## 配置环境
+> Ark 数据产品重构，基于 React16+Antd 技术栈。
 
-* **Nodejs/npm** 基础开发环境
-* **Git** 版本控制
-* **Filezilla** 文件传输工具(主要用于将文件传输到开发或生产服务器)
-* **Meld** (代码比较合并工具， 也可以选择 Beyond Compare)
-* **Visual Studio Code** 开发工具
-* **OpenVPN** (Windows and Linux) OR **Tunnelblick** (MacOS) Gitlab 服务器 VPN 工具
+* 原型 [http://192.168.1.151/mockup](http://192.168.1.151/mockup)
+* 内网地址 [http://192.168.1.151/](http://192.168.1.151/)
+* 线上地址 [http://ark.proudsmart.com/](http://ark.proudsmart.com/)
+* 接口地址 [http://192.168.1.151/ark-portal](http://192.168.1.151/ark-portal)
+* 图片服务器地址 [http://192.168.1.145/dc/](http://192.168.1.145/dc/)
 
-```markdown
-OpenVPN Windows Configure
-
-1. 安装 openvpn，拷贝 config 目录到安装目录
-2. 配置 Openvpn 启动程序，设置兼容性为通过管理员运行(windowOS, 右单击-以管理员身份运行)
-3. 连接 openvpn，输入用户名密码: guestHZ/Letmein123
-4. 访问 Gitlab 服务 http://10.46.215.20/users/sign_in (本次开发项目是 ark/ic-front)
-5. 配置 ssh-key
-6. 相关配置完成后，即可克隆代码到本地
-```
-
-## How to use
-
-> Before cloning code, you should connected to Gitlab OpenVPN.
-
-### 1. Clone code
+## Installation And Usage
 
 ```bash
-git clone git@192.168.1.180:ark-group/api-front.git -b dev
+# 有三个分支 master - 线上稳定版本，dev - 开发，test - 测试
+git clone git@192.168.1.180:ark-group/ark-front.git
+
+cd ark-front
+yarn install
+
+yarn start # start a dev server
+yarn start-browser # start a dev server and open default browser
+yarn build # build for production
+yarn build-analyse # build and generate a stats.json
+yarn dll # generate DllPlugin
+yarn test # run test
+yarn lint # run lint jsx
+yarn format # format code: .jsx?, .md, .s?css
+
+yarn server # test build folder, here is dist folder.
 ```
 
-### 2. Installition
+## Configuration
+
+* npm init & gitignore
+* File structure
+* commitlint
+* eslint
+* format(prettier)
+* webpack
+* Test
+* Router
+* Common http request and interceptor
+* webpack dll
+
+## Commitlint
+
+> The most common commit conventions follow this pattern:
+
+```md
+type: subject(lower-case)
+
+<!-- add one space line -->
+
+body?
+
+<!-- add one space line -->
+
+footer?
+```
+
+type includes:
+
+```json
+["add", "update", "delete", "feat", "fix", "docs", "style", "refactor", "test", "rever"]
+```
+
+You could config vim as default editor for git commit, just do:
 
 ```bash
-npm install
+git config --global core.editor "vim"
 ```
 
-### 3. Start a local server
+## Code styles
 
-```bash
-npm run start
+* [React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react)
+
+## Theme
+
+* [antd](https://ant.design/)
+
+## Problems
+
+* [x] Fonts can't load # Make webpack css-loader module: false, [More about css-modules](https://github.com/css-modules/css-modules)
+* [x] Jest test conf # Make ReactDom to ReactDOM, word error.
+* [ ] redux
+* [x] react-router@^4 # [More about dynamic-import](https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/guides/code-splitting.md)
+* [ ] cssnext
+
+## Support Plans
+
+* [ ] GraphQL
+* [ ] Apollo + Relay Modern
+* [ ] SSH
+* [ ] PWA(Service worker)
+
+## More from Ark front end standard product
+
+> Use React@16 to build ProudArk front end standard.
+
+Below you will find some information on how to perform common tasks.<br>
+You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+
+[More information about React&TypeScript](https://github.com/Microsoft/TypeScript-React-Starter#typescript-react-starter)
+
+## Pre need to konw
+
+* [A re-introduction to JavaScript (JS tutorial)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+* [Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+* [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+
+## Product Instruction
+
+* [typescript](http://www.typescriptlang.org/) & [typescript chinese](https://www.tslang.cn/index.html)
+* [react 16](https://reactjs.org/) & [React 16 Chinese](https://doc.react-china.org/)
+* [react-router-dom](https://reacttraining.com/react-router/)
+* [react-redux](http://cn.redux.js.org/docs/react-redux/) & [react-redux English](https://redux.js.org/docs/basics/UsageWithReact.html)
+* [redux](https://redux.js.org/)
+* [material-ui](https://material-ui-next.com/)
+* [styled-components](https://www.styled-components.com/)
+* font-awesome
+* [webpack 3](https://webpack.js.org/)
+* [Jest](https://facebook.github.io/jest/)
+* [Yarn](https://yarnpkg.com/zh-Hans/)
+
+## Important
+
+* styles [Four ways to style react components](https://codeburst.io/4-four-ways-to-style-react-components-ac6f323da822)
+* 在具有许多组件的应用程序中，在销毁时释放组件所占用的资源非常重要。
+* 如果你不在 render() 中使用某些东西，它就不应该在状态中。
+* 2 type component: function,class
+* Lifecircle
+
+```jsx
+componentDidMount() {
+...
+}
+
+componentWillUnmount() {
+...
+}
+
+componentWillUpdate 和 componentDidUpdate 依然可以被调用
 ```
 
-* Build code
-
-```bash
-npm run build
-```
-
-* Auto Unit-Testing
-
-```bash
-npm run test
-```
-
-* Auto E2E-Testing
-
-```bash
-npm run e2e
-```
-
-## Git 使用指南
-
-### 添加 180Gitlab remote
-
-```bash
-git remote add gitlab git@192.168.1.180:ark-group/api-front.git
-
-# on dev branch
-git pull gitlab dev --allow-unrelated-histories
-
-git push gitlab dev
-```
-
-## 技术概览
-
-* 语言 **Typescript** [ 中文网](https://www.tslang.cn/) [英文网](http://www.typescriptlang.org/)
-* JS 框架(平台) **Anguar@^4.3.2** [中文官网](https://angular.cn/) [英文官网](https://angular.io/)
-* HTML/CSS 模板 **[Bootstrap@^3.3.7](http://getbootstrap.com/components/)**
-* 图标字体 **[FontAwesome](http://fontawesome.io/icons/)**
-* Unit-Testing **Karma + Jasmine**
-* E2E-Testing **karma + Practor**
-* 函数库 **[Lodash](https://lodash.com/docs/)**
-* CSS 预处理器 **[SASS](http://sass.bootcss.com/)**
-* 打包构建工具 **weback** [中文文档](https://doc.webpack-china.org/) [英文官网](https://webpack.js.org/)
-* 版本控制 **Git**
-* 托管 Git 项目仓库 **Gitlab** [http://10.46.215.20/](http://10.46.215.20/)
-* 项目管理软件 **禅道** [http://36.110.36.118:1980/](http://36.110.36.118:1980/)
-* 普奥知识分享平台及 API 文档 **Wiki** [http://114.215.222.181/](http://114.215.222.181/)
-
-## 开发规范
-
-### 集成自动化规范
-
-* TSLint
-* HTMLHint
-* Sass Lint
-* ESLint
-
-### 一些推荐编程规范
-
-* [Angular 官方规范](https://angular.io/guide/styleguide)
-* [Angular: Best Practices](https://codeburst.io/angular-best-practices-4bed7ae1d0b7)
-* [Angular: Bad Practices](https://codeburst.io/angular-bad-practices-eab0e594ce92)
-* [Airbnb Css Styleguide](https://github.com/airbnb/css)
-* [CssGuide](https://cssguidelin.es/)
-
-## 一些优化计划列表
-
-* 路由守卫
-* 统一接口请求
-* H5 语义代码片段
-* 路由过渡动画
-* 删除垃圾代码
-* 时常重构
-* AOT
-* Server-rendering
-* First page optimise
-* Module optimise
-
-## 组建化列表
-
-* ECharts 折线图（多个以及单个），柱状图（多个以及单个），地图，饼图
-* D3 拓扑图，关系图
-* table 列表
-* 百度地图画圈
-* Validate
-* 头部用户基本信息
-
-## Visual Studio Code 常用插件@sort:installs
-
-* vscode-icons
-* Debugger for Chrome
-* ESLint
-* Beautify
-* TSLint
-* HTML Snippets
-* Angular v4 TypeScript Snippets
-* IntelliSense for Css class names
-* npm
-* Path Intellisense
-* Document This
-* Bootstrap 3 Snippets
-* Angular 2+ Snippets
-* Sass
-* Prettier - JavaScript formatter
-* HtmlHint
-* Color Highlight
-* Angular 2 TypeScript Emmet
-* Sass Lint
-
-## 常用代码片段
-
-### 1. sweetalert2
+* super
+  > 派生类包含了一个构造函数，它 必须调用 super()，它会执行基类的构造函数。 而且，在构造函数里访问 this 的属性之前，我们 一定要调用 super()。 这个是 TypeScript 强制执行的一条重要规则。
 
 ```ts
-swal({
-  title: "您确定要删除吗？",
-  text: "该操作将彻底删除，并且不能恢复!",
-  type: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#673ab7",
-  cancelButtonColor: "#dc3545",
-  confirmButtonText: "确定",
-  cancelButtonText: "取消"
-}).then(result => {
-  if (result.value) {
-    swal("Deleted!", "Your file has been deleted.", "success");
-    // result.dismiss can be 'cancel', 'overlay',
-    // 'close', and 'timer'
-  } else if (result.dismiss === "cancel") {
-    swal("Cancelled", "Your imaginary file is safe :)", "error");
+class Animal {
+  name: string;
+  constructor(theName: string) {
+    this.name = theName;
   }
-});
+  move(distanceInMeters: number = 0) {
+    console.log(`${this.name} moved ${distanceInMeters}m.`);
+  }
+}
+
+class Snake extends Animal {
+  constructor(name: string) {
+    super(name);
+  }
+  move(distanceInMeters = 5) {
+    console.log('Slithering...');
+    super.move(distanceInMeters);
+  }
+}
 ```
 
-## 更新日志
+super 实际上用在两种语法中:
+
+constructor 内的 super(): 执行父类的构造函数。必须至少执行一次。
+
+一般方法内的 super.method(): 执行父类的 (未必同名的) 方法。不是必需。
+
+* state
+
+不要直接更新状态例如，此代码不会重新渲染组件：
+
+// Wrong
+
+```jsx
+this.state.comment = 'Hello';
+```
+
+应当使用 setState():
+
+// Correct
+
+```jsx
+this.setState({ comment: 'Hello' });
+```
+
+构造函数是唯一能够初始化 this.state 的地方。
+
+状态更新可能是异步的
+React 可以将多个 setState() 调用合并成一个调用来提高性能。
+
+因为 this.props 和 this.state 可能是异步更新的，你不应该依靠它们的值来计算下一个状态。
+
+```jsx
+// Correct
+this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment,
+}));
+```
+
+Keys 可以在 DOM 中的某些元素被增加或删除的时候帮助 React 识别哪些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识
