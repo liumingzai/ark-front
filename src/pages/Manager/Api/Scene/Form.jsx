@@ -4,6 +4,17 @@ import { Form, Input, Col, Row, Switch } from 'antd';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const Y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const M = m < 10 ? `0${m}` : m;
+  const d = date.getDate();
+  const D = d < 10 ? `0${d}` : d;
+
+  return `${Y}-${M}-${D}`;
+}
+
 /**
  * 初始化stateData
  *
@@ -17,7 +28,7 @@ function initStateData(props) {
       value: data.applicationName,
     },
     updateTime: {
-      value: data.updateTime,
+      value: data.updateTime ? formatDate(data.updateTime) : data.updateTime,
     },
     appMd5: {
       value: data.appMd5,
@@ -84,7 +95,7 @@ const CustomForm = Form.create({
         <Col span={8} style={{ marginRight: '10px' }}>
           <FormItem label="场景名称">
             {getFieldDecorator('applicationName', {
-              rules: [{ required: true, message: 'Application name is required!' }],
+              rules: [{ required: true, message: '场景名称不能为空' }],
             })(<Input />)}
           </FormItem>
         </Col>
