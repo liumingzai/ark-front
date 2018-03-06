@@ -114,7 +114,7 @@ class Overview extends React.Component {
     };
 
     // 注册URL监听器
-    this.props.history.listen((location, action) => {
+    this.removeListener = this.props.history.listen((location, action) => {
       if (action === 'PUSH') {
         const param = queryString.parse(location.search);
         this.queryParam.page = (param && param.page && +param.page) || 1; // 更新page
@@ -135,6 +135,10 @@ class Overview extends React.Component {
 
   componentDidMount() {
     this.getApiOverview(this.queryParam);
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   onPageChange(page) {
