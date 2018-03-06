@@ -107,7 +107,7 @@ class Whitelist extends React.Component {
     };
 
     // 注册URL监听器
-    this.props.history.listen((location, action) => {
+    this.removeListener = this.props.history.listen((location, action) => {
       if (action === 'PUSH') {
         this.queryParam = queryString.parse(location.search);
         this.queryParam.page =
@@ -123,6 +123,10 @@ class Whitelist extends React.Component {
 
   componentDidMount() {
     this.getSummaryWhiteListLog(this.queryParam);
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   onPageChange(page) {
