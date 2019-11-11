@@ -1,4 +1,4 @@
-# Ark-front 2018 年伊始
+# Ark-front 2018 
 
 > Ark 数据产品重构，基于 React16+Antd 技术栈。
 
